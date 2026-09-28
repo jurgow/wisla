@@ -3,24 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trajes Masculinos</title>
+<title>Wisła · Sistema de Gestão de Acervo e Trajes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Paleta Dark Theme (Obsidian & Deep Ruby / Midnight Blue) */
-  --bg: #070a13;
-  --bg-gradient: radial-gradient(circle at 50% 0%, #170b18 0%, #070a13 70%);
-  --surface: #0f172a;
-  --surface-card: #111c33;
-  --surface-hover: #172440;
-  --surface-active: #1e2f52;
-  --bd: #1e293b;
-  --bd-hover: #334155;
-  --bd-focus: #e11d48;
-  --bd-glow: rgba(225, 29, 72, 0.35);
+  /* Google Material Dark Theme / Obsidian Palette */
+  --bg: #0b0f19;
+  --bg-gradient: radial-gradient(circle at 50% -20%, #1e1329 0%, #0b0f19 75%);
+  --surface: #111827;
+  --surface-variant: #1a2336;
+  --surface-card: #151f32;
+  --surface-hover: #1e2c47;
+  --surface-active: #253759;
   
+  --bd: rgba(255, 255, 255, 0.08);
+  --bd-hover: rgba(255, 255, 255, 0.16);
+  --bd-focus: #e11d48;
+  --bd-glow: rgba(225, 29, 72, 0.4);
+  
+  /* Cores Temáticas de Salas */
+  --room-color: #e11d48;
+  --room-bg: rgba(225, 29, 72, 0.14);
+  --room-border: rgba(225, 29, 72, 0.35);
+
+  --google-red: #ea4335;
+  --google-blue: #4285f4;
+  --google-green: #34a853;
+  --google-yellow: #fbbc05;
+  --wisla-red: #e11d48;
+  --wisla-crimson: #9f1239;
+
   --pri: #e11d48;
   --pri-dark: #9f1239;
   --pri-light: #fb7185;
@@ -28,48 +42,35 @@
   --pri-border: rgba(225, 29, 72, 0.3);
   
   --blue-accent: #38bdf8;
-  --blue-bg: rgba(56, 189, 248, 0.12);
-  --blue-border: rgba(56, 189, 248, 0.3);
-
   --emerald: #10b981;
-  --emerald-bg: rgba(16, 185, 129, 0.12);
-  --emerald-border: rgba(16, 185, 129, 0.3);
-
   --amber: #f59e0b;
-  --amber-bg: rgba(245, 158, 11, 0.12);
-  --amber-border: rgba(245, 158, 11, 0.3);
-
-  --purple: #a855f7;
-  --purple-bg: rgba(168, 85, 247, 0.12);
-  --purple-border: rgba(168, 85, 247, 0.3);
+  --purple: #c084fc;
+  --pink: #f472b6;
 
   --text: #f8fafc;
   --text-muted: #94a3b8;
   --text-light: #64748b;
   
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(225, 29, 72, 0.15);
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.65), 0 0 24px rgba(225, 29, 72, 0.12);
   
-  --radius-sm: 6px;
-  --radius: 12px;
-  --radius-lg: 18px;
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 20px;
   --radius-full: 9999px;
   
-  /* Ajustes Customizáveis */
-  --fit: contain;
-  --bgfit: contain;
-  --tw: 72px;
-  --cardw: 230px;
-  --ar: 3/4;
+  --sidebar-w: 240px;
   --ff: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --fs: 14px;
   --fsh: 12px;
-  --fst: 26px;
+  --fst: 24px;
   --fsc: 16px;
   --fsm: 13px;
-  --padx: 12px;
-  --pady: 11px;
+  --tw: 72px;
+  --cardw: 240px;
+  --ar: 3/4;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -82,104 +83,211 @@ body {
   line-height: 1.5;
   font-size: var(--fs);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ===== CABEÇALHO ===== */
-header {
-  background: rgba(11, 15, 26, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(225, 29, 72, 0.2);
+/* ===== GOOGLE APP BAR (CABEÇALHO SUPERIOR) ===== */
+.app-bar {
+  background: rgba(11, 15, 25, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--bd);
   color: #fff;
-  padding: 10px 24px;
+  padding: 8px 20px;
   display: flex;
   gap: 16px;
   align-items: center;
   position: sticky;
   top: 0;
-  z-index: 50;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  z-index: 60;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
-.header-brand {
+
+.brand-section {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
   user-select: none;
 }
-.header-brand h1 {
-  font-size: calc(var(--fsm) + 5px);
+.brand-logo-box {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: #151f32;
+  border: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+.brand-logo-box:hover { transform: scale(1.06); }
+.brand-logo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 3px;
+}
+.brand-titles {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.brand-title {
+  font-size: 16px;
   font-weight: 800;
-  letter-spacing: -0.5px;
-  margin: 0;
-  background: linear-gradient(135deg, #ffffff, #fda4af, #f43f5e);
+  letter-spacing: -0.3px;
+  background: linear-gradient(135deg, #ffffff 40%, #fda4af, #f43f5e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
-#logoBox {
-  height: 38px;
-  min-width: 38px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-#logoBox:hover { transform: scale(1.05); }
-#logoBox img {
-  height: 38px;
-  max-width: 130px;
-  object-fit: contain;
-  background: #0f172a;
-  border: 1px solid var(--bd);
-  border-radius: 8px;
-  padding: 4px;
-}
-#logoBox .ph0 {
+.brand-subtitle {
   font-size: 11px;
   font-weight: 700;
-  color: var(--pri-light);
-  background: var(--pri-bg);
-  border: 1.5px dashed var(--pri-border);
-  border-radius: 8px;
-  padding: 5px 10px;
-  line-height: 1;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.nav-links {
-  display: flex;
-  gap: 4px;
+/* Seletor de Sala / Workspace Switcher estilo Google Cloud */
+.room-selector-btn {
+  display: inline-flex;
   align-items: center;
-  flex-wrap: wrap;
+  gap: 10px;
+  background: var(--surface-variant);
+  border: 1px solid var(--bd);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: var(--shadow-sm);
+  margin-left: 8px;
+}
+.room-selector-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--room-border);
+  box-shadow: 0 0 14px var(--room-bg);
+}
+.room-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--room-color);
+  box-shadow: 0 0 8px var(--room-color);
+}
+
+/* Barra de Busca Global Estilo Google */
+.global-search-bar {
+  flex: 1;
+  max-width: 580px;
   margin: 0 auto;
-}
-.header-actions {
+  position: relative;
   display: flex;
-  gap: 8px;
   align-items: center;
 }
+.global-search-bar input {
+  width: 100%;
+  padding: 10px 42px 10px 42px;
+  background: #151f32;
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-full);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.22s ease;
+}
+.global-search-bar input:focus {
+  background: #1a253c;
+  border-color: var(--room-color);
+  box-shadow: 0 0 0 4px var(--room-bg);
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  font-size: 15px;
+  pointer-events: none;
+}
+.search-shortcut-badge {
+  position: absolute;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-family: monospace;
+}
 
-/* ===== BOTÕES ===== */
+/* Ações da App Bar */
+.app-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Badge de Autenticação / Status */
+.auth-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  user-select: none;
+}
+.auth-pill.locked {
+  background: rgba(148, 163, 184, 0.12);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+.auth-pill.locked:hover {
+  background: rgba(148, 163, 184, 0.22);
+  color: #fff;
+}
+.auth-pill.room-unlocked {
+  background: var(--room-bg);
+  color: var(--pri-light);
+  border: 1px solid var(--room-border);
+  box-shadow: 0 0 12px var(--room-bg);
+}
+.auth-pill.master-unlocked {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05));
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.2);
+}
+
+/* Botões do Sistema */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  background: var(--surface);
+  gap: 8px;
+  background: var(--surface-variant);
   color: var(--text);
   border: 1px solid var(--bd);
   border-radius: var(--radius-sm);
-  padding: 7px 14px;
+  padding: 8px 16px;
   cursor: pointer;
   font-family: inherit;
   font-size: var(--fsm);
   font-weight: 600;
-  transition: all 0.18s ease;
+  transition: all 0.18s cubic-bezier(0.2, 0, 0, 1);
   box-shadow: var(--shadow-sm);
   text-decoration: none;
   white-space: nowrap;
@@ -192,30 +300,28 @@ header {
 }
 .btn:active { transform: translateY(0); }
 .btn.primary {
-  background: linear-gradient(135deg, var(--pri), var(--pri-dark));
+  background: linear-gradient(135deg, var(--room-color), var(--pri-dark));
   color: #fff;
   border-color: transparent;
-  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.4);
+  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.35);
 }
 .btn.primary:hover {
-  background: linear-gradient(135deg, #f43f5e, var(--pri));
-  box-shadow: 0 4px 15px rgba(225, 29, 72, 0.6);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 16px var(--room-bg);
 }
 .btn.blue {
   background: linear-gradient(135deg, #0284c7, #0369a1);
   color: #fff;
   border-color: transparent;
 }
-.btn.on {
-  background: var(--pri-bg);
-  color: var(--pri-light);
-  font-weight: 700;
-  border-color: var(--pri-border);
-  box-shadow: 0 0 12px rgba(225, 29, 72, 0.25);
+.btn.amber {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  color: #fff;
+  border-color: transparent;
 }
 .btn.red {
   color: #fca5a5;
-  background: rgba(220, 38, 38, 0.15);
+  background: rgba(220, 38, 38, 0.14);
   border-color: rgba(220, 38, 38, 0.3);
 }
 .btn.red:hover {
@@ -224,100 +330,216 @@ header {
   color: #fff;
 }
 .btn.sm {
-  padding: 4px 10px;
+  padding: 5px 12px;
   font-size: 12px;
   border-radius: 6px;
 }
-header .btn {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: none;
-}
-header .btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.18);
-}
-header .btn.on {
-  background: var(--pri);
-  color: #fff;
-  border-color: transparent;
-  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.5);
+.btn.icon-only {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
 }
 
-/* Indicador de Status de Autenticação */
-#authBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-#authBadge.locked {
-  background: rgba(148, 163, 184, 0.12);
-  color: #94a3b8;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-}
-#authBadge.unlocked {
-  background: rgba(16, 185, 129, 0.15);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+/* ===== APP LAYOUT (SIDEBAR + MAIN VIEW) ===== */
+.app-container {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 61px);
 }
 
-/* ===== CONTAINER PRINCIPAL ===== */
-main {
-  padding: 28px 24px 60px;
-  max-width: 1440px;
-  margin: auto;
-}
-
-/* ===== PAINEL DE MÉTRICAS (KPIs DO TOPO) ===== */
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.kpi-card {
-  background: linear-gradient(145deg, #0f172a, #131d33);
-  border: 1px solid var(--bd);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  box-shadow: var(--shadow-sm);
+/* Sidebar estilo Google Navigation Rail / Drawer */
+.sidebar {
+  width: var(--sidebar-w);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(16px);
+  border-right: 1px solid var(--bd);
+  padding: 16px 10px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.nav-category-title {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-light);
+  letter-spacing: 0.8px;
+  padding: 8px 12px 4px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.2, 0, 0, 1);
+  text-decoration: none;
+  user-select: none;
+  border: 1px solid transparent;
+}
+.nav-item:hover {
+  background: var(--surface-hover);
+  color: #fff;
+}
+.nav-item.active {
+  background: var(--room-bg);
+  color: #fff;
+  font-weight: 700;
+  border-color: var(--room-border);
+  box-shadow: 0 0 12px var(--room-bg);
+}
+.nav-item .icon {
+  font-size: 17px;
+  line-height: 1;
+}
+.nav-item .badge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+}
+.nav-item.active .badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Área de Conteúdo Principal */
+.content-area {
+  flex: 1;
+  padding: 24px 28px 60px;
+  overflow-y: auto;
+  max-width: 1480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ===== BANNER DA SALA ATIVA (WORKSPACE HERO) ===== */
+.room-hero-card {
+  background: linear-gradient(135deg, rgba(21, 31, 50, 0.8), rgba(26, 35, 54, 0.95));
+  border: 1px solid var(--room-border);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.2s, border-color 0.2s;
 }
-.kpi-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--pri);
-}
-.kpi-card::before {
+.room-hero-card::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 4px;
+  width: 5px;
   height: 100%;
-  background: var(--pri);
+  background: var(--room-color);
+  box-shadow: 0 0 12px var(--room-color);
 }
-.kpi-card.blue::before { background: var(--blue-accent); }
-.kpi-card.emerald::before { background: var(--emerald); }
-.kpi-card.amber::before { background: var(--amber); }
-.kpi-card.purple::before { background: var(--purple); }
+.room-hero-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.room-hero-icon {
+  font-size: 38px;
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius);
+  background: var(--room-bg);
+  border: 1px solid var(--room-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.room-hero-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.4px;
+}
+.room-hero-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.room-hero-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.hero-stat-chip {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--bd);
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+}
+.hero-stat-num {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+}
+.hero-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* ===== PAINEL DE KPIS / METRICAS ===== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.kpi-card {
+  background: var(--surface-card);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--room-color);
+  box-shadow: var(--shadow);
+}
+.kpi-card-icon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
 .kpi-num {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.5px;
@@ -332,25 +554,25 @@ main {
 /* ===== SUBMENUS / ABAS DE CATEGORIAS EM "TODAS AS PEÇAS" ===== */
 .category-subnav {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   overflow-x: auto;
-  padding-bottom: 8px;
-  margin-bottom: 20px;
+  padding-bottom: 10px;
+  margin-bottom: 22px;
   border-bottom: 1px solid var(--bd);
 }
 .cat-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  background: var(--surface);
+  padding: 8px 18px;
+  background: var(--surface-variant);
   border: 1px solid var(--bd);
   border-radius: var(--radius-full);
   color: var(--text-muted);
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
   white-space: nowrap;
   user-select: none;
 }
@@ -360,13 +582,13 @@ main {
   border-color: var(--bd-hover);
 }
 .cat-pill.active {
-  background: linear-gradient(135deg, var(--pri), var(--pri-dark));
+  background: linear-gradient(135deg, var(--room-color), var(--pri-dark));
   color: #fff;
   border-color: transparent;
-  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.4);
+  box-shadow: 0 4px 14px var(--room-bg);
 }
 .cat-pill-count {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.35);
   padding: 2px 8px;
   border-radius: var(--radius-full);
   font-size: 11px;
@@ -377,49 +599,20 @@ main {
   color: #fff;
 }
 
-/* Banner de resumo da categoria */
-.category-summary-banner {
-  background: linear-gradient(135deg, #0f172a, #162444);
-  border: 1px solid var(--bd);
-  border-radius: var(--radius);
-  padding: 16px 20px;
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.category-summary-title {
-  font-size: 16px;
-  font-weight: 800;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.category-summary-stats {
-  display: flex;
-  gap: 16px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-.category-summary-stats b { color: var(--pri-light); }
-
 /* ===== BARRA DE FERRAMENTAS / FILTROS ===== */
-.bar {
+.toolbar-bar {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   align-items: center;
   margin-bottom: 24px;
-  background: var(--surface);
-  padding: 14px 18px;
+  background: var(--surface-variant);
+  padding: 12px 18px;
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--bd);
 }
-.bar input[type=search], .bar select, .bar input[type=text] {
+.toolbar-bar input[type=search], .toolbar-bar select, .toolbar-bar input[type=text] {
   padding: 9px 14px;
   border: 1px solid var(--bd);
   border-radius: var(--radius-sm);
@@ -427,44 +620,44 @@ main {
   font-size: var(--fsm);
   min-width: 240px;
   outline: none;
-  background: #090d16;
+  background: #0d1322;
   color: var(--text);
   transition: all 0.2s ease;
 }
-.bar input[type=search]:focus, .bar select:focus, .bar input[type=text]:focus {
-  border-color: var(--pri);
-  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
+.toolbar-bar input[type=search]:focus, .toolbar-bar select:focus, .toolbar-bar input[type=text]:focus {
+  border-color: var(--room-color);
+  box-shadow: 0 0 0 3px var(--room-bg);
 }
 
-/* Alternador de Visualização (Grade vs Tabela de Inventário) */
 .view-switcher {
   display: inline-flex;
-  background: #090d16;
+  background: #0d1322;
   border: 1px solid var(--bd);
   border-radius: var(--radius-sm);
-  padding: 2px;
+  padding: 3px;
 }
 .view-btn {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  padding: 6px 12px;
+  padding: 6px 14px;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: all 0.15s;
 }
 .view-btn.active {
   background: var(--surface-hover);
   color: #fff;
+  box-shadow: var(--shadow-sm);
 }
 
-/* ===== GRADE DE TRAJES (CARDS COM ESTOQUE AGRUPADO) ===== */
+/* ===== GRADE DE TRAJES (CARDS MODERNOS GOOGLE STYLE) ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--cardw), 1fr));
-  gap: 24px;
+  gap: 22px;
 }
 .card {
   background: var(--surface-card);
@@ -472,8 +665,8 @@ main {
   overflow: hidden;
   box-shadow: var(--shadow);
   cursor: pointer;
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.22s ease;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.22s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+  border: 1px solid var(--bd);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -481,14 +674,14 @@ main {
 .card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-lg);
-  border-color: var(--pri);
+  border-color: var(--room-color);
 }
 .ph {
   aspect-ratio: var(--ar);
-  background-size: var(--bgfit);
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #090d16;
+  background-color: #0b101c;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -507,27 +700,22 @@ main {
   align-items: flex-end;
 }
 .badge-count {
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(15, 23, 42, 0.88);
   backdrop-filter: blur(8px);
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-full);
-  padding: 3px 9px;
+  padding: 3px 10px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   box-shadow: var(--shadow-sm);
 }
-.badge-count.pri {
-  background: rgba(225, 29, 72, 0.85);
-  border-color: rgba(225, 29, 72, 0.4);
+.badge-count.room {
+  background: var(--room-color);
+  border-color: transparent;
 }
-.badge-count.blue {
-  background: rgba(2, 132, 199, 0.85);
-  border-color: rgba(56, 189, 248, 0.4);
-}
-
 .nm {
-  padding: 14px 14px 8px;
+  padding: 14px 14px 6px;
   font-weight: 800;
   text-align: center;
   color: #fff;
@@ -535,7 +723,7 @@ main {
   letter-spacing: -0.3px;
 }
 .comp-preview {
-  padding: 0 12px 12px;
+  padding: 0 12px 14px;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -544,7 +732,7 @@ main {
 }
 .part-pill {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 3px 8px;
   border-radius: 6px;
   font-size: 11px;
@@ -561,8 +749,8 @@ main {
 .card-footer {
   margin-top: auto;
   padding: 10px 14px;
-  background: rgba(0, 0, 0, 0.25);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.28);
+  border-top: 1px solid var(--bd);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -570,14 +758,14 @@ main {
   color: var(--text-light);
 }
 
-/* ===== HERO DO TRAJE (DETALHES) ===== */
-.title {
+/* ===== FICHA DE DETALHES DO TRAJE ===== */
+.costume-header {
   display: flex;
   gap: 24px;
   align-items: center;
   flex-wrap: wrap;
   margin-bottom: 24px;
-  background: linear-gradient(135deg, #0f172a, #15223e);
+  background: linear-gradient(135deg, #151f32, #1b2740);
   padding: 24px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
@@ -587,10 +775,10 @@ main {
   width: calc(var(--cardw) * 0.9);
   aspect-ratio: var(--ar);
   border-radius: var(--radius);
-  background-size: var(--bgfit);
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #090d16;
+  background-color: #0b101c;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -604,15 +792,15 @@ main {
   padding: 8px;
 }
 .cover:hover {
-  border-color: var(--pri);
-  color: var(--pri-light);
-  background-color: var(--pri-bg);
+  border-color: var(--room-color);
+  color: #fff;
+  background-color: var(--room-bg);
 }
-.title-info {
+.costume-info {
   flex: 1;
   min-width: 280px;
 }
-.title input {
+.costume-info input {
   font-family: inherit;
   font-size: var(--fst);
   font-weight: 800;
@@ -625,10 +813,10 @@ main {
   letter-spacing: -0.5px;
   transition: all 0.2s;
 }
-.title input:hover, .title input:focus {
-  border-color: var(--pri);
-  background: #090d16;
-  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
+.costume-info input:hover, .costume-info input:focus {
+  border-color: var(--room-color);
+  background: #0b101c;
+  box-shadow: 0 0 0 3px var(--room-bg);
   outline: none;
 }
 .composition-summary {
@@ -648,7 +836,7 @@ main {
 }
 .comp-chip b { color: #fff; }
 
-/* ===== QUADRO DE COMPOSIÇÃO AGRUPADA POR PEÇA ===== */
+/* Quadro de Composição por Peça */
 .breakdown-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -664,12 +852,6 @@ main {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  position: relative;
-  transition: border-color 0.2s, transform 0.2s;
-}
-.breakdown-card:hover {
-  border-color: rgba(225, 29, 72, 0.4);
-  transform: translateY(-2px);
 }
 .breakdown-header {
   display: flex;
@@ -687,9 +869,9 @@ main {
   gap: 8px;
 }
 .breakdown-total {
-  background: var(--pri-bg);
+  background: var(--room-bg);
   color: var(--pri-light);
-  border: 1px solid var(--pri-border);
+  border: 1px solid var(--room-border);
   font-weight: 800;
   font-size: 12px;
   padding: 3px 10px;
@@ -723,10 +905,10 @@ main {
   white-space: nowrap;
 }
 
-/* ===== TABELAS DARK ===== */
+/* ===== TABELAS DE DADOS (MATERIAL DATA TABLES) ===== */
 .wrap {
   overflow-x: auto;
-  background: var(--surface);
+  background: var(--surface-card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   border: 1px solid var(--bd);
@@ -739,11 +921,11 @@ table {
 }
 th, td {
   border-bottom: 1px solid var(--bd);
-  padding: var(--pady) var(--padx);
+  padding: 12px 14px;
   vertical-align: middle;
 }
 th {
-  background: #0b1120;
+  background: #0f172a;
   position: sticky;
   top: 0;
   z-index: 2;
@@ -756,9 +938,6 @@ th {
   letter-spacing: 0.8px;
   border-bottom: 2px solid var(--bd);
   user-select: none;
-  resize: horizontal;
-  overflow: hidden;
-  min-width: 50px;
 }
 tbody tr {
   transition: background-color 0.15s;
@@ -780,51 +959,46 @@ td input, td textarea, td select {
   font: inherit;
   font-size: var(--fs);
   padding: 6px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   color: var(--text);
   transition: all 0.15s ease;
 }
 td input:hover, td textarea:hover {
   border-color: var(--bd);
-  background: #090d16;
+  background: #0b101c;
 }
 td input:focus, td textarea:focus {
   outline: none;
-  border-color: var(--pri);
-  background: #090d16;
-  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
-}
-td textarea {
-  resize: vertical;
-  min-height: 38px;
+  border-color: var(--room-color);
+  background: #0b101c;
+  box-shadow: 0 0 0 3px var(--room-bg);
 }
 td.part input {
   font-weight: 700;
   color: #fff;
 }
 
-/* Miniaturas de fotos na tabela */
 .thumb {
   width: var(--tw);
   height: var(--tw);
-  object-fit: var(--fit);
-  border-radius: var(--radius-sm);
+  object-fit: contain;
+  border-radius: var(--radius-xs);
   cursor: pointer;
   display: block;
   border: 1px solid var(--bd);
-  background: #090d16;
+  background: #0b101c;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .thumb:hover {
   transform: scale(1.1);
   box-shadow: var(--shadow-lg);
-  border-color: var(--pri);
+  border-color: var(--room-color);
 }
 .nothumb {
   width: var(--tw);
   height: var(--tw);
   border: 2px dashed rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -834,15 +1008,14 @@ td.part input {
   font-weight: 600;
   text-align: center;
   transition: all 0.2s;
-  background: #090d16;
+  background: #0b101c;
 }
 .nothumb:hover {
-  border-color: var(--pri);
-  color: var(--pri-light);
-  background: var(--pri-bg);
+  border-color: var(--room-color);
+  color: #fff;
+  background: var(--room-bg);
 }
 
-/* Botões de Ações nas Tabelas */
 .acts { white-space: nowrap; }
 .acts button {
   border: none;
@@ -860,12 +1033,11 @@ td.part input {
   transform: scale(1.15);
 }
 
-/* Chips e Tags */
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: var(--pri-bg);
+  background: var(--room-bg);
   color: var(--pri-light);
   border-radius: var(--radius-full);
   padding: 3px 10px;
@@ -873,19 +1045,18 @@ td.part input {
   font-size: calc(var(--fs) - 2px);
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid var(--pri-border);
+  border: 1px solid var(--room-border);
   transition: all 0.15s ease;
 }
 .chip:hover {
-  background: var(--pri);
+  background: var(--room-color);
   color: #fff;
-  border-color: var(--pri);
 }
 .tag {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: linear-gradient(135deg, var(--pri), var(--pri-dark));
+  background: linear-gradient(135deg, var(--room-color), var(--pri-dark));
   color: #fff;
   border-radius: var(--radius-full);
   padding: 2px 8px;
@@ -894,40 +1065,24 @@ td.part input {
   cursor: pointer;
   white-space: nowrap;
   box-shadow: 0 2px 6px rgba(225, 29, 72, 0.4);
-  transition: transform 0.15s;
 }
-.tag:hover { transform: scale(1.05); }
 .ro {
   padding: 6px 8px;
   display: block;
   min-height: 32px;
   color: var(--text);
 }
-.warn {
-  color: #fbbf24;
-  font-size: 12px;
-  font-weight: 700;
-}
 .note {
   color: var(--text-muted);
   font-size: 13px;
-  margin-top: 8px;
   line-height: 1.5;
-}
-h2 {
-  margin-top: 0;
-  color: #fff;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  font-size: 22px;
-  margin-bottom: 6px;
 }
 
 /* Tabela de Dançarinos */
 table.dz th:first-child, table.dz td:first-child {
   position: sticky;
   left: 0;
-  background: #0f172a;
+  background: #111827;
   z-index: 1;
   border-right: 2px solid var(--bd);
 }
@@ -935,16 +1090,16 @@ table.dz th:first-child { z-index: 3; background: #0b1120; }
 table.dz td input { width: 64px; text-align: center; }
 table.dz td:first-child input { width: 170px; text-align: left; font-weight: 700; color: #fff; }
 table.dz th { text-align: center; font-size: 12px; }
-table.dz th a { color: var(--pri-light); text-decoration: none; transition: color 0.2s; font-weight: 700; }
+table.dz th a { color: var(--pri-light); text-decoration: none; font-weight: 700; }
 table.dz th a:hover { color: #fff; text-decoration: underline; }
 
-/* ===== MODAIS DARK ===== */
+/* ===== MODAIS GOOGLE STYLE ===== */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: none;
   align-items: center;
   justify-content: center;
@@ -953,29 +1108,82 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
 }
 .modal-overlay.active { display: flex; }
 .modal-card {
-  background: #0f172a;
+  background: #111827;
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 26px;
   box-shadow: var(--shadow-lg);
-  max-width: 540px;
+  max-width: 560px;
   width: 100%;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--bd);
-  animation: modalIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modalIn 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 @keyframes modalIn {
-  from { opacity: 0; transform: scale(0.95); }
+  from { opacity: 0; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }
 }
-.modal-card.lg { max-width: 860px; }
+.modal-card.lg { max-width: 880px; }
 .modal-card h3 {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 800;
   color: #fff;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   letter-spacing: -0.4px;
+}
+
+/* Switcher de Salas Modal */
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.room-card-option {
+  background: var(--surface-card);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+.room-card-option:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.room-card-option.active {
+  border-color: var(--room-color);
+  background: var(--room-bg);
+  box-shadow: 0 0 16px var(--room-bg);
+}
+.room-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.room-card-icon {
+  font-size: 24px;
+}
+.room-card-name {
+  font-weight: 800;
+  font-size: 15px;
+  color: #fff;
+}
+.room-card-count {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.room-card-lock-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 12px;
 }
 
 /* Modais de Peças Comuns Checkbox */
@@ -986,7 +1194,7 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   border: 1px solid var(--bd);
   border-radius: var(--radius);
   padding: 14px;
-  background: #090d16;
+  background: #0d1322;
   gap: 16px;
   max-height: 50vh;
 }
@@ -1002,7 +1210,7 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   transition: background 0.15s;
 }
 #ck label:hover { background: var(--surface-hover); }
-#ck label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--pri); cursor: pointer; }
+#ck label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--room-color); cursor: pointer; }
 
 /* Lightbox */
 #lb { z-index: 110; }
@@ -1012,7 +1220,7 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   object-fit: contain;
-  background: #090d16;
+  background: #0b101c;
   border: 1px solid var(--bd);
 }
 
@@ -1021,7 +1229,7 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   position: fixed;
   bottom: 24px;
   right: 24px;
-  background: #0f172a;
+  background: #111827;
   color: #fff;
   padding: 12px 22px;
   border-radius: var(--radius-sm);
@@ -1043,7 +1251,7 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   transform: translateY(0);
 }
 
-/* ===== BANCO DE FOTOS ===== */
+/* BANCO DE FOTOS */
 .bk-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -1062,13 +1270,13 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
 .bk-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow);
-  border-color: var(--pri);
+  border-color: var(--room-color);
 }
 .bk-card img {
   width: 100%;
   aspect-ratio: 1/1;
   object-fit: contain;
-  background: #090d16;
+  background: #0b101c;
   cursor: zoom-in;
   border-bottom: 1px solid var(--bd);
 }
@@ -1088,11 +1296,10 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   border-radius: 6px;
   width: 100%;
   background: transparent;
-  transition: all 0.2s;
 }
 .bk-card input:hover, .bk-card input:focus {
-  border-color: var(--pri);
-  background: #090d16;
+  border-color: var(--room-color);
+  background: #0b101c;
   outline: none;
 }
 .bk-card .use {
@@ -1116,17 +1323,17 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   padding: 32px 20px;
   text-align: center;
   color: var(--text-muted);
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(17, 24, 39, 0.6);
   margin-bottom: 24px;
   transition: all 0.2s;
 }
 #bkDrop.over {
-  background: var(--pri-bg);
-  border-color: var(--pri);
-  color: var(--pri-light);
+  background: var(--room-bg);
+  border-color: var(--room-color);
+  color: #fff;
 }
 
-/* ===== PAINEL DE CONFIGURAÇÕES ===== */
+/* Painel de Configurações & Gestão de Salas */
 .settings-tabs {
   display: flex;
   gap: 6px;
@@ -1148,7 +1355,7 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
 .settings-tab-btn:hover { color: #fff; background: var(--surface-hover); }
 .settings-tab-btn.active {
   color: #fff;
-  background: var(--pri);
+  background: var(--room-color);
   font-weight: 700;
 }
 .settings-section { display: none; }
@@ -1163,23 +1370,18 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   color: var(--text);
   margin-bottom: 5px;
 }
-.form-group .v {
-  float: right;
-  font-weight: 500;
-  color: var(--text-muted);
-}
-.form-group input[type=range], .form-group select, .form-group input[type=text] {
+.form-group input, .form-group select {
   width: 100%;
   padding: 8px 10px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--bd);
-  background: #090d16;
+  background: #0d1322;
   color: #fff;
   font-family: inherit;
   font-size: 13px;
 }
 
-/* ===== MODO CONSULTA (BLOQUEIO POR PIN / VISITANTE) ===== */
+/* MODO CONSULTA (BLOQUEIO DE EDIÇÃO) */
 body.locked .acts,
 body.locked #addC,
 body.locked #addI,
@@ -1199,14 +1401,13 @@ body.locked #bI,
 body.locked #bR,
 body.locked #lbchg,
 body.locked #lbdel,
-body.locked .grp button,
 body.locked .nothumb,
-body.locked #logoBox .ph0 {
+body.locked .cover:empty {
   display: none !important;
 }
 body.locked td input,
 body.locked td textarea,
-body.locked .title input,
+body.locked .costume-info input,
 body.locked .bk-card input {
   cursor: default;
   pointer-events: none;
@@ -1214,43 +1415,143 @@ body.locked .bk-card input {
 
 /* Modo Impressão */
 @media print {
-  header, .noprint, .acts, .bar, .kpi-grid, .category-subnav, .view-switcher { display: none !important; }
-  th { position: static; }
+  .app-bar, .sidebar, .toolbar-bar, .kpi-grid, .category-subnav, .view-switcher, .acts, .noprint { display: none !important; }
   body { background: #fff !important; color: #000 !important; font-size: 10pt; }
-  .wrap, .title, .card, .breakdown-card { box-shadow: none !important; border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
+  .wrap, .costume-header, .card, .breakdown-card { box-shadow: none !important; border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
   th { background: #eee !important; color: #000 !important; }
-  main { padding: 0; max-width: 100%; }
+  .content-area { padding: 0; max-width: 100%; }
+}
+
+@media (max-width: 840px) {
+  .sidebar { display: none; }
+  .app-container { flex-direction: column; }
 }
 </style>
 </head>
 <body class="locked">
 
-<header>
-  <div class="header-brand" onclick="go('#/')">
-    <span id="logoBox" title="Logo do grupo"></span>
-    <h1>👔 Trajes Masculinos</h1>
+<!-- Google App Bar -->
+<header class="app-bar">
+  <div class="brand-section" onclick="go('#/')">
+    <div class="brand-logo-box" id="logoBox" title="Logo do Grupo Folclórico Polonês Wisła">
+      <img src="" id="logoImg" alt="Wisła">
+    </div>
+    <div class="brand-titles">
+      <div class="brand-title">Wisła <span style="font-size:10px; padding:2px 6px; border-radius:4px; background:var(--room-bg); color:var(--pri-light); border:1px solid var(--room-border);">ACERVO</span></div>
+      <div class="brand-subtitle">Gestão de Trajes & Dança</div>
+    </div>
   </div>
-  <nav class="nav-links">
-    <button class="btn" data-nav="#/">Trajes</button>
-    <button class="btn" data-nav="#/pecas">Todas as peças</button>
-    <button class="btn" data-nav="#/dancarinos">Dançarinos</button>
-    <button class="btn" data-nav="#/comuns">Peças comuns</button>
-    <button class="btn" data-nav="#/banco">📷 Fotos</button>
-    <button class="btn" data-nav="#/backup">Backup</button>
-  </nav>
-  <div class="header-actions">
-    <div id="authBadge" class="locked" title="Clique para alternar entre Modo Consulta e Modo Edição">
+
+  <!-- Workspace / Room Switcher -->
+  <button class="room-selector-btn" id="openRoomSwitcherBtn" title="Trocar sala ou departamento do acervo">
+    <span class="room-dot" id="headerRoomDot"></span>
+    <span id="headerRoomIcon">👔</span>
+    <span id="headerRoomName">Trajes Masculinos</span>
+    <span style="font-size:10px; opacity:0.6;">▾</span>
+  </button>
+
+  <!-- Google Search Bar -->
+  <div class="global-search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="search" id="globalSearchInput" placeholder="Pesquisar traje, peça, cor ou dançarino no Wisła...">
+    <span class="search-shortcut-badge">Ctrl K</span>
+  </div>
+
+  <!-- Ações e Status -->
+  <div class="app-bar-actions">
+    <div id="authPill" class="auth-pill locked" title="Clique para autenticar com o PIN da sala ou Token Master (0412)">
       🔒 Modo Consulta
     </div>
-    <button class="btn" id="openSettingsBtn" title="Ajustes de layout e visual">⚙️</button>
+    <button class="btn icon-only" id="openSettingsBtn" title="Configurações, Layout e Gestão de Salas">⚙️</button>
   </div>
 </header>
 
-<main id="app">Carregando...</main>
+<div class="app-container">
+  <!-- Sidebar Navigation Drawer -->
+  <aside class="sidebar">
+    <div class="nav-category-title" id="sidebarRoomLabel">👔 Trajes Masculinos</div>
+    <a class="nav-item active" data-nav="#/">
+      <span class="icon">👔</span>
+      <span>Trajes</span>
+      <span class="badge" id="sideCostumesCount">0</span>
+    </a>
+    <a class="nav-item" data-nav="#/pecas">
+      <span class="icon">📦</span>
+      <span>Todas as Peças</span>
+      <span class="badge" id="sidePiecesCount">0</span>
+    </a>
+    <a class="nav-item" data-nav="#/comuns">
+      <span class="icon">🔗</span>
+      <span>Peças Comuns</span>
+      <span class="badge" id="sideCommonCount">0</span>
+    </a>
+
+    <div class="nav-category-title" style="margin-top:14px;">Geral & Apoio</div>
+    <a class="nav-item" data-nav="#/dancarinos">
+      <span class="icon">👥</span>
+      <span>Dançarinos</span>
+      <span class="badge" id="sideDancersCount">0</span>
+    </a>
+    <a class="nav-item" data-nav="#/banco">
+      <span class="icon">📷</span>
+      <span>Fotos do Acervo</span>
+      <span class="badge" id="sidePhotosCount">0</span>
+    </a>
+    <a class="nav-item" data-nav="#/backup">
+      <span class="icon">💾</span>
+      <span>Backup & Sync</span>
+    </a>
+
+    <div class="sidebar-footer">
+      <button class="btn sm" id="sideQuickSwitchBtn" style="width:100%; justify-content:flex-start;">
+        <span>🔄</span> <span>Trocar Sala...</span>
+      </button>
+      <button class="btn sm" id="sideManageRoomsBtn" style="width:100%; justify-content:flex-start;">
+        <span>🛡️</span> <span>Permissões & Salas</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Conteúdo Dinâmico -->
+  <main class="content-area" id="app">Carregando...</main>
+</div>
 
 <div id="toast"></div>
 
-<!-- Modal Dialog Genérico -->
+<!-- Modal Switcher de Salas (Google Workspace Project Style) -->
+<div id="roomModal" class="modal-overlay">
+  <div class="modal-card lg">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3>🏢 Selecionar Sala do Acervo</h3>
+      <button class="btn sm" id="closeRoomModalBtn" style="border:none; box-shadow:none; font-size:16px;">✕</button>
+    </div>
+    <p class="note" style="margin-top:-2px; margin-bottom:12px;">Escolha qual departamento do acervo você deseja visualizar ou gerenciar:</p>
+    
+    <div class="rooms-grid" id="roomsListGrid"></div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px solid var(--bd); padding-top:14px;">
+      <button class="btn" id="addNewRoomBtn">+ Criar Nova Sala</button>
+      <button class="btn primary" id="confirmRoomBtn">Acessar Sala</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dialog de Autenticação / Senha -->
+<div id="authModal" class="modal-overlay">
+  <div class="modal-card">
+    <h3 id="authModalTitle">🔒 Autenticação de Edição</h3>
+    <p class="note" id="authModalDesc">Digite o PIN da sala ou o <b>Token Master (0412)</b> para liberar as alterações:</p>
+    <div class="form-group" style="margin: 16px 0;">
+      <input type="password" id="authPinInput" placeholder="Digite o PIN (ex: 0412)..." style="font-size:18px; text-align:center; letter-spacing:4px; padding:12px;" autofocus>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px;">
+      <button class="btn red" id="authCancelBtn">Cancelar</button>
+      <button class="btn primary" id="authSubmitBtn">Desbloquear</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Confirmações Genérico -->
 <div id="md" class="modal-overlay">
   <div class="modal-card">
     <h3 id="mdTitle">Confirmação</h3>
@@ -1263,9 +1564,9 @@ body.locked .bk-card input {
 <div id="ck" class="modal-overlay">
   <div class="modal-card lg">
     <h3 id="cktit">Vincular Peça Comum</h3>
-    <div class="note" style="margin-top:-6px; margin-bottom:12px;">Marque os trajes em que esta peça é usada:</div>
+    <div class="note" style="margin-top:-6px; margin-bottom:12px;">Marque os trajes desta sala em que esta peça é usada:</div>
     <div style="display:flex; gap:8px; align-items:center;">
-      <input type="search" id="ckSearch" placeholder="Filtrar traje..." style="flex:1; padding:8px 12px; background:#090d16; border:1px solid var(--bd); border-radius:6px; color:#fff;">
+      <input type="search" id="ckSearch" placeholder="Filtrar traje..." style="flex:1; padding:8px 12px; background:#0d1322; border:1px solid var(--bd); border-radius:6px; color:#fff;">
       <button class="btn sm" id="ckall">Marcar todos</button>
       <button class="btn sm" id="cknone">Desmarcar todos</button>
     </div>
@@ -1277,7 +1578,7 @@ body.locked .bk-card input {
   </div>
 </div>
 
-<!-- Modal Lightbox (Visualização de Foto) -->
+<!-- Modal Lightbox (Foto) -->
 <div id="lb" class="modal-overlay">
   <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
     <img id="lbimg" alt="Foto">
@@ -1294,104 +1595,57 @@ body.locked .bk-card input {
   <div class="modal-card lg" id="bkBox"></div>
 </div>
 
-<!-- Modal Unificado de Configurações & Ajustes -->
+<!-- Modal Unificado de Configurações, Permissões e Gestão de Salas -->
 <div id="settingsDlg" class="modal-overlay">
-  <div class="modal-card">
+  <div class="modal-card lg">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h3 style="margin:0">⚙️ Configurações & Ajustes</h3>
+      <h3 style="margin:0">⚙️ Gestão do Acervo & Configurações</h3>
       <button class="btn sm" id="closeSettingsModalBtn" style="border:none; box-shadow:none; font-size:16px;">✕</button>
     </div>
     <div class="settings-tabs">
-      <button class="settings-tab-btn active" data-tab="tab-text">🔤 Textos & Colunas</button>
-      <button class="settings-tab-btn" data-tab="tab-photo">🖼 Fotos & Cartões</button>
-      <button class="settings-tab-btn" data-tab="tab-security">🔒 Segurança & PIN</button>
+      <button class="settings-tab-btn active" data-tab="tab-rooms">🏢 Gestão de Salas & PINs</button>
+      <button class="settings-tab-btn" data-tab="tab-security">🛡️ Token Master & Acesso</button>
+      <button class="settings-tab-btn" data-tab="tab-text">🔤 Layout & Fontes</button>
     </div>
 
-    <!-- Aba 1: Textos & Colunas -->
-    <div class="settings-section active" id="tab-text">
+    <!-- Aba 1: Gestão de Salas & Senhas Individuais -->
+    <div class="settings-section active" id="tab-rooms">
+      <p class="note" style="margin-bottom:14px;">Cada sala pode ter seu próprio PIN de edição para que uma equipe não altere o acervo da outra. O <b>Token Master (0412)</b> tem acesso irrestrito a todas.</p>
+      <div id="roomsManagementList" style="display:flex; flex-direction:column; gap:10px; max-height:45vh; overflow-y:auto; padding-right:4px;"></div>
+    </div>
+
+    <!-- Aba 2: Token Master -->
+    <div class="settings-section" id="tab-security">
+      <div style="background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.3); border-radius:12px; padding:16px; margin-bottom:16px;">
+        <h4 style="color:#fbbf24; margin-bottom:6px; font-size:15px;">👑 Token Master Geral: 0412</h4>
+        <p style="font-size:13px; color:var(--text-muted); margin:0;">O Token Master libera a edição de todas as salas simultaneamente e permite alterar as senhas de qualquer setor.</p>
+      </div>
       <div class="form-group">
-        <label>Fonte do Sistema</label>
+        <label>Logo do Wisła no Topo</label>
+        <button class="btn" id="changeLogoBtn">🖼 Alterar Logo do Wisła</button>
+      </div>
+    </div>
+
+    <!-- Aba 3: Layout & Fontes -->
+    <div class="settings-section" id="tab-text">
+      <div class="form-group">
+        <label>Fonte da Interface</label>
         <select id="tpFf">
-          <option value="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif">Plus Jakarta Sans (Moderna)</option>
+          <option value="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif">Plus Jakarta Sans (Google Style)</option>
           <option value="system-ui, -apple-system, sans-serif">Padrão do Sistema</option>
           <option value="'JetBrains Mono', monospace">JetBrains Mono (Técnica)</option>
-          <option value="Arial, Helvetica, sans-serif">Arial</option>
-          <option value="Calibri, Carlito, sans-serif">Calibri</option>
-          <option value="Verdana, sans-serif">Verdana</option>
         </select>
-      </div>
-      <div class="form-group">
-        <label>Texto das tabelas <span class="v" id="tpFsV"></span></label>
-        <input type="range" id="tpFs" min="11" max="22" step="1">
-      </div>
-      <div class="form-group">
-        <label>Título dos trajes <span class="v" id="tpFstV"></span></label>
-        <input type="range" id="tpFst" min="16" max="36" step="1">
-      </div>
-      <div class="form-group">
-        <label>Espaço entre colunas <span class="v" id="tpPxV"></span></label>
-        <input type="range" id="tpPx" min="4" max="24" step="1">
-      </div>
-      <div class="form-group">
-        <label>Espaço entre linhas <span class="v" id="tpPyV"></span></label>
-        <input type="range" id="tpPy" min="4" max="18" step="1">
-      </div>
-      <div style="display:flex; gap:8px; margin-top:12px;">
-        <button class="btn sm" id="tpReset">Restaurar Padrão</button>
-        <button class="btn sm" id="tpResetCols">Zerar Larguras de Colunas</button>
-      </div>
-    </div>
-
-    <!-- Aba 2: Fotos & Cartões -->
-    <div class="settings-section" id="tab-photo">
-      <div class="form-group">
-        <label>Encaixe da foto</label>
-        <select id="fpFit">
-          <option value="contain">Foto inteira (sem cortar)</option>
-          <option value="cover">Preencher o quadro (corta as bordas)</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Tamanho das fotos das peças <span class="v" id="fpTwV"></span></label>
-        <input type="range" id="fpTw" min="48" max="220" step="4">
-      </div>
-      <div class="form-group">
-        <label>Largura dos cartões no menu <span class="v" id="fpCwV"></span></label>
-        <input type="range" id="fpCw" min="160" max="360" step="10">
-      </div>
-      <div class="form-group">
-        <label>Formato dos cartões</label>
-        <select id="fpAr">
-          <option value="3/4">Retrato (3:4)</option>
-          <option value="1/1">Quadrado (1:1)</option>
-          <option value="4/3">Paisagem (4:3)</option>
-        </select>
-      </div>
-      <div style="margin-top:12px;">
-        <button class="btn sm" id="fpReset">Restaurar Padrão de Fotos</button>
-      </div>
-    </div>
-
-    <!-- Aba 3: Segurança -->
-    <div class="settings-section" id="tab-security">
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">
-        O PIN impede alterações acidentais. Apenas quem souber o PIN pode ativar o modo de edição.
-      </p>
-      <div id="pinStatusText" style="font-weight:700; margin-bottom:14px; color:#fff;"></div>
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <button class="btn primary" id="setPinActionBtn">🔒 Definir / Alterar PIN</button>
-        <button class="btn red" id="removePinActionBtn">Remover PIN (Acesso Livre)</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-/* ===== DICIONÁRIO E CORREÇÃO DE NOMES EM POLONÊS & PEÇAS ===== */
+/* ===== DICIONÁRIO E CORREÇÃO DE NOMES EM POLONÊS ===== */
 const POLISH_CORRECTIONS = {
   "LOWICZ": "ŁOWICZ",
   "SUITA LOWICKA": "ŁOWICZ",
-  "SUITA ŁOWICKA": "ŁOWICZ",
+  "SUITA ŁOWICZ": "ŁOWICZ",
   "SACZ": "SĄCZ",
   "LEMKO": "ŁEMKO",
   "BILGORAJ": "BIŁGORAJ",
@@ -1453,55 +1707,75 @@ function normalizePartName(part, costumeName = "") {
   return p;
 }
 
-/* Categorização para Inventário & Submenus */
 function classifyPiece(part) {
   const p = norm(part);
   if (p.includes("CALCA") || p.includes("CALÇA")) return { key: "calcas", label: "Calças", icon: "👖" };
-  if (p.includes("CAMISA")) return { key: "camisas", label: "Camisas", icon: "👔" };
-  if (p.includes("COLETE")) return { key: "coletes", label: "Coletes", icon: "🦺" };
-  if (p.includes("CAPOTE") || p.includes("SUKMANA") || p.includes("CASACO") || p.includes("PALETO") || p.includes("TUNICA")) return { key: "capotes", label: "Capotes & Sukmanas", icon: "🧥" };
-  if (p.includes("FAIXA") || p.includes("FITA") || p.includes("CINTO") || p.includes("GRAVATA") || p.includes("PUNHO") || p.includes("DRAGONA") || p.includes("LUVA") || p.includes("MEIA") || p.includes("ECHARPE") || p.includes("BORDADO")) return { key: "aderecos", label: "Adereços & Acessórios", icon: "🎗️" };
+  if (p.includes("CAMISA") || p.includes("BLUSA")) return { key: "camisas", label: "Camisas & Blusas", icon: "👔" };
+  if (p.includes("COLETE") || p.includes("CORPETE")) return { key: "coletes", label: "Coletes & Corpetes", icon: "🦺" };
+  if (p.includes("CAPOTE") || p.includes("SUKMANA") || p.includes("CASACO") || p.includes("PALETO") || p.includes("TUNICA") || p.includes("SAIA") || p.includes("VESTIDO")) return { key: "capotes", label: "Capotes, Sukmanas & Saias", icon: "🧥" };
+  if (p.includes("BOTA") || p.includes("SAPATO") || p.includes("CALCADO") || p.includes("CALÇADO")) return { key: "calcados", label: "Botas & Calçados", icon: "👢" };
+  if (p.includes("FAIXA") || p.includes("FITA") || p.includes("CINTO") || p.includes("GRAVATA") || p.includes("PUNHO") || p.includes("DRAGONA") || p.includes("LUVA") || p.includes("MEIA") || p.includes("ECHARPE") || p.includes("BORDADO") || p.includes("COROA") || p.includes("LENCO") || p.includes("LENÇO") || p.includes("CHOCALHO")) return { key: "aderecos", label: "Adereços & Acessórios", icon: "🎗️" };
   return { key: "outros", label: "Outras Peças", icon: "📦" };
 }
 
-function autoCorrectPolish(d) {
-  if (!d) return d;
-  if (Array.isArray(d.costumes)) {
-    d.costumes.forEach(c => {
-      c.name = fixPolishName(c.name);
-      (c.items || []).forEach(it => {
-        if (it.part) it.part = normalizePartName(it.part, c.name);
-      });
-    });
-    // Ordena trajes por ordem alfabética ao carregar
-    d.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
-  }
-  if (Array.isArray(d.common)) {
-    d.common.forEach(cm => {
-      if (cm.part) cm.part = normalizePartName(cm.part);
-    });
-    d.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
-  }
-  if (Array.isArray(d.dances)) {
-    d.dances = d.dances.map(fixPolishName);
-  }
-  if (Array.isArray(d.dancers)) {
-    d.dancers.forEach(p => {
-      const newNums = {};
-      Object.entries(p.nums || {}).forEach(([k, v]) => {
-        newNums[fixPolishName(k)] = v;
-      });
-      p.nums = newNums;
-    });
-    d.dancers.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
-  }
-  return d;
-}
+/* ===== HASH & SEGURANÇA ===== */
+const hash = s => {
+  let h = 5381; s = "trajes|" + s;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
+  return h.toString(36);
+};
+const MASTER_PIN_DEFAULT = "0412"; // Token Master
 
-/* ===== ARMAZENAMENTO & ESTADO ===== */
+/* ===== SALAS PADRÃO DO WISŁA ===== */
+const DEFAULT_ROOMS = {
+  "masculino": {
+    id: "masculino",
+    name: "Trajes Masculinos",
+    icon: "👔",
+    color: "#e11d48",
+    desc: "Acervo de trajes folclóricos masculinos",
+    pin: "gyqsv4", // 230773
+    costumes: [],
+    common: []
+  },
+  "feminino": {
+    id: "feminino",
+    name: "Trajes Femininos",
+    icon: "👗",
+    color: "#ec4899",
+    desc: "Acervo de trajes folclóricos femininos, saias e corpetes",
+    pin: "",
+    costumes: [],
+    common: []
+  },
+  "botas_masc": {
+    id: "botas_masc",
+    name: "Adereços e Botas Masculinos",
+    icon: "👢",
+    color: "#f59e0b",
+    desc: "Botas pretas/vermelhas, chapéus, cintos e acessórios masculinos",
+    pin: "",
+    costumes: [],
+    common: []
+  },
+  "botas_fem": {
+    id: "botas_fem",
+    name: "Adereços e Botas Femininos",
+    icon: "👠",
+    color: "#a855f7",
+    desc: "Botas, sapatos, coroas, fitas e adornos de cabeça femininos",
+    pin: "",
+    costumes: [],
+    common: []
+  }
+};
+
+/* ===== ESTADO GLOBAL (S) ===== */
 let S = null;
-let currentHomeView = localStorage.getItem("homeViewPref") || "cards"; // 'cards' ou 'matrix'
+let currentHomeView = localStorage.getItem("wislaHomeView") || "cards";
 let currentPieceCategory = "all";
+let isMasterUnlocked = false;
+let unlockedRooms = new Set(); // salas desbloqueadas na sessão atual
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -1509,7 +1783,7 @@ const norm = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "
 
 function openDB() {
   return new Promise((res, rej) => {
-    const r = indexedDB.open("trajesDB", 1);
+    const r = indexedDB.open("wislaAcervoDB", 2);
     r.onupgradeneeded = () => r.result.createObjectStore("kv");
     r.onsuccess = () => res(r.result);
     r.onerror = () => rej(r.error);
@@ -1533,32 +1807,149 @@ function save() {
       const db = await openDB();
       const tx = db.transaction("kv", "readwrite");
       tx.objectStore("kv").put(S, "state");
-      tx.oncomplete = () => toast("Salvo ✓");
+      tx.oncomplete = () => toast("Salvo no Wisła ✓");
       tx.onerror = () => toast("Erro ao salvar!");
     } catch (e) { toast("Erro ao salvar!"); }
   }, 400);
 }
 
-function seedState() {
-  return {
-    version: 3, 
-    common: [],
-    costumes: [],
-    dances: [],
-    dancers: [],
-    bank: [],
-    logo: "",
-    pin: ""
+/* Migração e Inicialização do Estado Multi-Salas */
+function migrateState(d) {
+  if (!d) d = {};
+  
+  const state = {
+    version: 4,
+    activeRoom: d.activeRoom || "masculino",
+    masterPin: d.masterPin || hash(MASTER_PIN_DEFAULT),
+    rooms: d.rooms || JSON.parse(JSON.stringify(DEFAULT_ROOMS)),
+    dances: d.dances || [],
+    dancers: d.dancers || [],
+    bank: d.bank || [],
+    logo: d.logo || ""
   };
+
+  // Garante que todas as salas padrão existam
+  Object.keys(DEFAULT_ROOMS).forEach(rk => {
+    if (!state.rooms[rk]) {
+      state.rooms[rk] = JSON.parse(JSON.stringify(DEFAULT_ROOMS[rk]));
+    }
+  });
+
+  // Se veio do modelo antigo (costumes na raiz), aloca para 'masculino'
+  if (Array.isArray(d.costumes) && d.costumes.length > 0 && state.rooms.masculino.costumes.length === 0) {
+    state.rooms.masculino.costumes = d.costumes;
+  }
+  if (Array.isArray(d.common) && d.common.length > 0 && state.rooms.masculino.common.length === 0) {
+    state.rooms.masculino.common = d.common;
+  }
+  if (d.pin && !state.rooms.masculino.pin) {
+    state.rooms.masculino.pin = d.pin;
+  }
+
+  // Ordena alfabeticamente trajes e dançarinos em todas as salas
+  Object.values(state.rooms).forEach(r => {
+    if (Array.isArray(r.costumes)) {
+      r.costumes.forEach(c => {
+        c.name = fixPolishName(c.name);
+        (c.items || []).forEach(it => { if (it.part) it.part = normalizePartName(it.part, c.name); });
+      });
+      r.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
+    }
+    if (Array.isArray(r.common)) {
+      r.common.forEach(cm => { if (cm.part) cm.part = normalizePartName(cm.part); });
+      r.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
+    }
+  });
+
+  if (Array.isArray(state.dancers)) {
+    state.dancers.forEach(p => {
+      const newNums = {};
+      Object.entries(p.nums || {}).forEach(([k, v]) => { newNums[fixPolishName(k)] = v; });
+      p.nums = newNums;
+    });
+    state.dancers.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
+  }
+
+  if (Array.isArray(state.dances)) {
+    state.dances = state.dances.map(fixPolishName);
+  }
+
+  return state;
 }
 
-/* ===== UTILITÁRIOS ===== */
+/* Helpers de Sala Ativa */
+function getActiveRoom() {
+  if (!S.rooms[S.activeRoom]) S.activeRoom = Object.keys(S.rooms)[0] || "masculino";
+  return S.rooms[S.activeRoom];
+}
+function isCurrentRoomUnlocked() {
+  if (isMasterUnlocked) return true;
+  const r = getActiveRoom();
+  if (!r.pin) return true; // sem senha = aberto
+  return unlockedRooms.has(r.id);
+}
+
+function updateThemeForActiveRoom() {
+  const r = getActiveRoom();
+  const root = document.documentElement;
+  const col = r.color || "#e11d48";
+  root.style.setProperty("--room-color", col);
+  root.style.setProperty("--room-bg", col + "24");
+  root.style.setProperty("--room-border", col + "55");
+  
+  const dot = document.getElementById("headerRoomDot");
+  if (dot) dot.style.background = col;
+  const icon = document.getElementById("headerRoomIcon");
+  if (icon) icon.textContent = r.icon || "📁";
+  const name = document.getElementById("headerRoomName");
+  if (name) name.textContent = r.name;
+  const sideLbl = document.getElementById("sidebarRoomLabel");
+  if (sideLbl) sideLbl.textContent = `${r.icon || '📁'} ${r.name}`;
+
+  updateCounters();
+  updateAuthUI();
+}
+
+function updateCounters() {
+  const r = getActiveRoom();
+  const cCount = r.costumes ? r.costumes.length : 0;
+  const pCount = (r.costumes || []).reduce((acc, c) => acc + (c.items || []).length, 0);
+  const cmCount = r.common ? r.common.length : 0;
+  
+  const elC = document.getElementById("sideCostumesCount"); if (elC) elC.textContent = cCount;
+  const elP = document.getElementById("sidePiecesCount"); if (elP) elP.textContent = pCount;
+  const elCm = document.getElementById("sideCommonCount"); if (elCm) elCm.textContent = cmCount;
+  const elD = document.getElementById("sideDancersCount"); if (elD) elD.textContent = S.dancers.length;
+  const elPh = document.getElementById("sidePhotosCount"); if (elPh) elPh.textContent = (S.bank || []).length;
+}
+
+function updateAuthUI() {
+  const pill = document.getElementById("authPill");
+  const isUnlocked = isCurrentRoomUnlocked();
+  document.body.classList.toggle("locked", !isUnlocked);
+
+  if (isMasterUnlocked) {
+    pill.className = "auth-pill master-unlocked";
+    pill.innerHTML = `👑 Master (Acesso Total)`;
+    pill.title = "Token Master 0412 ativo: Permissão total em todas as salas.";
+  } else if (isUnlocked) {
+    pill.className = "auth-pill room-unlocked";
+    pill.innerHTML = `🔓 Modo Edição (${getActiveRoom().name})`;
+    pill.title = "Edição liberada para esta sala. Clique para travar.";
+  } else {
+    pill.className = "auth-pill locked";
+    pill.innerHTML = `🔒 Modo Consulta`;
+    pill.title = "Clique para desbloquear a edição com PIN.";
+  }
+}
+
+/* Toast */
 function toast(msg) {
   const t = document.getElementById("toast");
   t.textContent = msg;
   t.classList.add("show");
   clearTimeout(t._h);
-  t._h = setTimeout(() => t.classList.remove("show"), 1600);
+  t._h = setTimeout(() => t.classList.remove("show"), 1800);
 }
 function go(h) { location.hash = h; }
 function download(name, text, type) {
@@ -1568,9 +1959,7 @@ function download(name, text, type) {
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
 const today = () => new Date().toISOString().slice(0, 10);
-
 const bank = () => (S.bank = S.bank || []);
-const OPT = Object.assign({ enhance: true }, JSON.parse(localStorage.getItem("bancoOpc") || "{}"));
 
 function readImg(file, max = 1000) {
   return new Promise((res, rej) => {
@@ -1583,13 +1972,13 @@ function readImg(file, max = 1000) {
         cv.width = Math.round(im.width * k);
         cv.height = Math.round(im.height * k);
         const g = cv.getContext("2d");
-        g.fillStyle = "#090d16";
+        g.fillStyle = "#0b101c";
         g.fillRect(0, 0, cv.width, cv.height);
-        if (OPT.enhance) g.filter = "brightness(1.06) contrast(1.10) saturate(1.08)";
+        g.filter = "brightness(1.05) contrast(1.08)";
         g.drawImage(im, 0, 0, cv.width, cv.height);
         res(cv.toDataURL("image/jpeg", 0.85));
       };
-      im.onerror = () => rej(new Error("Formato de imagem não suportado"));
+      im.onerror = () => rej(new Error("Formato não suportado"));
       im.src = fr.result;
     };
     fr.onerror = rej;
@@ -1601,28 +1990,14 @@ function openPhoto(src, onChange, onDelete) {
   const lb = document.getElementById("lb");
   document.getElementById("lbimg").src = src;
   lb.classList.add("active");
-  const isAuth = !document.body.classList.contains("locked");
+  const isAuth = isCurrentRoomUnlocked();
   document.getElementById("lbchg").style.display = isAuth ? "" : "none";
   document.getElementById("lbdel").style.display = isAuth ? "" : "none";
-  
   document.getElementById("lbchg").onclick = () => { lb.classList.remove("active"); pickImg(onChange); };
   document.getElementById("lbdel").onclick = () => { lb.classList.remove("active"); onDelete(); };
   document.getElementById("lbclose").onclick = () => lb.classList.remove("active");
 }
-document.getElementById("lb").addEventListener("click", e => {
-  if (e.target.id === "lb") e.currentTarget.classList.remove("active");
-});
-
-function findCostume(dance) {
-  const n = norm(ALIAS[dance] || dance);
-  return S.costumes.find(c => norm(c.name) === n) || S.costumes.find(c => norm(c.name).startsWith(n + " "));
-}
-
-/* ===== PEÇAS COMUNS ===== */
-const commonOf = it => it.cid ? S.common.find(x => x.id === it.cid) : null;
-const eff = it => commonOf(it) || it;
-const costumesOf = cm => S.costumes.filter(c => c.items.some(i => i.cid === cm.id));
-function cmLabel(cm) { return [cm.part, cm.type, cm.color].filter(Boolean).join(" · "); }
+document.getElementById("lb").onclick = e => { if (e.target.id === "lb") e.currentTarget.classList.remove("active"); };
 
 function ask(msg, opts, title = "Confirmação") {
   return new Promise(res => {
@@ -1642,14 +2017,27 @@ function ask(msg, opts, title = "Confirmação") {
   });
 }
 
+/* ===== PEÇAS COMUNS (POR SALA) ===== */
+const commonOf = it => {
+  const r = getActiveRoom();
+  return it.cid ? (r.common || []).find(x => x.id === it.cid) : null;
+};
+const eff = it => commonOf(it) || it;
+const costumesOf = cm => {
+  const r = getActiveRoom();
+  return (r.costumes || []).filter(c => c.items.some(i => i.cid === cm.id));
+};
+function cmLabel(cm) { return [cm.part, cm.type, cm.color].filter(Boolean).join(" · "); }
+
 function chooseCostumes(cm, after) {
+  const r = getActiveRoom();
   const ck = document.getElementById("ck"), list = document.getElementById("cklist");
   document.getElementById("cktit").textContent = cmLabel(cm) || "Peça comum";
   const used = new Set(costumesOf(cm).map(c => c.id));
   
   function renderList(filterTxt = "") {
     const f = norm(filterTxt);
-    const sorted = [...S.costumes].sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+    const sorted = [...(r.costumes || [])].sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
     list.innerHTML = sorted
       .filter(c => !f || norm(c.name).includes(f))
       .map(c => `<label><input type="checkbox" value="${c.id}" ${used.has(c.id) ? "checked" : ""}> ${esc(c.name)}</label>`)
@@ -1669,7 +2057,7 @@ function chooseCostumes(cm, after) {
       if (b.checked) used.add(b.value);
       else used.delete(b.value);
     });
-    S.costumes.forEach(c => {
+    (r.costumes || []).forEach(c => {
       const isSelected = used.has(c.id);
       const has = c.items.some(i => i.cid === cm.id);
       if (isSelected && !has) c.items.push({ id: uid(), cid: cm.id });
@@ -1681,61 +2069,31 @@ function chooseCostumes(cm, after) {
 }
 
 function newCommon(src = {}) {
+  const r = getActiveRoom();
   const cm = { id: uid(), part: normalizePartName(src.part || ""), type: src.type || "", color: src.color || "", qty: src.qty || "", notes: src.notes || "", photo: src.photo || "" };
-  S.common.push(cm);
-  S.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
+  r.common = r.common || [];
+  r.common.push(cm);
+  r.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
   return cm;
 }
-function itemKey(it) {
-  const t = norm(it.type).replace(/^QUE /, "");
-  if (!norm(it.part) || (!t && !norm(it.color))) return null;
-  return [norm(it.part), t, norm(it.color), norm(it.qty)].join("|");
-}
-function importRepeated() {
-  const G = {};
-  S.costumes.forEach(c => c.items.forEach(it => { if (it.cid) return; const k = itemKey(it); if (!k) return; (G[k] = G[k] || []).push([c, it]); }));
-  const groups = Object.entries(G).filter(([, g]) => new Set(g.map(x => x[0].id)).size >= 2);
-  if (!groups.length) { alert("Não há peças repetidas idênticas entre trajes para importar."); return false; }
-  const txt = groups.map(([, g]) => `• ${cmLabel(g[0][1])} (${new Set(g.map(x => x[0].id)).size} trajes)`).join("\n");
-  if (!confirm(`Serão criadas ${groups.length} peça(s) comum(ns), vinculadas aos respectivos trajes:\n\n${txt}\n\nContinuar?`)) return false;
-  groups.forEach(([, g]) => {
-    const f = g[0][1];
-    const cm = newCommon({ ...f, notes: "", photo: (g.find(x => x[1].photo) || [, {}])[1].photo || "" });
-    g.forEach(([, it]) => { for (const p of ["part", "type", "color", "qty", "notes", "photo", "noShared"]) delete it[p]; it.cid = cm.id; });
-  });
-  save(); toast(groups.length + " peças comuns criadas"); return true;
-}
 
-function migrate(d) {
-  if (!d.common) d.common = [];
-  if (!d.costumes) d.costumes = [];
-  if (!d.dances) d.dances = [];
-  if (!d.dancers) d.dancers = [];
-  if (!d.bank) d.bank = [];
-  d.version = 3;
-  return autoCorrectPolish(d);
-}
 function sharedIn(it, selfId) {
+  const r = getActiveRoom();
   if (!it.cid) return [];
-  return S.costumes.filter(c => c.id !== selfId && c.items.some(x => x.cid === it.cid));
+  return (r.costumes || []).filter(c => c.id !== selfId && c.items.some(x => x.cid === it.cid));
 }
 function thumb(src, attr) { return src ? `<img class="thumb" ${attr} src="${src}" alt="">` : `<div class="nothumb" ${attr}>+ foto</div>`; }
 
 function dancersCountFor(costumeName) {
   const normC = norm(costumeName);
-  return S.dancers.filter(p => {
-    return Object.keys(p.nums || {}).some(dance => {
-      return norm(ALIAS[dance] || dance) === normC;
-    });
-  }).length;
+  return S.dancers.filter(p => Object.keys(p.nums || {}).some(d => norm(ALIAS[d] || d) === normC)).length;
 }
 
-/* ===== AGRUPAMENTO INTELIGENTE DE COMPOSIÇÃO & ESTOQUE ===== */
 function getCostumeGroupedComposition(costume) {
   const groups = {};
   let totalUnits = 0;
   
-  costume.items.forEach(raw => {
+  (costume.items || []).forEach(raw => {
     const it = eff(raw);
     if (!it) return;
     const part = normalizePartName(it.part, costume.name);
@@ -1743,30 +2101,13 @@ function getCostumeGroupedComposition(costume) {
     totalUnits += q;
     
     if (!groups[part]) {
-      groups[part] = {
-        name: part,
-        totalQty: 0,
-        photos: [],
-        variations: {}
-      };
+      groups[part] = { name: part, totalQty: 0, variations: {} };
     }
     groups[part].totalQty += q;
-    if (it.photo && !groups[part].photos.includes(it.photo)) {
-      groups[part].photos.push(it.photo);
-    }
     
     const subKey = [it.type, it.color].filter(Boolean).join(" · ") || "(detalhe padrão)";
     if (!groups[part].variations[subKey]) {
-      groups[part].variations[subKey] = {
-        label: subKey,
-        type: it.type || "",
-        color: it.color || "",
-        qty: 0,
-        rawQtyStr: it.qty || "",
-        notes: it.notes || "",
-        isShared: !!raw.cid,
-        photo: it.photo || ""
-      };
+      groups[part].variations[subKey] = { label: subKey, qty: 0, rawQtyStr: it.qty || "", notes: it.notes || "", isShared: !!raw.cid };
     }
     groups[part].variations[subKey].qty += q;
   });
@@ -1778,23 +2119,22 @@ function getCostumeGroupedComposition(costume) {
   };
 }
 
-/* Estatísticas Globais do Acervo */
-function getGlobalInventoryStats() {
+function getRoomInventoryStats(r) {
   const stats = {
-    totalTrajes: S.costumes.length,
+    totalTrajes: (r.costumes || []).length,
     totalUnits: 0,
     calcas: 0,
     camisas: 0,
     coletes: 0,
     capotes: 0,
+    calcados: 0,
     aderecos: 0,
     outros: 0,
-    comuns: S.common.length,
-    dancers: S.dancers.filter(p => Object.keys(p.nums || {}).length > 0).length
+    comuns: (r.common || []).length
   };
 
-  S.costumes.forEach(c => {
-    c.items.forEach(raw => {
+  (r.costumes || []).forEach(c => {
+    (c.items || []).forEach(raw => {
       const it = eff(raw);
       if (!it) return;
       const cat = classifyPiece(it.part).key;
@@ -1808,68 +2148,236 @@ function getGlobalInventoryStats() {
   return stats;
 }
 
-/* ===== TELAS ===== */
+/* ===== DIALOG DE AUTENTICAÇÃO (SALA OU MASTER) ===== */
+function openAuthModal() {
+  const r = getActiveRoom();
+  const modal = document.getElementById("authModal");
+  const pinInput = document.getElementById("authPinInput");
+  pinInput.value = "";
+  
+  document.getElementById("authModalTitle").textContent = `🔒 Desbloquear ${r.name}`;
+  document.getElementById("authModalDesc").innerHTML = `Digite o PIN da sala ou o <b>Token Master (0412)</b>:`;
+  
+  modal.classList.add("active");
+  setTimeout(() => pinInput.focus(), 100);
+
+  const submit = () => {
+    const val = pinInput.value.trim();
+    if (!val) return;
+    
+    // Testa Master Token (0412)
+    if (hash(val) === S.masterPin || val === MASTER_PIN_DEFAULT) {
+      isMasterUnlocked = true;
+      modal.classList.remove("active");
+      toast("👑 Modo Master Ativado (Acesso Total)!");
+      updateAuthUI();
+      route();
+      return;
+    }
+
+    // Testa PIN da sala ativa
+    if (r.pin && hash(val) === r.pin) {
+      unlockedRooms.add(r.id);
+      modal.classList.remove("active");
+      toast(`🔓 Modo Edição Ativado em ${r.name}!`);
+      updateAuthUI();
+      route();
+      return;
+    }
+
+    alert("PIN incorreto. Digite a senha da sala ou o Token Master (0412).");
+    pinInput.value = "";
+    pinInput.focus();
+  };
+
+  document.getElementById("authSubmitBtn").onclick = submit;
+  pinInput.onkeydown = e => { if (e.key === "Enter") submit(); };
+  document.getElementById("authCancelBtn").onclick = () => modal.classList.remove("active");
+}
+
+document.getElementById("authPill").onclick = async () => {
+  if (isCurrentRoomUnlocked()) {
+    const v = await ask("Controle de Acesso da Sala", [
+      ["🔒 Travar esta sala (Modo Consulta)", "lock"],
+      ["👑 Sair do Modo Master", "lock_master"],
+      ["Alterar PIN desta sala", "chg_pin"]
+    ], "Opções de Edição");
+
+    if (v === "lock") {
+      isMasterUnlocked = false;
+      unlockedRooms.delete(getActiveRoom().id);
+      toast("Sala travada em Modo Consulta 🔒");
+      updateAuthUI();
+      route();
+    } else if (v === "lock_master") {
+      isMasterUnlocked = false;
+      toast("Modo Master encerrado 🔒");
+      updateAuthUI();
+      route();
+    } else if (v === "chg_pin") {
+      const np = prompt("Digite o novo PIN numérico para esta sala:");
+      if (np) {
+        getActiveRoom().pin = hash(np);
+        save();
+        toast("PIN da sala atualizado!");
+      }
+    }
+    return;
+  }
+  openAuthModal();
+};
+
+/* ===== SWITCHER DE SALAS (GOOGLE PROJECT SWITCHER STYLE) ===== */
+function openRoomSwitcher() {
+  const modal = document.getElementById("roomModal");
+  const grid = document.getElementById("roomsListGrid");
+  
+  grid.innerHTML = Object.values(S.rooms).map(r => {
+    const isAct = r.id === S.activeRoom;
+    const stats = getRoomInventoryStats(r);
+    const hasPin = !!r.pin;
+    
+    return `<div class="room-card-option ${isAct ? 'active' : ''}" data-room-id="${r.id}">
+      <span class="room-card-lock-badge">${hasPin ? '🔒' : '🔓'}</span>
+      <div class="room-card-header">
+        <span class="room-card-icon">${r.icon || '📁'}</span>
+        <div>
+          <div class="room-card-name">${esc(r.name)}</div>
+          <div class="room-card-count">${stats.totalTrajes} trajes · ${stats.totalUnits} peças</div>
+        </div>
+      </div>
+      <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">${esc(r.desc || '')}</p>
+    </div>`;
+  }).join("");
+
+  modal.classList.add("active");
+
+  grid.querySelectorAll(".room-card-option").forEach(card => {
+    card.onclick = () => {
+      const rid = card.dataset.roomId;
+      S.activeRoom = rid;
+      save();
+      updateThemeForActiveRoom();
+      modal.classList.remove("active");
+      toast(`Sala alterada para: ${getActiveRoom().name}`);
+      go("#/");
+    };
+  });
+
+  document.getElementById("closeRoomModalBtn").onclick = () => modal.classList.remove("active");
+  document.getElementById("confirmRoomBtn").onclick = () => modal.classList.remove("active");
+  document.getElementById("addNewRoomBtn").onclick = () => {
+    const name = prompt("Nome da nova sala / departamento do acervo:");
+    if (!name) return;
+    const icon = prompt("Ícone (emoji) para a sala:", "📁") || "📁";
+    const id = uid();
+    S.rooms[id] = {
+      id,
+      name,
+      icon,
+      color: "#0284c7",
+      desc: "Departamento personalizado do acervo",
+      pin: "",
+      costumes: [],
+      common: []
+    };
+    S.activeRoom = id;
+    save();
+    updateThemeForActiveRoom();
+    modal.classList.remove("active");
+    toast(`Nova sala "${name}" criada com sucesso!`);
+    go("#/");
+  };
+}
+
+document.getElementById("openRoomSwitcherBtn").onclick = openRoomSwitcher;
+document.getElementById("sideQuickSwitchBtn").onclick = openRoomSwitcher;
+
+/* ===== TELAS DO SISTEMA ===== */
 const app = document.getElementById("app");
 
-/* 1. TELA TRAJES (CATÁLOGO & INVENTÁRIO CONSOLIDADO) */
+/* 1. TELA TRAJES (HOME DA SALA ATIVA) */
 function viewHome() {
-  const stats = getGlobalInventoryStats();
-  
-  // Garante ordenação alfabética dos trajes
-  S.costumes.sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+  const r = getActiveRoom();
+  const stats = getRoomInventoryStats(r);
+  r.costumes = r.costumes || [];
+  r.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
 
   let h = `
-  <!-- KPIs Globais de Inventário -->
-  <div class="kpi-grid noprint">
-    <div class="kpi-card" onclick="go('#/pecas')">
-      <span class="kpi-num">${stats.totalTrajes}</span>
-      <span class="kpi-label">👔 Trajes no Acervo</span>
+  <!-- Banner Hero da Sala -->
+  <div class="room-hero-card noprint">
+    <div class="room-hero-info">
+      <div class="room-hero-icon">${r.icon || '📁'}</div>
+      <div>
+        <div class="room-hero-title">${esc(r.name)}</div>
+        <div class="room-hero-desc">${esc(r.desc || 'Acervo e Gestão de Trajes do Grupo Folclórico Polonês Wisła')}</div>
+      </div>
     </div>
-    <div class="kpi-card blue" onclick="currentPieceCategory='calcas'; go('#/pecas');">
-      <span class="kpi-num">${stats.calcas} <small style="font-size:12px;font-weight:600;">un</small></span>
-      <span class="kpi-label">👖 Calças Cadastradas</span>
-    </div>
-    <div class="kpi-card emerald" onclick="currentPieceCategory='camisas'; go('#/pecas');">
-      <span class="kpi-num">${stats.camisas} <small style="font-size:12px;font-weight:600;">un</small></span>
-      <span class="kpi-label">👔 Camisas Cadastradas</span>
-    </div>
-    <div class="kpi-card amber" onclick="currentPieceCategory='coletes'; go('#/pecas');">
-      <span class="kpi-num">${stats.coletes} <small style="font-size:12px;font-weight:600;">un</small></span>
-      <span class="kpi-label">🦺 Coletes Cadastrados</span>
-    </div>
-    <div class="kpi-card purple" onclick="currentPieceCategory='capotes'; go('#/pecas');">
-      <span class="kpi-num">${stats.capotes} <small style="font-size:12px;font-weight:600;">un</small></span>
-      <span class="kpi-label">🧥 Capotes / Sukmanas</span>
-    </div>
-    <div class="kpi-card" onclick="currentPieceCategory='aderecos'; go('#/pecas');">
-      <span class="kpi-num">${stats.aderecos} <small style="font-size:12px;font-weight:600;">un</small></span>
-      <span class="kpi-label">🎗️ Adereços & Faixas</span>
+    <div class="room-hero-stats">
+      <div class="hero-stat-chip">
+        <span class="hero-stat-num">${stats.totalTrajes}</span>
+        <span class="hero-stat-label">Trajes</span>
+      </div>
+      <div class="hero-stat-chip">
+        <span class="hero-stat-num">${stats.totalUnits}</span>
+        <span class="hero-stat-label">Peças em Estoque</span>
+      </div>
     </div>
   </div>
 
-  <div class="bar noprint">
-    <input type="search" id="q" placeholder="Buscar traje em ordem alfabética (ex: Biłgoraj, Krakowiak, Łowicz, Śląsk)...">
+  <!-- KPIs de Categorias Clicáveis -->
+  <div class="kpi-grid noprint">
+    <div class="kpi-card" onclick="go('#/pecas')">
+      <span class="kpi-card-icon">👔</span>
+      <span class="kpi-num">${stats.totalTrajes}</span>
+      <span class="kpi-label">Trajes na Sala</span>
+    </div>
+    <div class="kpi-card" onclick="currentPieceCategory='calcas'; go('#/pecas');">
+      <span class="kpi-card-icon">👖</span>
+      <span class="kpi-num">${stats.calcas} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-label">Calças</span>
+    </div>
+    <div class="kpi-card" onclick="currentPieceCategory='camisas'; go('#/pecas');">
+      <span class="kpi-card-icon">👔</span>
+      <span class="kpi-num">${stats.camisas} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-label">Camisas & Blusas</span>
+    </div>
+    <div class="kpi-card" onclick="currentPieceCategory='coletes'; go('#/pecas');">
+      <span class="kpi-card-icon">🦺</span>
+      <span class="kpi-num">${stats.coletes} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-label">Coletes & Corpetes</span>
+    </div>
+    <div class="kpi-card" onclick="currentPieceCategory='capotes'; go('#/pecas');">
+      <span class="kpi-card-icon">🧥</span>
+      <span class="kpi-num">${stats.capotes} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-label">Capotes / Sukmanas</span>
+    </div>
+    <div class="kpi-card" onclick="currentPieceCategory='aderecos'; go('#/pecas');">
+      <span class="kpi-card-icon">🎗️</span>
+      <span class="kpi-num">${stats.aderecos} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-label">Adereços & Faixas</span>
+    </div>
+  </div>
+
+  <div class="toolbar-bar noprint">
+    <input type="search" id="q" placeholder="Filtrar traje em ordem alfabética nesta sala...">
     <div class="view-switcher">
       <button class="view-btn ${currentHomeView === 'cards' ? 'active' : ''}" id="vCards">📇 Cartões</button>
-      <button class="view-btn ${currentHomeView === 'matrix' ? 'active' : ''}" id="vMatrix">📊 Matriz de Inventário</button>
+      <button class="view-btn ${currentHomeView === 'matrix' ? 'active' : ''}" id="vMatrix">📊 Matriz de Estoque</button>
     </div>
-    <button class="btn primary" id="addC">+ Novo traje</button>
+    <button class="btn primary" id="addC">+ Novo Traje</button>
   </div>`;
 
-  if(!S.costumes.length) {
-    h += `<div style="padding: 60px 20px; text-align: center; background: var(--surface); border-radius: 16px; border: 1px dashed var(--bd);">
-      <div style="font-size: 48px; margin-bottom: 12px;">👔</div>
-      <h3 style="font-size: 18px; margin-bottom: 6px; color:#fff;">Nenhum traje cadastrado ainda</h3>
-      <p style="color: var(--text-muted); margin-bottom: 18px;">Adicione seu primeiro traje ou restaure um backup (.json).</p>
-      <div style="display:inline-flex; gap:10px;">
-        <button class="btn primary" onclick="document.getElementById('addC').click()">+ Criar Traje</button>
-        <button class="btn" onclick="go('#/backup')">Restaurar Backup</button>
-      </div>
+  if (!r.costumes.length) {
+    h += `<div style="padding: 60px 20px; text-align: center; background: var(--surface-card); border-radius: 16px; border: 1px dashed var(--bd);">
+      <div style="font-size: 48px; margin-bottom: 12px;">${r.icon || '📁'}</div>
+      <h3 style="font-size: 18px; margin-bottom: 6px; color:#fff;">Nenhum traje cadastrado em "${esc(r.name)}"</h3>
+      <p style="color: var(--text-muted); margin-bottom: 18px;">Adicione o primeiro traje desta sala ou importe dados de backup.</p>
+      <button class="btn primary" onclick="document.getElementById('addC').click()">+ Criar Primeiro Traje</button>
     </div>`;
   } else if (currentHomeView === 'cards') {
-    /* Visualização em Cartões */
     h += `<div class="grid">`;
-    S.costumes.forEach(c => {
+    r.costumes.forEach(c => {
       const comp = getCostumeGroupedComposition(c);
       const dancerCount = dancersCountFor(c.name);
       
@@ -1881,10 +2389,9 @@ function viewHome() {
 
       h += `<div class="card" data-id="${c.id}" data-name="${esc(norm(c.name))}">
         <div class="ph" style="${c.photo ? `background-image:url('${c.photo}')` : ""}">
-          ${c.photo ? "" : "👔"}
+          ${c.photo ? "" : r.icon || "👔"}
           <div class="card-badges">
-            <span class="badge-count pri">${comp.totalUnits ? comp.totalUnits + ' peças' : c.items.length + ' itens'}</span>
-            <span class="badge-count blue">${comp.categoryCount} categorias</span>
+            <span class="badge-count room">${comp.totalUnits ? comp.totalUnits + ' peças' : (c.items || []).length + ' itens'}</span>
           </div>
         </div>
         <div class="nm">${esc(c.name)}</div>
@@ -1899,31 +2406,24 @@ function viewHome() {
     });
     h += `</div>`;
   } else {
-    /* Visualização em Matriz de Inventário Completa */
-    h += `<div class="wrap"><table class="matrix-table">
-      <thead>
-        <tr>
-          <th>Traje (Ordem Alfabética)</th>
-          <th>Foto</th>
-          <th style="text-align:center">🦺 Coletes</th>
-          <th style="text-align:center">👔 Camisas</th>
-          <th style="text-align:center">👖 Calças</th>
-          <th style="text-align:center">🧥 Capotes / Sukmanas</th>
-          <th style="text-align:center">🎗️ Adereços</th>
-          <th style="text-align:center; color:var(--pri-light);">Total Peças</th>
-          <th style="text-align:center">👥 Dançarinos</th>
-        </tr>
-      </thead>
-      <tbody>`;
-    
-    S.costumes.forEach(c => {
+    h += `<div class="wrap"><table><thead><tr>
+      <th>Traje (A-Z)</th>
+      <th>Foto</th>
+      <th style="text-align:center">🦺 Coletes</th>
+      <th style="text-align:center">👔 Camisas</th>
+      <th style="text-align:center">👖 Calças</th>
+      <th style="text-align:center">🧥 Capotes / Sukmanas</th>
+      <th style="text-align:center">🎗️ Adereços</th>
+      <th style="text-align:center; color:var(--pri-light);">Total Peças</th>
+      <th style="text-align:center">👥 Dançarinos</th>
+    </tr></thead><tbody>`;
+
+    r.costumes.forEach(c => {
       const comp = getCostumeGroupedComposition(c);
       const dancerCount = dancersCountFor(c.name);
-      
       const counts = { coletes: 0, camisas: 0, calcas: 0, capotes: 0, aderecos: 0 };
-      c.items.forEach(raw => {
-        const it = eff(raw);
-        if (!it) return;
+      (c.items || []).forEach(raw => {
+        const it = eff(raw); if (!it) return;
         const cat = classifyPiece(it.part).key;
         const q = parseQty(it.qty);
         if (counts[cat] !== undefined) counts[cat] += q;
@@ -1932,18 +2432,18 @@ function viewHome() {
       h += `<tr data-id="${c.id}" data-name="${esc(norm(c.name))}" style="cursor:pointer" onclick="go('#/traje/${c.id}')">
         <td><b style="color:#fff; font-size:15px;">${esc(c.name)}</b></td>
         <td>${c.photo ? `<img class="thumb" src="${c.photo}" style="width:44px; height:44px;">` : `<span style="color:var(--text-light)">-</span>`}</td>
-        <td style="text-align:center; font-weight:700;">${counts.coletes ? counts.coletes + ' un' : '<span style="color:var(--text-light)">-</span>'}</td>
-        <td style="text-align:center; font-weight:700;">${counts.camisas ? counts.camisas + ' un' : '<span style="color:var(--text-light)">-</span>'}</td>
-        <td style="text-align:center; font-weight:700;">${counts.calcas ? counts.calcas + ' un' : '<span style="color:var(--text-light)">-</span>'}</td>
-        <td style="text-align:center; font-weight:700;">${counts.capotes ? counts.capotes + ' un' : '<span style="color:var(--text-light)">-</span>'}</td>
-        <td style="text-align:center; font-weight:700;">${counts.aderecos ? counts.aderecos + ' un' : '<span style="color:var(--text-light)">-</span>'}</td>
+        <td style="text-align:center; font-weight:700;">${counts.coletes ? counts.coletes + ' un' : '-'}</td>
+        <td style="text-align:center; font-weight:700;">${counts.camisas ? counts.camisas + ' un' : '-'}</td>
+        <td style="text-align:center; font-weight:700;">${counts.calcas ? counts.calcas + ' un' : '-'}</td>
+        <td style="text-align:center; font-weight:700;">${counts.capotes ? counts.capotes + ' un' : '-'}</td>
+        <td style="text-align:center; font-weight:700;">${counts.aderecos ? counts.aderecos + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:15px;">${comp.totalUnits} un</td>
         <td style="text-align:center; font-weight:700;">${dancerCount ? dancerCount + ' 👥' : '-'}</td>
       </tr>`;
     });
     h += `</tbody></table></div>`;
   }
-  
+
   app.innerHTML = h;
 
   if (currentHomeView === 'cards') {
@@ -1951,66 +2451,57 @@ function viewHome() {
   }
 
   const qEl = document.getElementById("q");
-  if(qEl) qEl.oninput = e => {
+  if (qEl) qEl.oninput = e => {
     const q = norm(e.target.value);
-    const selector = currentHomeView === 'cards' ? ".card" : "tbody tr";
-    app.querySelectorAll(selector).forEach(el => el.style.display = el.dataset.name.includes(q) ? "" : "none");
+    const sel = currentHomeView === 'cards' ? ".card" : "tbody tr";
+    app.querySelectorAll(sel).forEach(el => el.style.display = el.dataset.name.includes(q) ? "" : "none");
   };
 
-  document.getElementById("vCards").onclick = () => {
-    currentHomeView = "cards";
-    localStorage.setItem("homeViewPref", "cards");
-    viewHome();
-  };
-  document.getElementById("vMatrix").onclick = () => {
-    currentHomeView = "matrix";
-    localStorage.setItem("homeViewPref", "matrix");
-    viewHome();
-  };
+  document.getElementById("vCards").onclick = () => { currentHomeView = "cards"; localStorage.setItem("wislaHomeView", "cards"); viewHome(); };
+  document.getElementById("vMatrix").onclick = () => { currentHomeView = "matrix"; localStorage.setItem("wislaHomeView", "matrix"); viewHome(); };
 
   document.getElementById("addC").onclick = () => {
-    const name = prompt("Nome do novo traje (ex: ŁOWICZ, KRAKOWIAK, SĄCZ, ŚLĄSK):"); if (!name) return;
+    const name = prompt(`Nome do novo traje para ${r.name} (ex: ŁOWICZ, KRAKOWIAK, SĄCZ):`); if (!name) return;
     const c = { id: uid(), name: fixPolishName(name), photo: "", items: [] };
-    S.costumes.push(c);
-    S.costumes.sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
-    save(); go("#/traje/" + c.id);
+    r.costumes.push(c);
+    r.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
+    save(); updateCounters(); go("#/traje/" + c.id);
   };
 }
 
-/* 2. TELA DETALHES DO TRAJE (FICHA TÉCNICA & COMPOSIÇÃO AGRUPADA) */
+/* 2. TELA DETALHES DO TRAJE */
 function viewCostume(id) {
-  const c = S.costumes.find(x => x.id === id);
-  if (!c) { app.innerHTML = `<p style="padding:40px; text-align:center">Traje não encontrado. <a href="#/">Voltar</a></p>`; return; }
-  c.items = c.items.filter(it => !it.cid || commonOf(it));
-  const avail = S.common.filter(cm => !c.items.some(i => i.cid === cm.id));
+  const r = getActiveRoom();
+  const c = (r.costumes || []).find(x => x.id === id);
+  if (!c) { app.innerHTML = `<p style="padding:40px; text-align:center">Traje não encontrado nesta sala. <a href="#/">Voltar</a></p>`; return; }
+  c.items = (c.items || []).filter(it => !it.cid || commonOf(it));
+  const avail = (r.common || []).filter(cm => !c.items.some(i => i.cid === cm.id));
   const dancerCount = dancersCountFor(c.name);
   const comp = getCostumeGroupedComposition(c);
-  
-  let h = `<div class="bar noprint">
-    <button class="btn" onclick="go('#/')">← Voltar</button>
-    <button class="btn primary" id="addI">+ Adicionar peça</button>
-    <select id="addCm"><option value="">+ Vincular peça comum...</option>${avail.map(cm => `<option value="${cm.id}">${esc(cmLabel(cm))}</option>`).join("")}</select>
+
+  let h = `<div class="toolbar-bar noprint">
+    <button class="btn" onclick="go('#/')">← Voltar para ${esc(r.name)}</button>
+    <button class="btn primary" id="addI">+ Adicionar Peça</button>
+    <select id="addCm"><option value="">+ Vincular Peça Comum...</option>${avail.map(cm => `<option value="${cm.id}">${esc(cmLabel(cm))}</option>`).join("")}</select>
     <button class="btn" onclick="window.print()">🖨 Imprimir Ficha</button>
-    <button class="btn red" id="delC" style="margin-left:auto">Excluir traje</button>
+    <button class="btn red" id="delC" style="margin-left:auto">Excluir Traje</button>
   </div>
   
-  <!-- Ficha do Traje -->
-  <div class="title">
+  <div class="costume-header">
     <div class="cover" id="cover" style="${c.photo ? `background-image:url('${c.photo}');border:none` : ""}">
       ${c.photo ? "" : "Clique para<br>adicionar foto<br>do traje"}
     </div>
-    <div class="title-info">
+    <div class="costume-info">
       <input id="cname" value="${esc(c.name)}" title="Nome do traje">
       <div class="composition-summary">
         <span class="comp-chip">Total de Peças: <b>${comp.totalUnits || c.items.length} un.</b></span>
         <span class="comp-chip">Categorias: <b>${comp.categoryCount} tipos</b></span>
         <span class="comp-chip">Peças Comuns: <b>${c.items.filter(i => i.cid).length}</b></span>
-        <span class="comp-chip">Dançarinos Escalados: <b>${dancerCount}</b></span>
+        <span class="comp-chip">Dançarinos: <b>${dancerCount}</b></span>
       </div>
     </div>
   </div>
 
-  <!-- Quadro Visual de Estoque & Composição Agrupada -->
   <h3 style="margin-bottom:12px; font-size:16px; color:#fff; display:flex; align-items:center; gap:8px;">
     📊 Resumo de Estoque por Peça (Quantidades & Variações)
   </h3>
@@ -2020,7 +2511,7 @@ function viewCostume(id) {
     const varRows = Object.values(g.variations).map(v => {
       return `<div class="breakdown-item-row">
         <span class="breakdown-item-desc">
-          ${v.isShared ? '<span class="tag" title="Peça comum compartilhada">🔗</span>' : '•'}
+          ${v.isShared ? '<span class="tag">🔗</span>' : '•'}
           <span>${esc(v.label)}</span>
           ${v.notes ? `<small style="color:var(--text-light);margin-left:4px;">(${esc(v.notes)})</small>` : ''}
         </span>
@@ -2030,50 +2521,34 @@ function viewCostume(id) {
 
     h += `<div class="breakdown-card">
       <div class="breakdown-header">
-        <span class="breakdown-title">
-          <span>🧥</span>
-          <span>${esc(g.name)}</span>
-        </span>
+        <span class="breakdown-title"><span>🧥</span> <span>${esc(g.name)}</span></span>
         <span class="breakdown-total">${g.totalQty ? g.totalQty + ' un. total' : Object.keys(g.variations).length + ' variação'}</span>
       </div>
-      <div class="breakdown-items">
-        ${varRows}
-      </div>
+      <div class="breakdown-items">${varRows}</div>
     </div>`;
   });
 
   h += `</div>
 
-  <!-- Tabela Completa de Itens & Edição -->
   <h3 style="margin-bottom:12px; font-size:16px; color:#fff; display:flex; align-items:center; gap:8px;">
     📝 Tabela Detalhada de Itens
   </h3>
-  <div class="wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Peça</th>
-          <th>Foto</th>
-          <th>Tipo / Detalhe</th>
-          <th>Cor</th>
-          <th>Quant.</th>
-          <th>Observação</th>
-          <th>Também usada em</th>
-          <th class="acts noprint"></th>
-        </tr>
-      </thead>
-      <tbody>`;
-  
+  <div class="wrap"><table><thead><tr>
+    <th>Peça</th>
+    <th>Foto</th>
+    <th>Tipo / Detalhe</th>
+    <th>Cor</th>
+    <th>Quant.</th>
+    <th>Observação</th>
+    <th>Também Usada Em</th>
+    <th class="acts noprint"></th>
+  </tr></thead><tbody>`;
+
   c.items.forEach((it, i) => {
     const cm = commonOf(it);
     if (cm) {
       h += `<tr data-i="${i}" class="link">
-        <td class="part">
-          <span class="ro">
-            <b>${esc(cm.part)}</b><br>
-            <span class="tag" data-cm="${cm.id}" title="Editar na tela Peças comuns">🔗 peça comum</span>
-          </span>
-        </td>
+        <td class="part"><span class="ro"><b>${esc(cm.part)}</b><br><span class="tag" data-cm="${cm.id}">🔗 peça comum</span></span></td>
         <td>${thumb(cm.photo, `data-cmph="${cm.id}"`)}</td>
         <td><span class="ro">${esc(cm.type)}</span></td>
         <td><span class="ro">${esc(cm.color)}</span></td>
@@ -2105,26 +2580,24 @@ function viewCostume(id) {
       </tr>`;
     }
   });
-  h += `</tbody></table></div>
-  <p class="note">Linhas destacadas em vermelho escuro são <b>peças comuns</b>: sincronizadas em múltiplos trajes e editadas na aba Peças comuns.</p>`;
-  
-  app.innerHTML = h;
+
+  app.innerHTML = h + `</tbody></table></div>`;
   const re = () => viewCostume(id);
 
   document.getElementById("cname").onchange = e => {
     c.name = fixPolishName(e.target.value) || c.name;
     e.target.value = c.name;
-    S.costumes.sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+    r.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
     save();
   };
   document.getElementById("cover").onclick = () => {
     const set = p => { c.photo = p; save(); re(); };
     c.photo ? openPhoto(c.photo, set, () => { if (confirm("Remover a foto do traje?")) set(""); }) : pickImg(set);
   };
-  document.getElementById("addI").onclick = () => { c.items.push({ id: uid(), part: "", type: "", color: "", qty: "", notes: "", photo: "" }); save(); re(); app.querySelector("tbody tr:last-child input")?.focus(); };
-  document.getElementById("addCm").onchange = e => { if (!e.target.value) return; c.items.push({ id: uid(), cid: e.target.value }); save(); re(); };
-  document.getElementById("delC").onclick = () => { if (confirm(`Excluir o traje "${c.name}" e todas as suas peças?`)) { S.costumes = S.costumes.filter(x => x !== c); save(); go("#/"); } };
-  
+  document.getElementById("addI").onclick = () => { c.items.push({ id: uid(), part: "", type: "", color: "", qty: "", notes: "", photo: "" }); save(); re(); updateCounters(); };
+  document.getElementById("addCm").onchange = e => { if (!e.target.value) return; c.items.push({ id: uid(), cid: e.target.value }); save(); re(); updateCounters(); };
+  document.getElementById("delC").onclick = () => { if (confirm(`Excluir o traje "${c.name}"?`)) { r.costumes = r.costumes.filter(x => x !== c); save(); updateCounters(); go("#/"); } };
+
   app.querySelectorAll("tbody tr").forEach(tr => {
     const i = +tr.dataset.i, it = c.items[i];
     tr.querySelectorAll("[data-f]").forEach(inp => {
@@ -2132,12 +2605,11 @@ function viewCostume(id) {
       inp.onchange = () => {
         if (inp.dataset.f === "part") inp.value = normalizePartName(inp.value, c.name);
         else if (inp.dataset.f !== "notes" && inp.dataset.f !== "qty") inp.value = inp.value.toUpperCase();
-        it[inp.dataset.f] = inp.value;
-        save();
+        it[inp.dataset.f] = inp.value; save();
       };
     });
     const ph = tr.querySelector("[data-ph]");
-    if (ph) ph.onclick = () => { const set = p => { it.photo = p; save(); re(); }; it.photo ? openPhoto(it.photo, set, () => { if (confirm("Remover esta foto?")) set(""); }) : pickImg(set); };
+    if (ph) ph.onclick = () => { const set = p => { it.photo = p; save(); re(); }; it.photo ? openPhoto(it.photo, set, () => { if (confirm("Remover foto?")) set(""); }) : pickImg(set); };
     const cph = tr.querySelector("[data-cmph]");
     if (cph) cph.onclick = () => go("#/comuns/" + cph.dataset.cmph);
     tr.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/comuns/" + t.dataset.cm));
@@ -2148,39 +2620,29 @@ function viewCostume(id) {
     const dup = tr.querySelector("[data-dup]"); if (dup) dup.onclick = () => { c.items.splice(i + 1, 0, { ...it, id: uid() }); save(); re(); };
     const mk = tr.querySelector("[data-mk]"); if (mk) mk.onclick = () => {
       if (!it.part) return alert("Preencha o nome da peça primeiro.");
-      if (!confirm("Transformar esta peça em peça comum? Depois você escolhe em quais outros trajes ela aparece.")) return;
-      const cm = newCommon(it); c.items[i] = { id: it.id, cid: cm.id }; save();
-      chooseCostumes(cm, re);
+      const cm = newCommon(it); c.items[i] = { id: it.id, cid: cm.id }; save(); chooseCostumes(cm, re);
     };
     tr.querySelector("[data-del]").onclick = () => {
-      if (!confirm(it.cid ? "Tirar esta peça comum deste traje?" : "Excluir esta peça?")) return;
-      c.items.splice(i, 1); save(); re();
+      if (!confirm("Excluir esta peça?")) return;
+      c.items.splice(i, 1); save(); re(); updateCounters();
     };
     tr.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
   });
 }
 
-/* 3. TELA TODAS AS PEÇAS COM SUBMENUS DE CATEGORIAS */
+/* 3. TELA TODAS AS PEÇAS COM SUBMENUS */
 function viewPieces() {
-  const stats = getGlobalInventoryStats();
+  const r = getActiveRoom();
+  const stats = getRoomInventoryStats(r);
   
-  // Lista todas as peças agrupadas com traje
   const allRows = [];
-  S.costumes.forEach(c => c.items.forEach(raw => {
+  (r.costumes || []).forEach(c => (c.items || []).forEach(raw => {
     const it = eff(raw); if (!it) return;
     const cat = classifyPiece(it.part);
     const q = parseQty(it.qty);
-    allRows.push({
-      costume: c,
-      raw,
-      it,
-      cat,
-      q,
-      txt: norm([c.name, it.part, it.type, it.color, it.qty, it.notes].join(" "))
-    });
+    allRows.push({ costume: c, raw, it, cat, q, txt: norm([c.name, it.part, it.type, it.color, it.qty, it.notes].join(" ")) });
   }));
 
-  // Ordena por Traje (A-Z) e depois por Peça (A-Z)
   allRows.sort((a, b) => {
     const cDiff = a.costume.name.localeCompare(b.costume.name, "pt-BR", { sensitivity: "base" });
     if (cDiff !== 0) return cDiff;
@@ -2190,14 +2652,14 @@ function viewPieces() {
   const submenus = [
     { key: "all", label: "Todas as Peças", icon: "📦", count: stats.totalUnits },
     { key: "calcas", label: "Calças", icon: "👖", count: stats.calcas },
-    { key: "capotes", label: "Capotes & Sukmanas", icon: "🧥", count: stats.capotes },
-    { key: "camisas", label: "Camisas", icon: "👔", count: stats.camisas },
-    { key: "coletes", label: "Coletes", icon: "🦺", count: stats.coletes },
+    { key: "camisas", label: "Camisas & Blusas", icon: "👔", count: stats.camisas },
+    { key: "coletes", label: "Coletes & Corpetes", icon: "🦺", count: stats.coletes },
+    { key: "capotes", label: "Capotes, Sukmanas & Saias", icon: "🧥", count: stats.capotes },
+    { key: "calcados", label: "Botas & Calçados", icon: "👢", count: stats.calcados },
     { key: "aderecos", label: "Adereços & Faixas", icon: "🎗️", count: stats.aderecos }
   ];
 
   let h = `
-  <!-- Submenus / Abas de Categorias -->
   <div class="category-subnav noprint">
     ${submenus.map(sm => `
       <div class="cat-pill ${currentPieceCategory === sm.key ? 'active' : ''}" data-cat="${sm.key}">
@@ -2207,8 +2669,8 @@ function viewPieces() {
     `).join("")}
   </div>
 
-  <div class="bar noprint">
-    <input type="search" id="q" placeholder="Buscar por modelo, cor, observação ou traje...">
+  <div class="toolbar-bar noprint">
+    <input type="search" id="q" placeholder="Buscar por modelo, cor, observação ou traje em ${esc(r.name)}...">
     <span id="cnt" class="note" style="margin-left:auto; font-weight:700; color:#fff;"></span>
   </div>
 
@@ -2221,7 +2683,7 @@ function viewPieces() {
     <th style="text-align:center">Quant.</th>
     <th>Observação</th>
   </tr></thead><tbody>`;
-  
+
   allRows.forEach(row => {
     const { costume: c, raw, it, cat, txt } = row;
     h += `<tr data-t="${esc(txt)}" data-cat="${cat.key}" ${raw.cid ? 'class="link"' : ""}>
@@ -2234,26 +2696,23 @@ function viewPieces() {
       <td>${esc(it.notes)}</td>
     </tr>`;
   });
-  
+
   app.innerHTML = h + `</tbody></table></div>`;
 
   const filterRows = () => {
     const q = norm(document.getElementById("q").value);
-    let n = 0, units = 0;
+    let n = 0;
     app.querySelectorAll("tbody tr").forEach(tr => {
       const matchCat = currentPieceCategory === "all" || tr.dataset.cat === currentPieceCategory;
       const matchTxt = !q || tr.dataset.t.includes(q);
       const ok = matchCat && matchTxt;
       tr.style.display = ok ? "" : "none";
-      if (ok) {
-        n++;
-      }
+      if (ok) n++;
     });
-    document.getElementById("cnt").textContent = n + " item(ns) filtrado(s)";
+    document.getElementById("cnt").textContent = n + " item(ns) listado(s)";
   };
 
   document.getElementById("q").oninput = filterRows;
-
   app.querySelectorAll(".cat-pill").forEach(pill => {
     pill.onclick = () => {
       currentPieceCategory = pill.dataset.cat;
@@ -2268,60 +2727,64 @@ function viewPieces() {
   app.querySelectorAll("[data-zoom-src]").forEach(img => img.onclick = () => openPhoto(img.dataset.zoomSrc, () => {}, () => {}));
 }
 
-/* 4. TELA DANÇARINOS (ORDEM ALFABÉTICA) */
+/* 4. TELA DANÇARINOS (GLOBAL WISŁA) */
 function viewDancers() {
-  // Ordena dançarinos por ordem alfabética
+  S.dancers = S.dancers || [];
   S.dancers.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
 
-  let h = `<div class="bar noprint">
+  let h = `<div class="toolbar-bar noprint">
     <input type="search" id="q" placeholder="Buscar dançarino em ordem alfabética...">
-    <button class="btn primary" id="addD">+ Dançarino</button>
-    <button class="btn" id="addDz">+ Dança</button>
+    <button class="btn primary" id="addD">+ Novo Dançarino</button>
+    <button class="btn" id="addDz">+ Nova Dança</button>
     <button class="btn" onclick="window.print()">🖨 Imprimir Grade</button>
     <span class="note" style="margin-left:auto">${S.dancers.length} dançarinos · ${S.dances.length} danças</span>
   </div>
-  <p class="note" style="margin-top:-14px; margin-bottom:14px">Número da camisa/peça de cada dançarino. Clique no nome da dança para abrir o traje correspondente.</p>
   <div class="wrap"><table class="dz"><thead><tr><th>Dançarino (A-Z)</th>`;
-  
+
   S.dances.forEach((d, j) => {
-    const c = findCostume(d);
+    const r = getActiveRoom();
+    const c = (r.costumes || []).find(x => norm(x.name) === norm(d));
     h += `<th>
-      ${c ? `<a href="#/traje/${c.id}">${esc(d)}</a>` : `${esc(d)} <span class="warn" title="Nenhum traje com este nome">⚠</span>`}
+      ${c ? `<a href="#/traje/${c.id}">${esc(d)}</a>` : esc(d)}
       <br>
       <span class="acts noprint">
-        <button data-dl="${j}" title="Mover para a esquerda">◀</button>
-        <button data-dx="${j}" title="Excluir dança">✕</button>
-        <button data-dr="${j}" title="Mover para a direita">▶</button>
+        <button data-dl="${j}">◀</button>
+        <button data-dx="${j}">✕</button>
+        <button data-dr="${j}">▶</button>
       </span>
     </th>`;
   });
   h += `<th class="noprint"></th></tr></thead><tbody>`;
-  
+
   S.dancers.forEach((p, i) => {
     h += `<tr data-i="${i}" data-n="${esc(norm(p.name))}">
       <td><input data-name value="${esc(p.name)}" placeholder="NOME DO DANÇARINO"></td>`;
     S.dances.forEach(d => {
       h += `<td><input data-d="${esc(d)}" value="${esc(p.nums[d] || "")}" placeholder="-"></td>`;
     });
-    h += `<td class="acts noprint"><button data-del title="Excluir dançarino">🗑</button></td></tr>`;
+    h += `<td class="acts noprint"><button data-del title="Excluir">🗑</button></td></tr>`;
   });
+
   app.innerHTML = h + `</tbody></table></div>`;
 
-  document.getElementById("q").oninput = e => { const q = norm(e.target.value); app.querySelectorAll("tbody tr").forEach(tr => tr.style.display = tr.dataset.n.includes(q) ? "" : "none"); };
+  document.getElementById("q").oninput = e => {
+    const q = norm(e.target.value);
+    app.querySelectorAll("tbody tr").forEach(tr => tr.style.display = tr.dataset.n.includes(q) ? "" : "none");
+  };
   document.getElementById("addD").onclick = () => {
     const n = prompt("Nome do dançarino:"); if (!n) return;
     S.dancers.push({ id: uid(), name: n.toUpperCase().trim(), nums: {} });
     S.dancers.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
-    save(); viewDancers();
+    save(); updateCounters(); viewDancers();
   };
   document.getElementById("addDz").onclick = () => {
-    const n = prompt("Nome da dança (ex: ŁOWICZ, KRAKOWIAK, SĄCZ, ŚLĄSK):", ""); if (!n) return;
+    const n = prompt("Nome da dança (ex: ŁOWICZ, KRAKOWIAK, SĄCZ, ŚLĄSK):"); if (!n) return;
     const d = fixPolishName(n); if (S.dances.includes(d)) return alert("Essa dança já existe.");
     S.dances.push(d); save(); viewDancers();
   };
   app.querySelectorAll("[data-dx]").forEach(b => b.onclick = () => {
     const d = S.dances[+b.dataset.dx];
-    if (!confirm(`Excluir a dança "${d}" da grade? Os números desta coluna serão apagados.`)) return;
+    if (!confirm(`Excluir a dança "${d}"?`)) return;
     S.dances.splice(+b.dataset.dx, 1); S.dancers.forEach(p => delete p.nums[d]); save(); viewDancers();
   });
   const mv = (j, k) => { if (k < 0 || k >= S.dances.length) return; [S.dances[j], S.dances[k]] = [S.dances[k], S.dances[j]]; save(); viewDancers(); };
@@ -2335,30 +2798,37 @@ function viewDancers() {
       S.dancers.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
       save();
     };
-    tr.querySelectorAll("[data-d]").forEach(inp => inp.oninput = () => { if (inp.value.trim()) p.nums[inp.dataset.d] = inp.value.trim(); else delete p.nums[inp.dataset.d]; save(); });
-    tr.querySelector("[data-del]").onclick = () => { if (confirm(`Excluir o dançarino "${p.name}"?`)) { S.dancers.splice(+tr.dataset.i, 1); save(); viewDancers(); } };
+    tr.querySelectorAll("[data-d]").forEach(inp => inp.oninput = () => {
+      if (inp.value.trim()) p.nums[inp.dataset.d] = inp.value.trim(); else delete p.nums[inp.dataset.d];
+      save();
+    });
+    tr.querySelector("[data-del]").onclick = () => {
+      if (!confirm(`Excluir "${p.name}"?`)) return;
+      S.dancers.splice(+tr.dataset.i, 1); save(); updateCounters(); viewDancers();
+    };
   });
 }
 
-/* 5. TELA PEÇAS COMUNS (ORDEM ALFABÉTICA) */
+/* 5. TELA PEÇAS COMUNS (DA SALA ATIVA) */
 function viewCommon(focusId) {
-  S.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
+  const r = getActiveRoom();
+  r.common = r.common || [];
+  r.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
 
-  let h = `<h2>🔗 Peças comuns</h2>
-  <p class="note" style="margin-top:0">Peças reutilizadas em múltiplos trajes (ex.: CAMISA QUE AMASSA, FAIXA, COLETE). A alteração de foto e dados aqui reflete em todos os trajes vinculados.</p>
-  <div class="bar noprint">
+  let h = `<h2>🔗 Peças Comuns · ${esc(r.name)}</h2>
+  <p class="note" style="margin-top:0">Peças reutilizadas em múltiplos trajes desta sala. A alteração de foto e detalhes aqui sincroniza em todos os trajes vinculados.</p>
+  <div class="toolbar-bar noprint">
     <input type="search" id="q" placeholder="Buscar peça comum em ordem alfabética...">
-    <button class="btn primary" id="addCm">+ Nova peça comum</button>
-    <button class="btn" id="imp">Importar peças repetidas</button>
+    <button class="btn primary" id="addCm">+ Nova Peça Comum</button>
   </div>`;
-  
-  if (!S.common.length) {
-    h += `<div style="padding: 40px; text-align: center; background: var(--surface); border-radius: 16px; border: 1px dashed var(--bd);">
-      <p style="color:var(--text-muted)">Nenhuma peça comum cadastrada ainda.<br>Clique em <b>+ Nova peça comum</b> ou importe as repetidas automaticamente.</p>
+
+  if (!r.common.length) {
+    h += `<div style="padding: 40px; text-align: center; background: var(--surface-card); border-radius: 16px; border: 1px dashed var(--bd);">
+      <p style="color:var(--text-muted)">Nenhuma peça comum cadastrada nesta sala.<br>Clique em <b>+ Nova Peça Comum</b> para criar.</p>
     </div>`;
   } else {
-    h += `<div class="wrap"><table><thead><tr><th>Foto</th><th>Peça (A-Z)</th><th>Tipo / Detalhe</th><th>Cor</th><th>Quant.</th><th>Observação</th><th>Trajes em que aparece</th><th class="acts noprint"></th></tr></thead><tbody>`;
-    S.common.forEach((cm, i) => {
+    h += `<div class="wrap"><table><thead><tr><th>Foto</th><th>Peça (A-Z)</th><th>Tipo / Detalhe</th><th>Cor</th><th>Quant.</th><th>Observação</th><th>Trajes Vinculados</th><th class="acts noprint"></th></tr></thead><tbody>`;
+    r.common.forEach((cm, i) => {
       const cs = costumesOf(cm);
       h += `<tr data-i="${i}" id="cm-${cm.id}" data-n="${esc(norm(cmLabel(cm)))}">
         <td>${thumb(cm.photo, "data-ph")}</td>
@@ -2368,109 +2838,94 @@ function viewCommon(focusId) {
         <td style="width:80px"><input data-f="qty" value="${esc(cm.qty)}" placeholder="1"></td>
         <td><textarea data-f="notes" rows="1" placeholder="Observações...">${esc(cm.notes)}</textarea></td>
         <td style="min-width:220px">
-          ${cs.map(c => `<span class="chip" data-go="${c.id}">${esc(c.name)}</span>`).join("") || '<span class="warn">Nenhum traje</span>'}<br>
-          <button class="btn sm noprint" data-ch style="margin-top:6px">Escolher trajes (${cs.length})</button>
+          ${cs.map(c => `<span class="chip" data-go="${c.id}">${esc(c.name)}</span>`).join("") || '<span style="color:var(--amber)">Nenhum traje</span>'}<br>
+          <button class="btn sm noprint" data-ch style="margin-top:6px">Vincular Trajes (${cs.length})</button>
         </td>
-        <td class="acts noprint"><button title="Excluir peça comum" data-del>🗑</button></td>
+        <td class="acts noprint"><button title="Excluir" data-del>🗑</button></td>
       </tr>`;
     });
     h += `</tbody></table></div>`;
   }
+
   app.innerHTML = h;
   const re = () => viewCommon();
-  
-  document.getElementById("q").oninput = e => { const q = norm(e.target.value); app.querySelectorAll("tbody tr").forEach(tr => tr.style.display = tr.dataset.n.includes(q) ? "" : "none"); };
-  document.getElementById("addCm").onclick = () => { const cm = newCommon(); save(); viewCommon(cm.id); };
-  document.getElementById("imp").onclick = () => { if (importRepeated()) re(); };
-  
+
+  document.getElementById("q").oninput = e => {
+    const q = norm(e.target.value);
+    app.querySelectorAll("tbody tr").forEach(tr => tr.style.display = tr.dataset.n.includes(q) ? "" : "none");
+  };
+  document.getElementById("addCm").onclick = () => { const cm = newCommon(); save(); updateCounters(); viewCommon(cm.id); };
+
   app.querySelectorAll("tbody tr").forEach(tr => {
-    const cm = S.common[+tr.dataset.i];
+    const cm = r.common[+tr.dataset.i];
     tr.querySelectorAll("[data-f]").forEach(inp => {
       inp.oninput = () => { cm[inp.dataset.f] = inp.value; save(); };
       inp.onchange = () => {
         if (inp.dataset.f === "part") inp.value = normalizePartName(inp.value);
         else if (inp.dataset.f !== "notes" && inp.dataset.f !== "qty") inp.value = inp.value.toUpperCase();
         cm[inp.dataset.f] = inp.value;
-        tr.dataset.n = norm(cmLabel(cm));
-        S.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
+        r.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
         save();
       };
     });
     tr.querySelector("[data-ph]").onclick = () => {
       const set = p => { cm.photo = p; save(); re(); };
-      cm.photo ? openPhoto(cm.photo, set, () => { if (confirm(`Remover a foto? Ela sairá de ${costumesOf(cm).length} traje(s).`)) set(""); }) : pickImg(set);
+      cm.photo ? openPhoto(cm.photo, set, () => { if (confirm("Remover a foto?")) set(""); }) : pickImg(set);
     };
     tr.querySelector("[data-ch]").onclick = () => chooseCostumes(cm, re);
     tr.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
-    tr.querySelector("[data-del]").onclick = async () => {
-      const cs = costumesOf(cm);
-      const v = cs.length ? await ask(`A peça "${cmLabel(cm) || "sem nome"}" está em ${cs.length} traje(s).`, [["Manter nos trajes como peça normal (sem vínculo)", "keep"], ["Remover também dos trajes", "drop"]], "Excluir Peça Comum") : (confirm("Excluir esta peça comum?") ? "drop" : null);
-      if (!v) return;
-      S.costumes.forEach(c => { c.items = v === "drop" ? c.items.filter(i => i.cid !== cm.id) : c.items.map(i => i.cid === cm.id ? { id: i.id, part: cm.part, type: cm.type, color: cm.color, qty: cm.qty, notes: cm.notes, photo: cm.photo } : i); });
-      S.common = S.common.filter(x => x !== cm); save(); re();
+    tr.querySelector("[data-del]").onclick = () => {
+      if (!confirm("Excluir esta peça comum?")) return;
+      r.common = r.common.filter(x => x !== cm);
+      r.costumes.forEach(c => { c.items = c.items.filter(i => i.cid !== cm.id); });
+      save(); updateCounters(); re();
     };
   });
-  if (focusId) { const r = document.getElementById("cm-" + focusId); if (r) { r.scrollIntoView({ block: "center" }); r.style.outline = "2px solid var(--pri)"; r.querySelector("input")?.focus(); } }
 }
 
 /* 6. TELA BANCO DE FOTOS */
 function viewBank() {
   const B = bank();
-  function usage(b) {
-    const r = [];
-    S.costumes.forEach(c => {
-      if (c.photo === b.img) r.push("Capa: " + c.name);
-      c.items.forEach(it => { if (!it.cid && it.photo === b.img) r.push(c.name + " · " + (it.part || "peça")); });
-    });
-    (S.common || []).forEach(cm => { if (cm.photo === b.img) r.push("Peça comum: " + [cm.part, cm.type, cm.color].filter(Boolean).join(" ")); });
-    return r;
-  }
-
-  let h = `<h2>📷 Banco de Fotos</h2>
-    <p class="note" style="margin-top:0">Galeria de fotos do acervo. Arraste arquivos para carregar ou vincule fotos existentes a trajes e peças.</p>
+  let h = `<h2>📷 Banco de Fotos do Acervo Wisła</h2>
+    <p class="note" style="margin-top:0">Galeria geral de fotos compartilhadas entre todas as salas e trajes.</p>
     <div id="bkDrop">
       <div style="font-size:32px; margin-bottom:8px">📥</div>
       <b>Arraste as fotos para cá</b> ou <button class="btn primary" id="bkUp" style="margin:0 8px">Escolher do Computador</button>
-      <br>
-      <label style="font-size:13px; display:inline-flex; align-items:center; gap:6px; margin-top:14px; cursor:pointer">
-        <input type="checkbox" id="bkEnh" ${OPT.enhance ? "checked" : ""}> Otimizar nitidez e contraste automaticamente
-      </label>
     </div>
-    <div class="bar">
+    <div class="toolbar-bar">
       <input type="search" id="bkQ" placeholder="Buscar foto pelo nome...">
-      <select id="bkF"><option value="">Todas as fotos</option><option value="free">Ainda não usadas</option><option value="used">Já utilizadas</option></select>
       <span class="note" style="margin-left:auto; color:#fff; font-weight:700;">${B.length} foto(s) no banco</span>
     </div>
     <div class="bk-grid">`;
-  
+
   B.forEach((b, i) => {
-    const u = usage(b);
-    h += `<div class="bk-card" data-i="${i}" data-n="${esc(norm(b.name))}" data-u="${u.length ? "used" : "free"}">
+    h += `<div class="bk-card" data-i="${i}" data-n="${esc(norm(b.name))}">
       <img src="${b.img}" alt="" data-zoom>
       <div class="bd">
         <input data-nm value="${esc(b.name)}" title="Nome da foto">
-        <div class="use" title="${esc(u.join("\n"))}">${u.length ? "Usada em " + u.length + ": " + esc(u.slice(0, 2).join(", ")) + (u.length > 2 ? "…" : "") : "Ainda não usada"}</div>
         <div class="row">
-          <button class="btn primary" data-use>Usar em...</button>
-          <button class="btn red" data-del title="Excluir do banco">🗑</button>
+          <button class="btn red" data-del title="Excluir do banco">🗑 Excluir</button>
         </div>
       </div>
     </div>`;
   });
+
   app.innerHTML = h + `</div>`;
 
   const inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/*"; inp.multiple = true;
   inp.onchange = async () => {
-    let n = 0, bad = 0;
+    let n = 0;
     for (const f of inp.files) {
-      if (!f.type.startsWith("image/")) { bad++; continue; }
-      try { const img = await readImg(f); bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) }); n++; }
-      catch (e) { bad++; }
+      if (!f.type.startsWith("image/")) continue;
+      try {
+        const img = await readImg(f);
+        bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
+        n++;
+      } catch (e) {}
     }
-    save(); toast(n + " foto(s) adicionada(s)"); viewBank();
+    save(); toast(n + " foto(s) adicionada(s)"); updateCounters(); viewBank();
   };
   document.getElementById("bkUp").onclick = () => inp.click();
-  document.getElementById("bkEnh").onchange = e => { OPT.enhance = e.target.checked; localStorage.setItem("bancoOpc", JSON.stringify(OPT)); };
 
   const d = document.getElementById("bkDrop");
   d.ondragover = e => { e.preventDefault(); d.classList.add("over"); };
@@ -2480,98 +2935,38 @@ function viewBank() {
     let n = 0;
     for (const f of e.dataTransfer.files) {
       if (!f.type.startsWith("image/")) continue;
-      try { const img = await readImg(f); bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) }); n++; }
-      catch (err) {}
+      try {
+        const img = await readImg(f);
+        bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
+        n++;
+      } catch (err) {}
     }
-    save(); toast(n + " foto(s) adicionada(s)"); viewBank();
+    save(); toast(n + " foto(s) adicionada(s)"); updateCounters(); viewBank();
   };
 
-  const filt = () => {
-    const q = norm(document.getElementById("bkQ").value), s = document.getElementById("bkF").value;
-    app.querySelectorAll(".bk-card").forEach(el => el.style.display = el.dataset.n.includes(q) && (!s || el.dataset.u === s) ? "" : "none");
+  document.getElementById("bkQ").oninput = e => {
+    const q = norm(e.target.value);
+    app.querySelectorAll(".bk-card").forEach(el => el.style.display = el.dataset.n.includes(q) ? "" : "none");
   };
-  document.getElementById("bkQ").oninput = filt;
-  document.getElementById("bkF").onchange = filt;
 
   app.querySelectorAll(".bk-card").forEach(el => {
     const b = B[+el.dataset.i];
-    el.querySelector("[data-nm]").onchange = e => { b.name = e.target.value.toUpperCase().trim(); e.target.value = b.name; el.dataset.n = norm(b.name); save(); };
-    el.querySelector("[data-zoom]").onclick = () => {
-      openPhoto(b.img, () => {}, () => {});
-    };
-    el.querySelector("[data-use]").onclick = () => assignDlg(b);
+    el.querySelector("[data-nm]").onchange = e => { b.name = e.target.value.toUpperCase().trim(); save(); };
+    el.querySelector("[data-zoom]").onclick = () => openPhoto(b.img, () => {}, () => {});
     el.querySelector("[data-del]").onclick = () => {
-      const u = usage(b);
-      if (!confirm(u.length ? `Excluir do banco? A foto continuará nos ${u.length} lugar(es) onde já foi aplicada.` : "Excluir esta foto do banco?")) return;
-      S.bank = B.filter(x => x !== b); save(); viewBank();
+      if (!confirm("Excluir esta foto do banco geral?")) return;
+      S.bank = B.filter(x => x !== b); save(); updateCounters(); viewBank();
     };
   });
 }
 
-function assignDlg(b) {
-  const box = document.getElementById("bkBox");
-  const costOpts = S.costumes.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("");
-  box.innerHTML = `<h3>Vincular Foto: ${esc(b.name)}</h3>
-    <div style="display:flex; gap:20px; flex-wrap:wrap">
-      <img src="${b.img}" style="width:180px; height:180px; object-fit:contain; background:#090d16; border:1px solid var(--bd); border-radius:12px;">
-      <div style="flex:1; min-width:260px;">
-        <div class="form-group">
-          <label>Usar esta foto como:</label>
-          <select id="bkT">
-            <option value="item">Foto de uma peça de traje</option>
-            <option value="common">Foto de uma peça comum</option>
-            <option value="cover">Foto de capa do traje</option>
-          </select>
-        </div>
-        <div id="bkWhere"></div>
-      </div>
-    </div>
-    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-      <button class="btn red" id="bkCancel">Cancelar</button>
-      <button class="btn primary" id="bkOk">Aplicar Foto</button>
-    </div>`;
-
-  const where = () => {
-    const t = document.getElementById("bkT").value;
-    if (t === "common") {
-      const cs = S.common || [];
-      document.getElementById("bkWhere").innerHTML = cs.length ? `<div class="form-group"><label>Peça comum:</label><select id="bkCm">${cs.map(cm => `<option value="${cm.id}">${esc([cm.part, cm.type, cm.color].filter(Boolean).join(" · "))}</option>`).join("")}</select></div>` : `<p class="warn">Nenhuma peça comum cadastrada.</p>`;
-    } else {
-      document.getElementById("bkWhere").innerHTML = `<div class="form-group"><label>Traje:</label><select id="bkC">${costOpts}</select></div>` + (t === "item" ? `<div class="form-group"><label>Peça:</label><select id="bkI"></select></div>` : "");
-      const fill = () => {
-        if (t !== "item") return;
-        const c = S.costumes.find(x => x.id === document.getElementById("bkC").value);
-        if (!c) return;
-        const its = c.items.map((it, i) => [it, i]).filter(([it]) => !it.cid);
-        document.getElementById("bkI").innerHTML = its.length ? its.map(([it, i]) => `<option value="${i}">${esc([it.part, it.type, it.color].filter(Boolean).join(" · ") || "(sem nome)")}${it.photo ? " 📷" : ""}</option>`).join("") : `<option value="">(sem peças próprias)</option>`;
-      };
-      document.getElementById("bkC").onchange = fill; fill();
-    }
-  };
-  document.getElementById("bkT").onchange = where; where();
-  document.getElementById("bkCancel").onclick = () => document.getElementById("bkDlg").classList.remove("active");
-  document.getElementById("bkOk").onclick = () => {
-    const t = document.getElementById("bkT").value; let obj = null, label = "";
-    if (t === "common") { obj = (S.common || []).find(x => x.id === (document.getElementById("bkCm") || {}).value); label = "peça comum"; }
-    else {
-      const c = S.costumes.find(x => x.id === document.getElementById("bkC").value);
-      if (t === "cover") { obj = c; label = "capa de " + c.name; }
-      else { const i = (document.getElementById("bkI") || {}).value; if (i !== "" && i != null) { obj = c.items[+i]; label = c.name; } }
-    }
-    if (!obj) return alert("Escolha onde aplicar a foto.");
-    if (obj.photo && !confirm("Já existe uma foto neste local. Deseja substituir?")) return;
-    obj.photo = b.img; save(); document.getElementById("bkDlg").classList.remove("active"); toast("Foto aplicada em " + label); viewBank();
-  };
-  document.getElementById("bkDlg").classList.add("active");
-}
-
-/* Picker de Foto ao Clicar em "+ Foto" */
-window.pickImg = pickImg = function (cb) {
+/* Picker de Fotos Modal */
+window.pickImg = function(cb) {
   const B = bank(), box = document.getElementById("bkBox");
   box.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h3 style="margin:0">Escolher Foto</h3>
+      <h3 style="margin:0">Escolher Foto do Acervo</h3>
       <div style="display:flex; gap:8px;">
-        <input type="search" id="pkQ" placeholder="Filtrar foto..." style="padding:6px 10px; background:#090d16; border:1px solid var(--bd); border-radius:6px; color:#fff;">
+        <input type="search" id="pkQ" placeholder="Filtrar foto..." style="padding:6px 10px; background:#0d1322; border:1px solid var(--bd); border-radius:6px; color:#fff;">
         <button class="btn primary sm" id="pkUp">⬆ Enviar do PC</button>
         <button class="btn red sm" id="pkX">Cancelar</button>
       </div>
@@ -2584,6 +2979,7 @@ window.pickImg = pickImg = function (cb) {
         </div>`).join("") : `<p style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted)">Nenhuma foto no banco ainda.<br>Clique em <b>Enviar do PC</b> para adicionar.</p>`}
       </div>
     </div>`;
+  
   document.getElementById("bkDlg").classList.add("active");
   const close = () => document.getElementById("bkDlg").classList.remove("active");
   document.getElementById("pkX").onclick = close;
@@ -2596,237 +2992,162 @@ window.pickImg = pickImg = function (cb) {
         const img = await readImg(i.files[0]);
         bank().push({ id: uid(), name: i.files[0].name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
         save(); close(); cb(img);
-      } catch (e) { alert("Não foi possível processar a imagem."); }
+      } catch (e) { alert("Erro ao carregar imagem."); }
     };
     i.click();
   };
   box.querySelectorAll(".bk-card").forEach(el => el.onclick = () => { close(); cb(B[+el.dataset.i].img); });
 };
-document.getElementById("bkDlg").addEventListener("click", e => { if (e.target.id === "bkDlg") document.getElementById("bkDlg").classList.remove("active"); });
+document.getElementById("bkDlg").onclick = e => { if (e.target.id === "bkDlg") document.getElementById("bkDlg").classList.remove("active"); };
 
 /* 7. TELA BACKUP */
-function csv(rows) { return "\uFEFF" + rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(";")).join("\r\n"); }
 function viewBackup() {
+  const r = getActiveRoom();
   const kb = Math.round(JSON.stringify(S).length / 1024);
-  app.innerHTML = `<h2>💾 Backup e Exportação</h2>
-  <p class="note" style="margin-top:0">Os dados e fotos ficam salvos localmente neste navegador. Faça backups regulares para manter os dados protegidos.</p>
+
+  app.innerHTML = `<h2>💾 Backup & Sincronização do Wisła</h2>
+  <p class="note" style="margin-top:0">Exporte ou restaure o acervo de todas as salas ou da sala ativa.</p>
   
-  <div style="background:var(--surface); border:1px solid var(--bd); border-radius:16px; padding:24px; margin:20px 0; box-shadow:var(--shadow)">
-    <h3 style="font-size:16px; margin-bottom:14px; color:#fff;">Estatísticas do Acervo</h3>
+  <div style="background:var(--surface-card); border:1px solid var(--bd); border-radius:16px; padding:24px; margin:20px 0; box-shadow:var(--shadow)">
+    <h3 style="font-size:16px; margin-bottom:14px; color:#fff;">Estatísticas do Sistema</h3>
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-bottom:20px;">
-      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.costumes.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Trajes</span></div>
-      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.costumes.reduce((a, c) => a + c.items.length, 0)}</b><br><span style="font-size:12px; color:var(--text-muted)">Itens Registrados</span></div>
-      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.common.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Peças comuns</span></div>
-      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.dancers.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Dançarinos</span></div>
-      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${(S.bank || []).length}</b><br><span style="font-size:12px; color:var(--text-muted)">Fotos no banco</span></div>
-      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${kb} KB</b><br><span style="font-size:12px; color:var(--text-muted)">Tamanho aproximado</span></div>
+      <div style="background:#0d1322; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--room-color)">${Object.keys(S.rooms).length}</b><br><span style="font-size:12px; color:var(--text-muted)">Salas</span></div>
+      <div style="background:#0d1322; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--room-color)">${Object.values(S.rooms).reduce((a, rm) => a + (rm.costumes || []).length, 0)}</b><br><span style="font-size:12px; color:var(--text-muted)">Trajes Totais</span></div>
+      <div style="background:#0d1322; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--room-color)">${S.dancers.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Dançarinos</span></div>
+      <div style="background:#0d1322; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--room-color)">${(S.bank || []).length}</b><br><span style="font-size:12px; color:var(--text-muted)">Fotos</span></div>
+      <div style="background:#0d1322; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--room-color)">${kb} KB</b><br><span style="font-size:12px; color:var(--text-muted)">Tamanho Total</span></div>
     </div>
     
     <div style="display:flex; gap:12px; flex-wrap:wrap;">
-      <button class="btn primary" id="bJ">⬇ Baixar Backup Completo (.json)</button>
+      <button class="btn primary" id="bAll">⬇ Baixar Backup Completo de TODAS as Salas (.json)</button>
+      <button class="btn" id="bRoom">⬇ Baixar Backup de "${esc(r.name)}" (.json)</button>
       <button class="btn blue" id="bI">⬆ Restaurar Backup (.json)</button>
-      <button class="btn" id="bC1">📊 Exportar Peças (.csv)</button>
-      <button class="btn" id="bC2">📊 Exportar Dançarinos (.csv)</button>
     </div>
-  </div>
-
-  <div style="background:rgba(220, 38, 38, 0.1); border:1px solid rgba(220, 38, 38, 0.3); border-radius:16px; padding:20px;">
-    <h3 style="font-size:15px; color:#fca5a5; margin-bottom:6px;">Zona de Perigo</h3>
-    <p style="font-size:13px; color:#f87171; margin-bottom:12px;">Limpar os dados apagará permanentemente todos os trajes e fotos salvos neste navegador.</p>
-    <button class="btn red" id="bR">Limpar Todos os Dados</button>
   </div>`;
 
-  document.getElementById("bJ").onclick = () => download(`trajes-backup-${today()}.json`, JSON.stringify(S), "application/json");
+  document.getElementById("bAll").onclick = () => download(`wisla-acervo-geral-${today()}.json`, JSON.stringify(S), "application/json");
+  document.getElementById("bRoom").onclick = () => download(`wisla-${r.id}-${today()}.json`, JSON.stringify(r), "application/json");
   document.getElementById("bI").onclick = () => {
-    const i = document.createElement("input"); i.type = "file"; i.accept = ".json,application/json";
-    i.onchange = async () => {
+    const inp = document.createElement("input"); inp.type = "file"; inp.accept = ".json,application/json";
+    inp.onchange = async () => {
       try {
-        const d = JSON.parse(await i.files[0].text());
-        if (!Array.isArray(d.costumes) || !Array.isArray(d.dancers) || !Array.isArray(d.dances)) throw 0;
-        if (S.costumes.length && !confirm("Substituir todos os dados atuais por este backup?")) return;
-        S = migrate(d); save(); toast("Backup restaurado e dados corrigidos!"); go("#/");
-      } catch (e) { alert("Arquivo de backup inválido ou corrompido."); }
+        const d = JSON.parse(await inp.files[0].text());
+        if (confirm("Restaurar este backup substituindo os dados correspondentes?")) {
+          S = migrateState(d);
+          save();
+          updateThemeForActiveRoom();
+          toast("Backup do Wisła restaurado com sucesso!");
+          go("#/");
+        }
+      } catch (e) { alert("Arquivo de backup inválido."); }
     };
-    i.click();
+    inp.click();
   };
-  document.getElementById("bC1").onclick = () => download(`trajes-pecas-${today()}.csv`, csv([["Traje", "Peça", "Tipo", "Cor", "Quant.", "Observação"], ...S.costumes.flatMap(c => c.items.map(eff).filter(Boolean).map(it => [c.name, it.part, it.type, it.color, it.qty, it.notes]))]), "text/csv");
-  document.getElementById("bC2").onclick = () => download(`dancarinos-${today()}.csv`, csv([["Dançarino", ...S.dances], ...S.dancers.map(p => [p.name, ...S.dances.map(d => p.nums[d] || "")])]), "text/csv");
-  document.getElementById("bR").onclick = () => { if (confirm("Tem certeza absoluta? ISSO VAI APAGAR TODOS OS DADOS do aplicativo neste computador.")) { S = seedState(); save(); go("#/"); } };
 }
 
-/* ===== CONFIGURAÇÕES (MODAL & ESTILOS) ===== */
-(function setupSettings() {
-  const DEF_TEXT = { ff: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif", fs: 14, fst: 26, px: 12, py: 11 };
-  const DEF_PHOTO = { fit: "contain", tw: 72, cw: 230, ar: "3/4" };
-  
-  let textP = Object.assign({}, DEF_TEXT, JSON.parse(localStorage.getItem("textoAjuste") || "{}"));
-  let photoP = Object.assign({}, DEF_PHOTO, JSON.parse(localStorage.getItem("fotoAjuste") || "{}"));
-  let W = JSON.parse(localStorage.getItem("colunasLargura") || "{}");
+/* ===== CONFIGURAÇÕES & GESTÃO DE SALAS MODAL ===== */
+function renderRoomsManagement() {
+  const container = document.getElementById("roomsManagementList");
+  if (!container) return;
 
-  const $ = id => document.getElementById(id);
+  container.innerHTML = Object.values(S.rooms).map(r => {
+    const hasPin = !!r.pin;
+    return `<div style="background:var(--surface-card); border:1px solid var(--bd); border-radius:12px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:24px;">${r.icon || '📁'}</span>
+        <div>
+          <b style="color:#fff;">${esc(r.name)}</b>
+          <div style="font-size:12px; color:var(--text-muted);">${(r.costumes || []).length} trajes · Status: ${hasPin ? '🔒 PIN Protegido' : '🔓 Acesso Livre'}</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn sm" data-setpin="${r.id}">${hasPin ? 'Alterar PIN' : 'Definir PIN'}</button>
+        ${hasPin ? `<button class="btn sm red" data-rempin="${r.id}">Remover PIN</button>` : ''}
+      </div>
+    </div>`;
+  }).join("");
 
-  function applyStyles() {
-    const r = document.documentElement.style;
-    r.setProperty("--ff", textP.ff);
-    r.setProperty("--fs", textP.fs + "px");
-    r.setProperty("--fsh", (textP.fs - 2) + "px");
-    r.setProperty("--fst", textP.fst + "px");
-    r.setProperty("--padx", textP.px + "px");
-    r.setProperty("--pady", textP.py + "px");
-    
-    $("tpFf").value = textP.ff;
-    $("tpFs").value = textP.fs; $("tpFsV").textContent = textP.fs + " px";
-    $("tpFst").value = textP.fst; $("tpFstV").textContent = textP.fst + " px";
-    $("tpPx").value = textP.px; $("tpPxV").textContent = textP.px + " px";
-    $("tpPy").value = textP.py; $("tpPyV").textContent = textP.py + " px";
-    localStorage.setItem("textoAjuste", JSON.stringify(textP));
-
-    r.setProperty("--fit", photoP.fit);
-    r.setProperty("--bgfit", photoP.fit);
-    r.setProperty("--tw", photoP.tw + "px");
-    r.setProperty("--cardw", photoP.cw + "px");
-    r.setProperty("--ar", photoP.ar);
-
-    $("fpFit").value = photoP.fit;
-    $("fpTw").value = photoP.tw; $("fpTwV").textContent = photoP.tw + " px";
-    $("fpCw").value = photoP.cw; $("fpCwV").textContent = photoP.cw + " px";
-    $("fpAr").value = photoP.ar;
-    localStorage.setItem("fotoAjuste", JSON.stringify(photoP));
-  }
-
-  $("tpFf").onchange = e => { textP.ff = e.target.value; applyStyles(); };
-  $("tpFs").oninput = e => { textP.fs = +e.target.value; applyStyles(); };
-  $("tpFst").oninput = e => { textP.fst = +e.target.value; applyStyles(); };
-  $("tpPx").oninput = e => { textP.px = +e.target.value; applyStyles(); };
-  $("tpPy").oninput = e => { textP.py = +e.target.value; applyStyles(); };
-  $("tpReset").onclick = () => { textP = Object.assign({}, DEF_TEXT); applyStyles(); };
-  $("tpResetCols").onclick = () => { W = {}; localStorage.setItem("colunasLargura", "{}"); document.querySelectorAll(".wrap table th").forEach(th => th.style.width = ""); toast("Larguras zeradas"); };
-
-  $("fpFit").onchange = e => { photoP.fit = e.target.value; applyStyles(); };
-  $("fpTw").oninput = e => { photoP.tw = +e.target.value; applyStyles(); };
-  $("fpCw").oninput = e => { photoP.cw = +e.target.value; applyStyles(); };
-  $("fpAr").onchange = e => { photoP.ar = e.target.value; applyStyles(); };
-  $("fpReset").onclick = () => { photoP = Object.assign({}, DEF_PHOTO); applyStyles(); };
-
-  document.querySelectorAll(".settings-tab-btn").forEach(btn => {
+  container.querySelectorAll("[data-setpin]").forEach(btn => {
     btn.onclick = () => {
-      document.querySelectorAll(".settings-tab-btn").forEach(b => b.classList.remove("active"));
-      document.querySelectorAll(".settings-section").forEach(s => s.classList.remove("active"));
-      btn.classList.add("active");
-      $(btn.dataset.tab).classList.add("active");
+      const rid = btn.dataset.setpin;
+      const targetRoom = S.rooms[rid];
+      const np = prompt(`Digite o novo PIN numérico para "${targetRoom.name}":`);
+      if (np) {
+        targetRoom.pin = hash(np);
+        save();
+        toast(`PIN de ${targetRoom.name} atualizado!`);
+        renderRoomsManagement();
+      }
     };
   });
 
-  $("openSettingsBtn").onclick = () => {
-    $("settingsDlg").classList.add("active");
-    updateSecurityTab();
-  };
-  $("closeSettingsModalBtn").onclick = () => $("settingsDlg").classList.remove("active");
-  $("settingsDlg").addEventListener("click", e => { if (e.target.id === "settingsDlg") $("settingsDlg").classList.remove("active"); });
-
-  const screenKey = () => (location.hash.split("/")[1] || "home");
-  const colKey = th => screenKey() + "|" + (th.textContent || "").trim().replace(/\s+/g, " ").slice(0, 40) + "|" + th.cellIndex;
-  let saveW;
-  const ro = new ResizeObserver(entries => {
-    let changed = false;
-    entries.forEach(en => { const th = en.target; if (th.dataset.wset !== "1") return; const w = Math.round(th.getBoundingClientRect().width); if (th.style.width && W[colKey(th)] !== w) { W[colKey(th)] = w; changed = true; } });
-    if (changed) { clearTimeout(saveW); saveW = setTimeout(() => localStorage.setItem("colunasLargura", JSON.stringify(W)), 300); }
+  container.querySelectorAll("[data-rempin]").forEach(btn => {
+    btn.onclick = () => {
+      const rid = btn.dataset.rempin;
+      const targetRoom = S.rooms[rid];
+      if (confirm(`Remover a senha de "${targetRoom.name}"? Ela ficará sempre aberta para edição.`)) {
+        targetRoom.pin = "";
+        save();
+        toast(`PIN de ${targetRoom.name} removido!`);
+        renderRoomsManagement();
+      }
+    };
   });
-  function hookTables() {
-    document.querySelectorAll(".wrap table th").forEach(th => {
-      if (th.dataset.wset) return;
-      const w = W[colKey(th)]; if (w) th.style.width = w + "px";
-      th.dataset.wset = "1";
-      th.addEventListener("mouseup", () => { if (!th.style.width) return; W[colKey(th)] = Math.round(th.getBoundingClientRect().width); localStorage.setItem("colunasLargura", JSON.stringify(W)); });
-      ro.observe(th);
-    });
-  }
-  new MutationObserver(hookTables).observe(document.getElementById("app"), { childList: true, subtree: true });
-
-  applyStyles(); hookTables();
-})();
-
-/* ===== SEGURANÇA & CONTROLE DE EDIÇÃO (PIN) ===== */
-const hash = s => { let h = 5381; s = "trajes|" + s; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; return h.toString(36); };
-let locked = true;
-
-function updateSecurityTab() {
-  const t = document.getElementById("pinStatusText");
-  if (t) t.textContent = S && S.pin ? "Status: 🔒 PIN de segurança configurado." : "Status: 🔓 Nenhum PIN configurado (acesso aberto para edição).";
-}
-function drawAuthBadge() {
-  const b = document.getElementById("authBadge");
-  if (locked) {
-    b.className = "locked";
-    b.innerHTML = `🔒 Modo Consulta`;
-    b.title = "Clique para liberar a edição (requer PIN se configurado)";
-  } else {
-    b.className = "unlocked";
-    b.innerHTML = `🔓 Modo Edição Ativo`;
-    b.title = "Edição liberada. Clique para travar em Modo Consulta.";
-  }
-  updateSecurityTab();
-}
-function setLocked(v) {
-  locked = v;
-  document.body.classList.toggle("locked", v);
-  if (v) sessionStorage.removeItem("trajesLiberado");
-  else sessionStorage.setItem("trajesLiberado", "1");
-  drawAuthBadge();
-  route();
-}
-function newPin() {
-  const a = prompt("Crie um PIN de segurança (4 a 8 números):"); if (a === null) return false;
-  if (!/^\d{4,8}$/.test(a)) { alert("O PIN deve ter de 4 a 8 números."); return false; }
-  if (prompt("Digite o PIN novamente para confirmar:") !== a) { alert("Os PINs não conferem."); return false; }
-  S.pin = hash(a); save(); toast("PIN salvo"); drawAuthBadge(); return true;
 }
 
-document.getElementById("authBadge").onclick = async () => {
-  if (locked) {
-    if (S && S.pin) {
-      const p = prompt("Digite o PIN para liberar o modo edição:"); if (p === null) return;
-      if (hash(p) === S.pin) { setLocked(false); toast("Modo Edição Ativado 🔓"); } else alert("PIN incorreto.");
-    } else {
-      setLocked(false);
-      toast("Modo Edição Ativado 🔓");
-    }
-    return;
-  }
-  const v = await ask("Controle de Acesso", [["🔒 Travar agora (Modo Consulta)", "lock"], ["Alterar PIN", "chg"], ["Remover PIN", "del"]], "Modo de Operação");
-  if (v === "lock") { setLocked(true); toast("Modo Consulta Ativado 🔒"); }
-  else if (v === "chg") newPin();
-  else if (v === "del") { if (confirm("Remover o PIN? O app ficará sempre aberto para edição.")) { delete S.pin; save(); drawAuthBadge(); toast("PIN removido"); } }
+document.getElementById("openSettingsBtn").onclick = () => {
+  document.getElementById("settingsDlg").classList.add("active");
+  renderRoomsManagement();
+};
+document.getElementById("sideManageRoomsBtn").onclick = () => {
+  document.getElementById("settingsDlg").classList.add("active");
+  renderRoomsManagement();
+};
+document.getElementById("closeSettingsModalBtn").onclick = () => document.getElementById("settingsDlg").classList.remove("active");
+document.getElementById("settingsDlg").onclick = e => { if (e.target.id === "settingsDlg") document.getElementById("settingsDlg").classList.remove("active"); };
+
+document.querySelectorAll(".settings-tab-btn").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".settings-tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".settings-section").forEach(s => s.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  };
+});
+
+document.getElementById("changeLogoBtn").onclick = () => {
+  pickImg(img => {
+    S.logo = img;
+    save();
+    document.getElementById("logoImg").src = img;
+    toast("Logo do Wisła atualizada!");
+  });
 };
 
-document.getElementById("setPinActionBtn").onclick = () => { if (newPin()) setLocked(false); };
-document.getElementById("removePinActionBtn").onclick = () => {
-  if (!S.pin) return alert("Nenhum PIN cadastrado.");
-  if (confirm("Remover o PIN de segurança?")) { delete S.pin; save(); setLocked(false); toast("PIN removido"); }
-};
-
-/* ===== LOGO DO TOPO ===== */
-function drawLogo() {
-  const box = document.getElementById("logoBox");
-  box.innerHTML = S && S.logo ? `<img src="${S.logo}" alt="Logo">` : `<span class="ph0">+ logo</span>`;
-}
-document.getElementById("logoBox").onclick = async e => {
-  e.stopPropagation();
-  if (document.body.classList.contains("locked")) return;
-  if (S.logo) {
-    const v = await ask("Deseja trocar ou remover a logo?", [["Trocar a logo (escolher do banco)", "chg"], ["Remover a logo", "del"]], "Logo do Topo");
-    if (v === "del") { S.logo = ""; save(); drawLogo(); return; }
-    if (v !== "chg") return;
+/* Busca Global (Google Bar) */
+document.getElementById("globalSearchInput").oninput = e => {
+  const q = norm(e.target.value);
+  if (!q) return;
+  if (!location.hash.startsWith("#/pecas")) go("#/pecas");
+  const subInp = document.getElementById("q");
+  if (subInp) {
+    subInp.value = e.target.value;
+    subInp.dispatchEvent(new Event("input"));
   }
-  pickImg(img => { S.logo = img; save(); drawLogo(); toast("Logo atualizada"); });
 };
+window.addEventListener("keydown", e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+    e.preventDefault();
+    document.getElementById("globalSearchInput").focus();
+  }
+});
 
 /* ===== ROTEAMENTO ===== */
 function route() {
   const h = location.hash || "#/";
-  document.querySelectorAll("[data-nav]").forEach(b => {
+  document.querySelectorAll(".sidebar .nav-item").forEach(b => {
     const nav = b.dataset.nav;
-    b.classList.toggle("on", h === nav || (nav === "#/comuns" && h.startsWith("#/comuns")) || (nav === "#/" && h.startsWith("#/traje/")) || (nav === "#/banco" && h.startsWith("#/banco")));
+    b.classList.toggle("active", h === nav || (nav === "#/comuns" && h.startsWith("#/comuns")) || (nav === "#/" && h.startsWith("#/traje/")) || (nav === "#/banco" && h.startsWith("#/banco")));
   });
   window.scrollTo(0, 0);
   if (h.startsWith("#/traje/")) viewCostume(h.slice(8));
@@ -2837,18 +3158,20 @@ function route() {
   else if (h.startsWith("#/banco")) viewBank();
   else viewHome();
 }
-document.querySelectorAll("[data-nav]").forEach(b => b.onclick = () => go(b.dataset.nav));
+document.querySelectorAll(".sidebar .nav-item").forEach(b => b.onclick = () => go(b.dataset.nav));
 window.addEventListener("hashchange", route);
 
 /* ===== INICIALIZAÇÃO ===== */
 (async () => {
-  if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
-  S = await loadState();
-  if (!S) { S = seedState(); save(); } else { S = migrate(S); save(); }
-  locked = !sessionStorage.getItem("trajesLiberado");
-  document.body.classList.toggle("locked", locked);
-  drawAuthBadge();
-  drawLogo();
+  const raw = await loadState();
+  S = migrateState(raw);
+  save();
+
+  if (S.logo) {
+    document.getElementById("logoImg").src = S.logo;
+  }
+
+  updateThemeForActiveRoom();
   route();
 })();
 </script>
