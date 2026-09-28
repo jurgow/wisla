@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Wisła · Gestão de Acervo e Trajes</title>
+<title>Wisła · Gestão de Trajes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -110,16 +110,16 @@ body {
 .brand-section {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
   user-select: none;
   flex-shrink: 0;
 }
 .brand-logo-box {
-  width: 38px;
   height: 38px;
+  padding: 2px 8px;
   border-radius: var(--radius-sm);
-  background: #151f32;
+  background: #0d1322;
   border: 1px solid var(--bd);
   display: flex;
   align-items: center;
@@ -127,12 +127,11 @@ body {
   overflow: hidden;
   transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
-.brand-logo-box:hover { transform: scale(1.05); }
+.brand-logo-box:hover { transform: scale(1.03); }
 .brand-logo-box img {
-  width: 100%;
-  height: 100%;
+  height: 32px;
+  width: auto;
   object-fit: contain;
-  padding: 2px;
 }
 .brand-titles {
   display: flex;
@@ -151,11 +150,10 @@ body {
   gap: 5px;
 }
 .brand-subtitle {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-muted);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 /* Seletor de Sala / Workspace Switcher estilo Google Cloud */
@@ -326,6 +324,11 @@ body {
 }
 .btn.amber {
   background: linear-gradient(135deg, #d97706, #b45309);
+  color: #fff;
+  border-color: transparent;
+}
+.btn.green {
+  background: linear-gradient(135deg, #10b981, #047857);
   color: #fff;
   border-color: transparent;
 }
@@ -546,13 +549,18 @@ body {
 .hero-stat-chip {
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid var(--bd);
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
 }
+.hero-stat-chip.highlight {
+  background: var(--room-bg);
+  border-color: var(--room-border);
+  box-shadow: 0 0 16px var(--room-bg);
+}
 .hero-stat-num {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 800;
   color: #fff;
   line-height: 1.1;
@@ -769,6 +777,7 @@ body {
 .badge-count.room {
   background: var(--room-color);
   border-color: transparent;
+  box-shadow: 0 0 10px var(--room-bg);
 }
 .nm {
   padding: 12px 12px 6px;
@@ -889,6 +898,11 @@ body {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
+}
+.comp-chip.highlight {
+  background: var(--room-bg);
+  border-color: var(--room-border);
+  color: var(--pri-light);
 }
 .comp-chip b { color: #fff; }
 
@@ -1487,7 +1501,8 @@ body.locked .bk-card input {
     gap: 8px;
   }
   .brand-subtitle, .search-shortcut-badge { display: none; }
-  .brand-logo-box { width: 32px; height: 32px; }
+  .brand-logo-box { height: 32px; padding: 2px 4px; }
+  .brand-logo-box img { height: 26px; }
   .room-selector-btn {
     max-width: 140px;
     font-size: 11px;
@@ -1569,16 +1584,16 @@ body.locked .bk-card input {
 <header class="app-bar">
   <div class="brand-section" onclick="go('#/')">
     <div class="brand-logo-box" id="logoBox" title="Logo do Grupo Folclórico Polonês Wisła">
-      <img src="" id="logoImg" alt="Wisła">
+      <img src="wisla-logo.png" id="logoImg" alt="Wisła">
     </div>
     <div class="brand-titles">
-      <div class="brand-title">Wisła <span style="font-size:9px; padding:1px 5px; border-radius:4px; background:var(--room-bg); color:var(--pri-light); border:1px solid var(--room-border);">ACERVO</span></div>
+      <div class="brand-title">Wisła</div>
       <div class="brand-subtitle">Gestão de Trajes</div>
     </div>
   </div>
 
   <!-- Workspace / Room Switcher -->
-  <button class="room-selector-btn" id="openRoomSwitcherBtn" title="Trocar sala ou departamento do acervo">
+  <button class="room-selector-btn" id="openRoomSwitcherBtn" title="Trocar sala ou setor de trajes">
     <span class="room-dot" id="headerRoomDot"></span>
     <span id="headerRoomIcon">👔</span>
     <span id="headerRoomName">Trajes Masculinos</span>
@@ -1597,7 +1612,7 @@ body.locked .bk-card input {
     <div id="authPill" class="auth-pill locked" title="Clique para autenticar com o PIN da sala ou Token Master (0412)">
       🔒 Consulta
     </div>
-    <button class="btn icon-only" id="openSettingsBtn" title="Configurações, Layout e Gestão de Salas">⚙️</button>
+    <button class="btn icon-only" id="openSettingsBtn" title="Configurações, Sincronização e Salas">⚙️</button>
   </div>
 </header>
 
@@ -1634,7 +1649,7 @@ body.locked .bk-card input {
     </a>
     <a class="nav-item" data-nav="#/backup">
       <span class="icon">💾</span>
-      <span>Backup & Sync</span>
+      <span>Salvar & Sincronizar</span>
     </a>
 
     <div class="sidebar-footer">
@@ -1681,15 +1696,15 @@ body.locked .bk-card input {
 <div id="roomModal" class="modal-overlay">
   <div class="modal-card lg">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3>🏢 Selecionar Sala do Acervo</h3>
+      <h3>🏢 Selecionar Sala de Trajes</h3>
       <button class="btn sm" id="closeRoomModalBtn" style="border:none; box-shadow:none; font-size:16px;">✕</button>
     </div>
-    <p class="note" style="margin-top:-2px; margin-bottom:12px;">Escolha qual departamento do acervo você deseja visualizar ou gerenciar:</p>
+    <p class="note" style="margin-top:-2px; margin-bottom:12px;">Escolha qual setor de trajes você deseja visualizar ou gerenciar:</p>
     
     <div class="rooms-grid" id="roomsListGrid"></div>
 
     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px solid var(--bd); padding-top:14px; flex-wrap:wrap; gap:8px;">
-      <button class="btn" id="addNewRoomBtn">+ Nova Sala</button>
+      <button class="btn" id="addNewRoomBtn">+ Nova Sala (Master)</button>
       <button class="btn primary" id="confirmRoomBtn">Acessar Sala</button>
     </div>
   </div>
@@ -1758,41 +1773,49 @@ body.locked .bk-card input {
 <div id="settingsDlg" class="modal-overlay">
   <div class="modal-card lg">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h3 style="margin:0">⚙️ Gestão do Acervo & Configurações</h3>
+      <h3 style="margin:0">⚙️ Gestão de Trajes & Permissões</h3>
       <button class="btn sm" id="closeSettingsModalBtn" style="border:none; box-shadow:none; font-size:16px;">✕</button>
     </div>
     <div class="settings-tabs">
       <button class="settings-tab-btn active" data-tab="tab-rooms">🏢 Gestão de Salas & PINs</button>
-      <button class="settings-tab-btn" data-tab="tab-security">🛡️ Token Master & Acesso</button>
-      <button class="settings-tab-btn" data-tab="tab-text">🔤 Layout & Mais</button>
+      <button class="settings-tab-btn" data-tab="tab-sync">☁️ Sincronização Compartilhada</button>
+      <button class="settings-tab-btn" data-tab="tab-security">🛡️ Senha Master (0412)</button>
     </div>
 
     <!-- Aba 1: Gestão de Salas & Senhas Individuais -->
     <div class="settings-section active" id="tab-rooms">
-      <p class="note" style="margin-bottom:14px;">Cada sala possui seu próprio PIN de edição para isolar as alterações. O <b>Token Master (0412)</b> tem acesso irrestrito a todas.</p>
+      <p class="note" style="margin-bottom:14px;">Cada sala possui seu próprio PIN de edição para isolar as alterações. Apenas o <b>Token Master (0412)</b> pode alterar nomes ou senhas.</p>
       <div id="roomsManagementList" style="display:flex; flex-direction:column; gap:10px; max-height:45vh; overflow-y:auto; padding-right:4px;"></div>
     </div>
 
-    <!-- Aba 2: Token Master -->
-    <div class="settings-section" id="tab-security">
-      <div style="background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.3); border-radius:12px; padding:16px; margin-bottom:16px;">
-        <h4 style="color:#fbbf24; margin-bottom:6px; font-size:15px;">👑 Token Master Geral: 0412</h4>
-        <p style="font-size:13px; color:var(--text-muted); margin:0;">O Token Master libera a edição de todas as salas simultaneamente e permite alterar as senhas de qualquer setor.</p>
-      </div>
-      <div class="form-group">
-        <label>Logo do Wisła no Topo</label>
-        <button class="btn" id="changeLogoBtn">🖼 Alterar Logo do Wisła</button>
+    <!-- Aba 2: Sincronização Compartilhada -->
+    <div class="settings-section" id="tab-sync">
+      <div style="background:rgba(2, 132, 199, 0.12); border:1px solid rgba(2, 132, 199, 0.3); border-radius:12px; padding:16px; margin-bottom:16px;">
+        <h4 style="color:#38bdf8; margin-bottom:6px; font-size:15px;">☁️ Salvar Alterações no Repositório Compartilhado</h4>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">Quando qualquer pessoa autenticada fizer alterações, clique no botão abaixo para publicar no GitHub. Assim todos que abrirem o app verão as mudanças imediatamente!</p>
+        
+        <div class="form-group">
+          <label>Token de Acesso do GitHub (PAT)</label>
+          <input type="password" id="ghTokenInput" placeholder="github_pat_..." style="font-family:monospace; font-size:12px;">
+          <small style="color:var(--text-light); font-size:11px;">O token fica salvo apenas no seu navegador para sincronização segura.</small>
+        </div>
+        
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
+          <button class="btn primary" id="btnSyncGithub">☁️ Sincronizar e Publicar no GitHub</button>
+          <button class="btn blue" id="btnDownloadDataJs">⬇ Baixar Arquivo trajes-data.js</button>
+        </div>
       </div>
     </div>
 
-    <!-- Aba 3: Layout & Mais -->
-    <div class="settings-section" id="tab-text">
+    <!-- Aba 3: Token Master & Logo -->
+    <div class="settings-section" id="tab-security">
+      <div style="background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.3); border-radius:12px; padding:16px; margin-bottom:16px;">
+        <h4 style="color:#fbbf24; margin-bottom:6px; font-size:15px;">👑 Token Master Geral: 0412</h4>
+        <p style="font-size:13px; color:var(--text-muted); margin:0;">O Token Master é necessário para alterar a logo, nomes de salas e configurações estruturais.</p>
+      </div>
       <div class="form-group">
-        <label>Atalhos do Sistema</label>
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
-          <button class="btn" onclick="document.getElementById('settingsDlg').classList.remove('active'); go('#/banco');">📷 Fotos do Acervo</button>
-          <button class="btn" onclick="document.getElementById('settingsDlg').classList.remove('active'); go('#/backup');">💾 Backup & Sincronização</button>
-        </div>
+        <label>Logo Oficial do Wisła (Exige Master)</label>
+        <button class="btn" id="changeLogoBtn">🖼 Alterar Imagem da Logo</button>
       </div>
     </div>
   </div>
@@ -1832,7 +1855,7 @@ const POLISH_CORRECTIONS = {
 
 const ALIAS = {
   "SUITA LOWICKA": "ŁOWICZ",
-  "SUITA ŁOWICKA": "ŁOWICZ",
+  "SUITA ŁOWICZ": "ŁOWICZ",
   "LOWICZ": "ŁOWICZ",
   "SACZ": "SĄCZ",
   "LEMKO": "ŁEMKO",
@@ -1975,8 +1998,8 @@ function save() {
       const db = await openDB();
       const tx = db.transaction("kv", "readwrite");
       tx.objectStore("kv").put(S, "state");
-      tx.oncomplete = () => toast("Salvo no Wisła ✓");
-      tx.onerror = () => toast("Erro ao salvar!");
+      tx.oncomplete = () => toast("Salvo localmente ✓");
+      tx.onerror = () => toast("Erro ao salvar localmente!");
     } catch (e) { toast("Erro ao salvar!"); }
   }, 400);
 }
@@ -2117,7 +2140,7 @@ function toast(msg) {
   t.textContent = msg;
   t.classList.add("show");
   clearTimeout(t._h);
-  t._h = setTimeout(() => t.classList.remove("show"), 1800);
+  t._h = setTimeout(() => t.classList.remove("show"), 2000);
 }
 function go(h) { location.hash = h; }
 function download(name, text, type) {
@@ -2183,6 +2206,70 @@ function ask(msg, opts, title = "Confirmação") {
     });
     md.classList.add("active");
   });
+}
+
+/* ===== EXIGÊNCIA DE SENHA MASTER ===== */
+function requireMasterAuth(actionCallback) {
+  if (isMasterUnlocked) {
+    actionCallback();
+    return;
+  }
+  const modal = document.getElementById("authModal");
+  const pinInput = document.getElementById("authPinInput");
+  pinInput.value = "";
+  document.getElementById("authModalTitle").textContent = "👑 Ação Restrita: Token Master";
+  document.getElementById("authModalDesc").innerHTML = "Esta ação altera a estrutura do sistema ou a logo oficial. Digite o <b>Token Master (0412)</b>:";
+  modal.classList.add("active");
+  setTimeout(() => pinInput.focus(), 100);
+
+  const submit = () => {
+    const val = pinInput.value.trim();
+    if (hash(val) === S.masterPin || val === MASTER_PIN_DEFAULT) {
+      isMasterUnlocked = true;
+      modal.classList.remove("active");
+      toast("👑 Token Master validado com sucesso!");
+      updateAuthUI();
+      actionCallback();
+    } else {
+      alert("Token Master incorreto (0412). Acesso negado.");
+      pinInput.value = "";
+      pinInput.focus();
+    }
+  };
+  document.getElementById("authSubmitBtn").onclick = submit;
+  pinInput.onkeydown = e => { if (e.key === "Enter") submit(); };
+  document.getElementById("authCancelBtn").onclick = () => modal.classList.remove("active");
+}
+
+/* ===== CÁLCULO DE TRAJES COMPLETOS (KITS PRONTOS) ===== */
+function calcCompleteKits(costume, commonList) {
+  const counts = { calcas: 0, camisas: 0, coletes: 0, capotes: 0 };
+  (costume.items || []).forEach(raw => {
+    let it = raw;
+    if (raw.cid && commonList) {
+      const found = commonList.find(x => x.id === raw.cid);
+      if (found) it = found;
+    }
+    const cat = classifyPiece(it.part).key;
+    const q = parseQty(it.qty);
+    if (counts[cat] !== undefined) counts[cat] += q;
+  });
+
+  // Um kit completo precisa de Calça + Camisa + Vestimenta Superior (Colete ou Capote/Sukmana)
+  const req = [];
+  if (counts.calcas > 0) req.push(counts.calcas);
+  if (counts.camisas > 0) req.push(counts.camisas);
+  
+  const topTotal = counts.coletes + counts.capotes;
+  if (topTotal > 0) {
+    if (counts.coletes > 0 && counts.capotes > 0) {
+      req.push(Math.max(counts.coletes, counts.capotes));
+    } else {
+      req.push(topTotal);
+    }
+  }
+
+  return req.length ? Math.min(...req) : 0;
 }
 
 /* ===== PEÇAS COMPARTILHADAS (POR SALA) ===== */
@@ -2290,6 +2377,7 @@ function getCostumeGroupedComposition(costume) {
 function getRoomInventoryStats(r) {
   const stats = {
     totalTrajes: (r.costumes || []).length,
+    totalKits: 0,
     totalUnits: 0,
     calcas: 0,
     camisas: 0,
@@ -2302,6 +2390,9 @@ function getRoomInventoryStats(r) {
   };
 
   (r.costumes || []).forEach(c => {
+    const kits = calcCompleteKits(c, r.common || []);
+    stats.totalKits += kits;
+
     (c.items || []).forEach(raw => {
       const it = eff(raw);
       if (!it) return;
@@ -2368,7 +2459,7 @@ document.getElementById("authPill").onclick = async () => {
     const v = await ask("Controle de Acesso da Sala", [
       ["🔒 Travar esta sala (Modo Consulta)", "lock"],
       ["👑 Sair do Modo Master", "lock_master"],
-      ["Alterar PIN desta sala", "chg_pin"]
+      ["Alterar PIN desta sala (Master)", "chg_pin"]
     ], "Opções de Edição");
 
     if (v === "lock") {
@@ -2383,12 +2474,14 @@ document.getElementById("authPill").onclick = async () => {
       updateAuthUI();
       route();
     } else if (v === "chg_pin") {
-      const np = prompt("Digite o novo PIN numérico para esta sala:");
-      if (np) {
-        getActiveRoom().pin = hash(np);
-        save();
-        toast("PIN da sala atualizado!");
-      }
+      requireMasterAuth(() => {
+        const np = prompt("Digite o novo PIN numérico para esta sala:");
+        if (np) {
+          getActiveRoom().pin = hash(np);
+          save();
+          toast("PIN da sala atualizado!");
+        }
+      });
     }
     return;
   }
@@ -2411,7 +2504,7 @@ function openRoomSwitcher() {
         <span class="room-card-icon">${r.icon || '📁'}</span>
         <div>
           <div class="room-card-name">${esc(r.name)}</div>
-          <div class="room-card-count">${stats.totalTrajes} trajes · ${stats.totalUnits} peças</div>
+          <div class="room-card-count"><b>${stats.totalKits} trajes completos</b> · ${stats.totalTrajes} modelos</div>
         </div>
       </div>
       <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">${esc(r.desc || '')}</p>
@@ -2435,26 +2528,28 @@ function openRoomSwitcher() {
   document.getElementById("closeRoomModalBtn").onclick = () => modal.classList.remove("active");
   document.getElementById("confirmRoomBtn").onclick = () => modal.classList.remove("active");
   document.getElementById("addNewRoomBtn").onclick = () => {
-    const name = prompt("Nome da nova sala / departamento do acervo:");
-    if (!name) return;
-    const icon = prompt("Ícone (emoji) para a sala:", "📁") || "📁";
-    const id = uid();
-    S.rooms[id] = {
-      id,
-      name,
-      icon,
-      color: "#0284c7",
-      desc: "Departamento personalizado do acervo",
-      pin: "",
-      costumes: [],
-      common: []
-    };
-    S.activeRoom = id;
-    save();
-    updateThemeForActiveRoom();
-    modal.classList.remove("active");
-    toast(`Nova sala "${name}" criada com sucesso!`);
-    go("#/");
+    requireMasterAuth(() => {
+      const name = prompt("Nome da nova sala / departamento de trajes:");
+      if (!name) return;
+      const icon = prompt("Ícone (emoji) para a sala:", "📁") || "📁";
+      const id = uid();
+      S.rooms[id] = {
+        id,
+        name,
+        icon,
+        color: "#0284c7",
+        desc: "Departamento de trajes",
+        pin: "",
+        costumes: [],
+        common: []
+      };
+      S.activeRoom = id;
+      save();
+      updateThemeForActiveRoom();
+      modal.classList.remove("active");
+      toast(`Nova sala "${name}" criada com sucesso!`);
+      go("#/");
+    });
   };
 }
 
@@ -2472,23 +2567,23 @@ function viewHome() {
   r.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
 
   let h = `
-  <!-- Banner Hero da Sala -->
+  <!-- Banner Hero da Sala com Foco em Trajes Completos -->
   <div class="room-hero-card noprint">
     <div class="room-hero-info">
       <div class="room-hero-icon">${r.icon || '📁'}</div>
       <div>
         <div class="room-hero-title">${esc(r.name)}</div>
-        <div class="room-hero-desc">${esc(r.desc || 'Acervo e Gestão de Trajes do Grupo Folclórico Polonês Wisła')}</div>
+        <div class="room-hero-desc">${esc(r.desc || 'Gestão de Trajes Folclóricos · Wisła')}</div>
       </div>
     </div>
     <div class="room-hero-stats">
-      <div class="hero-stat-chip">
-        <span class="hero-stat-num">${stats.totalTrajes}</span>
-        <span class="hero-stat-label">Trajes</span>
+      <div class="hero-stat-chip highlight">
+        <span class="hero-stat-num">${stats.totalKits}</span>
+        <span class="hero-stat-label">Trajes Completos</span>
       </div>
       <div class="hero-stat-chip">
-        <span class="hero-stat-num">${stats.totalUnits}</span>
-        <span class="hero-stat-label">Peças em Estoque</span>
+        <span class="hero-stat-num">${stats.totalTrajes}</span>
+        <span class="hero-stat-label">Modelos / Regiões</span>
       </div>
     </div>
   </div>
@@ -2497,8 +2592,8 @@ function viewHome() {
   <div class="kpi-grid noprint">
     <div class="kpi-card" onclick="go('#/pecas')">
       <span class="kpi-card-icon">👔</span>
-      <span class="kpi-num">${stats.totalTrajes}</span>
-      <span class="kpi-label">Trajes na Sala</span>
+      <span class="kpi-num">${stats.totalKits} <small style="font-size:11px;font-weight:600;">kits</small></span>
+      <span class="kpi-label">Trajes Completos</span>
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='calcas'; go('#/pecas');">
       <span class="kpi-card-icon">👖</span>
@@ -2547,6 +2642,7 @@ function viewHome() {
     h += `<div class="grid">`;
     r.costumes.forEach(c => {
       const comp = getCostumeGroupedComposition(c);
+      const kits = calcCompleteKits(c, r.common || []);
       const dancerCount = dancersCountFor(c.name);
       
       const pills = comp.groups.map(g => {
@@ -2559,7 +2655,7 @@ function viewHome() {
         <div class="ph" style="${c.photo ? `background-image:url('${c.photo}')` : ""}">
           ${c.photo ? "" : r.icon || "👔"}
           <div class="card-badges">
-            <span class="badge-count room">${comp.totalUnits ? comp.totalUnits + ' peças' : (c.items || []).length + ' itens'}</span>
+            <span class="badge-count room">${kits ? kits + ' trajes completos' : (comp.totalUnits ? comp.totalUnits + ' peças' : 'Novo')}</span>
           </div>
         </div>
         <div class="nm">${esc(c.name)}</div>
@@ -2577,17 +2673,17 @@ function viewHome() {
     h += `<div class="wrap"><table><thead><tr>
       <th>Traje (A-Z)</th>
       <th>Foto</th>
+      <th style="text-align:center; color:var(--pri-light);">Trajes Completos (Kits)</th>
       <th style="text-align:center">🦺 Coletes</th>
       <th style="text-align:center">👔 Camisas</th>
       <th style="text-align:center">👖 Calças</th>
       <th style="text-align:center">🧥 Capotes / Sukmanas</th>
       <th style="text-align:center">🎗️ Adereços</th>
-      <th style="text-align:center; color:var(--pri-light);">Total Peças</th>
       <th style="text-align:center">👥 Dançarinos</th>
     </tr></thead><tbody>`;
 
     r.costumes.forEach(c => {
-      const comp = getCostumeGroupedComposition(c);
+      const kits = calcCompleteKits(c, r.common || []);
       const dancerCount = dancersCountFor(c.name);
       const counts = { coletes: 0, camisas: 0, calcas: 0, capotes: 0, aderecos: 0 };
       (c.items || []).forEach(raw => {
@@ -2600,12 +2696,12 @@ function viewHome() {
       h += `<tr data-id="${c.id}" data-name="${esc(norm(c.name))}" style="cursor:pointer" onclick="go('#/traje/${c.id}')">
         <td><b style="color:#fff; font-size:14px;">${esc(c.name)}</b></td>
         <td>${c.photo ? `<img class="thumb" src="${c.photo}" style="width:40px; height:40px;">` : `<span style="color:var(--text-light)">-</span>`}</td>
+        <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:15px;">${kits} trajes</td>
         <td style="text-align:center; font-weight:700;">${counts.coletes ? counts.coletes + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.camisas ? counts.camisas + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.calcas ? counts.calcas + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.capotes ? counts.capotes + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.aderecos ? counts.aderecos + ' un' : '-'}</td>
-        <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:14px;">${comp.totalUnits} un</td>
         <td style="text-align:center; font-weight:700;">${dancerCount ? dancerCount + ' 👥' : '-'}</td>
       </tr>`;
     });
@@ -2646,6 +2742,7 @@ function viewCostume(id) {
   const avail = (r.common || []).filter(cm => !c.items.some(i => i.cid === cm.id));
   const dancerCount = dancersCountFor(c.name);
   const comp = getCostumeGroupedComposition(c);
+  const kits = calcCompleteKits(c, r.common || []);
 
   let h = `<div class="toolbar-bar noprint">
     <button class="btn" onclick="go('#/')">← Voltar</button>
@@ -2662,8 +2759,8 @@ function viewCostume(id) {
     <div class="costume-info">
       <input id="cname" value="${esc(c.name)}" title="Nome do traje">
       <div class="composition-summary">
-        <span class="comp-chip">Total de Peças: <b>${comp.totalUnits || c.items.length} un.</b></span>
-        <span class="comp-chip">Categorias: <b>${comp.categoryCount} tipos</b></span>
+        <span class="comp-chip highlight">Trajes Completos: <b>${kits} kits</b></span>
+        <span class="comp-chip">Total Peças: <b>${comp.totalUnits || c.items.length} un.</b></span>
         <span class="comp-chip">Compartilhadas: <b>${c.items.filter(i => i.cid).length}</b></span>
         <span class="comp-chip">Dançarinos: <b>${dancerCount}</b></span>
       </div>
@@ -3172,14 +3269,34 @@ window.pickImg = function(cb) {
 };
 document.getElementById("bkDlg").onclick = e => { if (e.target.id === "bkDlg") document.getElementById("bkDlg").classList.remove("active"); };
 
-/* 7. TELA BACKUP */
+/* 7. TELA BACKUP E SINCRONIZAÇÃO COMPARTILHADA */
 function viewBackup() {
   const r = getActiveRoom();
   const kb = Math.round(JSON.stringify(S).length / 1024);
+  const savedToken = localStorage.getItem("wisla_gh_pat") || "";
 
-  app.innerHTML = `<h2>💾 Backup & Sincronização do Wisła</h2>
-  <p class="note" style="margin-top:0">Exporte ou restaure o acervo de todas as salas ou da sala ativa.</p>
+  app.innerHTML = `<h2>💾 Salvar & Sincronizar Trajes</h2>
+  <p class="note" style="margin-top:0">Publique as alterações no repositório compartilhado para que todos tenham acesso aos dados atualizados.</p>
   
+  <!-- Cartão de Sincronização GitHub -->
+  <div style="background:linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(15, 23, 42, 0.95)); border:1px solid rgba(2, 132, 199, 0.4); border-radius:16px; padding:20px; margin:16px 0; box-shadow:var(--shadow)">
+    <h3 style="font-size:16px; color:#38bdf8; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+      <span>☁️</span> <span>Sincronização Direta no Repositório (GitHub)</span>
+    </h3>
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">
+      Ao salvar aqui, o arquivo de dados compartilhado (<code>trajes-data.js</code>) é atualizado diretamente na nuvem do repositório <b>jurgow/trajes-masculinos</b>.
+    </p>
+    
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      <button class="btn primary" id="btnPageSyncGithub" style="min-height:42px; font-size:14px;">
+        <span>☁️</span> <span>Publicar Alterações no GitHub</span>
+      </button>
+      <button class="btn blue" id="btnPageDownloadJs" style="min-height:42px;">
+        <span>⬇</span> <span>Baixar trajes-data.js Atualizado</span>
+      </button>
+    </div>
+  </div>
+
   <div style="background:var(--surface-card); border:1px solid var(--bd); border-radius:16px; padding:20px; margin:16px 0; box-shadow:var(--shadow)">
     <h3 style="font-size:15px; margin-bottom:12px; color:#fff;">Estatísticas do Acervo</h3>
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom:18px;">
@@ -3191,13 +3308,81 @@ function viewBackup() {
     </div>
     
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-      <button class="btn primary" id="bAll">⬇ Baixar Backup Completo de TODAS as Salas (.json)</button>
-      <button class="btn" id="bRoom">⬇ Baixar Backup de "${esc(r.name)}" (.json)</button>
-      <button class="btn blue" id="bI">⬆ Restaurar Backup (.json)</button>
+      <button class="btn" id="bAll">⬇ Baixar Backup JSON (.json)</button>
+      <button class="btn" id="bRoom">⬇ Baixar Backup de "${esc(r.name)}"</button>
+      <button class="btn red" id="bI">⬆ Restaurar Backup Local (.json)</button>
     </div>
   </div>`;
 
-  document.getElementById("bAll").onclick = () => download(`wisla-acervo-geral-${today()}.json`, JSON.stringify(S), "application/json");
+  const doDownloadJs = () => {
+    const jsContent = 'window.WISLA_DEFAULT_DATA = ' + JSON.stringify(S) + ';';
+    download('trajes-data.js', jsContent, 'application/javascript');
+    toast("trajes-data.js baixado com sucesso!");
+  };
+
+  const doSyncGitHub = async () => {
+    let token = localStorage.getItem("wisla_gh_pat") || "";
+    if (!token) {
+      token = prompt("Digite seu Token do GitHub (PAT) para sincronizar:", "");
+      if (!token) return;
+      localStorage.setItem("wisla_gh_pat", token.trim());
+    }
+
+    toast("Sincronizando com o GitHub...");
+    try {
+      const repo = "jurgow/trajes-masculinos";
+      const path = "trajes-data.js";
+      const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
+      
+      // Obtém SHA do arquivo atual
+      let sha = "";
+      const getRes = await fetch(apiUrl, {
+        headers: { "Authorization": `token ${token.trim()}`, "Accept": "application/vnd.github.v3+json" }
+      });
+      if (getRes.ok) {
+        const getJson = await getRes.json();
+        sha = getJson.sha;
+      }
+
+      const jsContent = 'window.WISLA_DEFAULT_DATA = ' + JSON.stringify(S) + ';';
+      // UTF-8 base64 encoding
+      const utf8Bytes = new TextEncoder().encode(jsContent);
+      let binaryStr = "";
+      for (let i = 0; i < utf8Bytes.length; i++) binaryStr += String.fromCharCode(utf8Bytes[i]);
+      const base64Content = btoa(binaryStr);
+
+      const putRes = await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          "Authorization": `token ${token.trim()}`,
+          "Accept": "application/vnd.github.v3+json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: `update: alteracao de trajes via app Wisla (${today()})`,
+          content: base64Content,
+          sha: sha || undefined
+        })
+      });
+
+      if (putRes.ok) {
+        toast("✓ Publicado no GitHub com sucesso!");
+        alert("Sucesso! As alterações foram publicadas no repositório GitHub e estão disponíveis para todos.");
+      } else {
+        const err = await putRes.json();
+        alert("Erro ao sincronizar com GitHub: " + (err.message || "Verifique o token."));
+      }
+    } catch (e) {
+      alert("Erro na conexão com GitHub: " + e.message);
+    }
+  };
+
+  document.getElementById("btnPageSyncGithub").onclick = doSyncGitHub;
+  document.getElementById("btnSyncGithub").onclick = doSyncGitHub;
+  document.getElementById("btnPageDownloadJs").onclick = doDownloadJs;
+  document.getElementById("btnDownloadDataJs").onclick = doDownloadJs;
+
+  document.getElementById("bAll").onclick = () => download(`wisla-trajes-geral-${today()}.json`, JSON.stringify(S), "application/json");
   document.getElementById("bRoom").onclick = () => download(`wisla-${r.id}-${today()}.json`, JSON.stringify(r), "application/json");
   document.getElementById("bI").onclick = () => {
     const inp = document.createElement("input"); inp.type = "file"; inp.accept = ".json,application/json";
@@ -3224,12 +3409,13 @@ function renderRoomsManagement() {
 
   container.innerHTML = Object.values(S.rooms).map(r => {
     const hasPin = !!r.pin;
+    const stats = getRoomInventoryStats(r);
     return `<div style="background:var(--surface-card); border:1px solid var(--bd); border-radius:12px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
       <div style="display:flex; align-items:center; gap:10px;">
         <span style="font-size:22px;">${r.icon || '📁'}</span>
         <div>
           <b style="color:#fff; font-size:14px;">${esc(r.name)}</b>
-          <div style="font-size:11px; color:var(--text-muted);">${(r.costumes || []).length} trajes · Status: ${hasPin ? '🔒 PIN Protegido' : '🔓 Acesso Livre'}</div>
+          <div style="font-size:11px; color:var(--text-muted);"><b>${stats.totalKits} trajes completos</b> (${stats.totalTrajes} modelos) · Status: ${hasPin ? '🔒 PIN Protegido' : '🔓 Acesso Livre'}</div>
         </div>
       </div>
       <div style="display:flex; gap:6px;">
@@ -3241,34 +3427,40 @@ function renderRoomsManagement() {
 
   container.querySelectorAll("[data-setpin]").forEach(btn => {
     btn.onclick = () => {
-      const rid = btn.dataset.setpin;
-      const targetRoom = S.rooms[rid];
-      const np = prompt(`Digite o novo PIN numérico para "${targetRoom.name}":`);
-      if (np) {
-        targetRoom.pin = hash(np);
-        save();
-        toast(`PIN de ${targetRoom.name} atualizado!`);
-        renderRoomsManagement();
-      }
+      requireMasterAuth(() => {
+        const rid = btn.dataset.setpin;
+        const targetRoom = S.rooms[rid];
+        const np = prompt(`Digite o novo PIN numérico para "${targetRoom.name}":`);
+        if (np) {
+          targetRoom.pin = hash(np);
+          save();
+          toast(`PIN de ${targetRoom.name} atualizado!`);
+          renderRoomsManagement();
+        }
+      });
     };
   });
 
   container.querySelectorAll("[data-rempin]").forEach(btn => {
     btn.onclick = () => {
-      const rid = btn.dataset.rempin;
-      const targetRoom = S.rooms[rid];
-      if (confirm(`Remover a senha de "${targetRoom.name}"? Ela ficará sempre aberta para edição.`)) {
-        targetRoom.pin = "";
-        save();
-        toast(`PIN de ${targetRoom.name} removido!`);
-        renderRoomsManagement();
-      }
+      requireMasterAuth(() => {
+        const rid = btn.dataset.rempin;
+        const targetRoom = S.rooms[rid];
+        if (confirm(`Remover a senha de "${targetRoom.name}"? Ela ficará sempre aberta para edição.`)) {
+          targetRoom.pin = "";
+          save();
+          toast(`PIN de ${targetRoom.name} removido!`);
+          renderRoomsManagement();
+        }
+      });
     };
   });
 }
 
 document.getElementById("openSettingsBtn").onclick = () => {
   document.getElementById("settingsDlg").classList.add("active");
+  const ghInp = document.getElementById("ghTokenInput");
+  if (ghInp) ghInp.value = localStorage.getItem("wisla_gh_pat") || "";
   renderRoomsManagement();
 };
 document.getElementById("sideManageRoomsBtn").onclick = () => {
@@ -3287,12 +3479,19 @@ document.querySelectorAll(".settings-tab-btn").forEach(btn => {
   };
 });
 
+document.getElementById("ghTokenInput").onchange = e => {
+  localStorage.setItem("wisla_gh_pat", e.target.value.trim());
+  toast("Token do GitHub salvo no navegador!");
+};
+
 document.getElementById("changeLogoBtn").onclick = () => {
-  pickImg(img => {
-    S.logo = img;
-    save();
-    document.getElementById("logoImg").src = img;
-    toast("Logo do Wisła atualizada!");
+  requireMasterAuth(() => {
+    pickImg(img => {
+      S.logo = img;
+      save();
+      document.getElementById("logoImg").src = img;
+      toast("Logo do Wisła atualizada com sucesso!");
+    });
   });
 };
 
