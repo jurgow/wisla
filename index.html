@@ -4,114 +4,1030 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trajes Masculinos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --pri: #9b2232;
-  --pri2: #c42b3f;
-  --bg: #f4f6f8;
+  --pri-dark: #7b1825;
+  --pri-light: #be2b40;
+  --pri-bg: #fff1f2;
+  --pri-border: #fecdd3;
+  --bg: #f8fafc;
+  --surface: #ffffff;
   --bd: #e2e8f0;
-  --mut: #64748b;
-  --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-  --shadow-hover: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-  --radius: 12px;
+  --bd-focus: #9b2232;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  
+  /* Ajustes Customizáveis */
+  --fit: contain;
+  --bgfit: contain;
+  --tw: 72px;
+  --cardw: 180px;
+  --ar: 3/4;
+  --ff: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --fs: 14px;
+  --fsh: 12px;
+  --fst: 26px;
+  --fsc: 15px;
+  --fsm: 13px;
+  --padx: 12px;
+  --pady: 10px;
 }
-* { box-sizing: border-box; }
-body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: #1e293b; line-height: 1.5; }
-header { background: linear-gradient(135deg, var(--pri), var(--pri2)); color: #fff; padding: 12px 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
-header h1 { font-size: 20px; margin: 0 auto 0 0; cursor: pointer; font-weight: 700; letter-spacing: -0.5px; }
-.btn { background: #fff; color: var(--pri); border: 1px solid transparent; border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-.btn:hover { background: #f8f9fa; transform: translateY(-1px); box-shadow: 0 4px 6px rgba(0,0,0,0.08); }
-header .btn { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.2); box-shadow: none; }
-header .btn:hover { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.4); }
-.btn.on { background: #fff; color: var(--pri); font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-.btn.red { color: #dc2626; background: #fee2e2; border-color: #fca5a5; }
-.btn.red:hover { background: #fecaca; }
-main { padding: 24px; max-width: 1400px; margin: auto; }
-.bar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; background: #fff; padding: 12px 16px; border-radius: var(--radius); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--bd); }
-.bar input[type=search], .bar select { padding: 9px 12px; border: 1px solid var(--bd); border-radius: 8px; font-size: 14px; min-width: 220px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-.bar input[type=search]:focus, .bar select:focus { border-color: var(--pri); box-shadow: 0 0 0 3px rgba(155, 34, 50, 0.15); }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
-.card { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: all 0.2s ease; border: 1px solid var(--bd); }
-.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: #cbd5e1; }
-.ph { aspect-ratio: 3/4; background: #f1f5f9 center/cover no-repeat; display: flex; align-items: center; justify-content: center; color: #cbd5e1; font-size: 48px; border-bottom: 1px solid var(--bd); }
-.nm { padding: 12px 12px 4px; font-weight: 700; text-align: center; color: #0f172a; font-size: 15px; }
-.sub { padding: 0 12px 12px; text-align: center; color: var(--mut); font-size: 13px; }
-.title { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 20px; background: #fff; padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--bd); }
-.cover { width: 140px; height: 186px; border-radius: 8px; background: #f1f5f9 center/cover no-repeat; display: flex; align-items: center; justify-content: center; color: #94a3b8; cursor: pointer; font-size: 13px; text-align: center; border: 2px dashed #cbd5e1; transition: all 0.2s; }
-.cover:hover { border-color: var(--pri); color: var(--pri); background: #f8fafc; }
-.title input { font-size: 28px; font-weight: 800; border: 1px solid transparent; background: transparent; padding: 6px 10px; border-radius: 8px; width: 100%; color: #0f172a; letter-spacing: -0.5px; transition: all 0.2s; }
-.title input:hover, .title input:focus { border-color: var(--pri); background: #fff; box-shadow: 0 0 0 3px rgba(155, 34, 50, 0.1); outline: none; }
-.wrap { overflow: auto; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--bd); }
-table { border-collapse: collapse; width: 100%; }
-th, td { border-bottom: 1px solid var(--bd); padding: 10px 12px; vertical-align: middle; font-size: 14px; }
-th { background: #f8fafc; position: sticky; top: 0; z-index: 2; text-align: left; white-space: nowrap; font-weight: 700; color: #475569; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--bd); }
-tbody tr { transition: background 0.2s; }
-tbody tr:hover { background: #f8fafc; }
-td input, td textarea { width: 100%; border: 1px solid transparent; background: transparent; font: inherit; padding: 6px 8px; border-radius: 6px; transition: all 0.2s; }
-td input:hover, td textarea:hover { border-color: #cbd5e1; background: #fff; }
-td input:focus, td textarea:focus { outline: none; border-color: var(--pri); background: #fff; box-shadow: 0 0 0 3px rgba(155, 34, 50, 0.1); }
-td textarea { resize: vertical; min-height: 36px; }
-td.part input { font-weight: 700; color: #0f172a; }
-.thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; cursor: pointer; display: block; border: 1px solid var(--bd); transition: transform 0.2s; }
-.thumb:hover { transform: scale(1.05); }
-.nothumb { width: 64px; height: 64px; border: 2px dashed #cbd5e1; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #94a3b8; cursor: pointer; font-size: 12px; text-align: center; transition: all 0.2s; background: #f8fafc; }
-.nothumb:hover { border-color: var(--pri); color: var(--pri); }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--ff);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  font-size: var(--fs);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== HEADER & NAVEGAÇÃO ===== */
+header {
+  background: linear-gradient(135deg, var(--pri-dark), var(--pri-light));
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(123, 24, 37, 0.2);
+  backdrop-filter: blur(8px);
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: auto;
+  cursor: pointer;
+  user-select: none;
+}
+.header-brand h1 {
+  font-size: calc(var(--fsm) + 5px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#logoBox {
+  height: 38px;
+  min-width: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+#logoBox:hover { transform: scale(1.05); }
+#logoBox img {
+  height: 38px;
+  max-width: 120px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 6px;
+  padding: 3px;
+  box-shadow: var(--shadow-sm);
+}
+#logoBox .ph0 {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  border: 1.5px dashed rgba(255,255,255,0.6);
+  border-radius: 6px;
+  padding: 4px 8px;
+  line-height: 1;
+}
+
+.nav-links {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--surface);
+  color: var(--pri);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--fsm);
+  font-weight: 600;
+  transition: all 0.18s ease;
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+.btn:active { transform: translateY(0); }
+.btn.primary {
+  background: var(--pri);
+  color: #fff;
+  border-color: transparent;
+}
+.btn.primary:hover {
+  background: var(--pri-dark);
+  color: #fff;
+}
+.btn.on {
+  background: #fff;
+  color: var(--pri);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  border-color: #fff;
+}
+.btn.red {
+  color: #dc2626;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+.btn.red:hover {
+  background: #fee2e2;
+  border-color: #f87171;
+}
+.btn.sm {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+header .btn {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.22);
+  box-shadow: none;
+}
+header .btn:hover {
+  background: rgba(255,255,255,0.24);
+  border-color: rgba(255,255,255,0.4);
+}
+header .btn.on {
+  background: #fff;
+  color: var(--pri-dark);
+}
+#pinBtn.lk {
+  background: #fef08a;
+  border-color: #fde047;
+  color: #854d0e;
+  font-weight: 700;
+}
+
+/* ===== CONTAINER PRINCIPAL ===== */
+main {
+  padding: 24px;
+  max-width: 1440px;
+  margin: auto;
+}
+
+/* ===== BARRA DE FERRAMENTAS / FILTRO ===== */
+.bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 20px;
+  background: var(--surface);
+  padding: 12px 18px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--bd);
+}
+.bar input[type=search], .bar select, .bar input[type=text] {
+  padding: 8px 14px;
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--fsm);
+  min-width: 220px;
+  outline: none;
+  background: #fff;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.bar input[type=search]:focus, .bar select:focus, .bar input[type=text]:focus {
+  border-color: var(--pri);
+  box-shadow: 0 0 0 3px rgba(155, 34, 50, 0.12);
+}
+
+/* ===== GRADE DE TRAJES ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--cardw), 1fr));
+  gap: 20px;
+}
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  border: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--pri-border);
+}
+.ph {
+  aspect-ratio: var(--ar);
+  background-size: var(--bgfit);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+  font-size: 48px;
+  border-bottom: 1px solid var(--bd);
+  position: relative;
+}
+.nm {
+  padding: 12px 14px 4px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text);
+  font-size: var(--fsc);
+  letter-spacing: -0.2px;
+}
+.sub {
+  padding: 0 14px 14px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.badge-count {
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ===== HERO DO TRAJE (DETALHES) ===== */
+.title {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  background: var(--surface);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--bd);
+}
+.cover {
+  width: calc(var(--cardw) * 0.85);
+  aspect-ratio: var(--ar);
+  border-radius: var(--radius);
+  background-size: var(--bgfit);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  border: 2px dashed #cbd5e1;
+  transition: all 0.2s;
+  padding: 8px;
+}
+.cover:hover {
+  border-color: var(--pri);
+  color: var(--pri);
+  background-color: var(--pri-bg);
+}
+.title-info {
+  flex: 1;
+  min-width: 280px;
+}
+.title input {
+  font-family: inherit;
+  font-size: var(--fst);
+  font-weight: 800;
+  border: 1.5px solid transparent;
+  background: transparent;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  width: 100%;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  transition: all 0.2s;
+}
+.title input:hover, .title input:focus {
+  border-color: var(--pri);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(155, 34, 50, 0.1);
+  outline: none;
+}
+
+/* ===== TABELAS MODERNAS ===== */
+.wrap {
+  overflow-x: auto;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--bd);
+  margin-bottom: 20px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: var(--fs);
+}
+th, td {
+  border-bottom: 1px solid var(--bd);
+  padding: var(--pady) var(--padx);
+  vertical-align: middle;
+}
+th {
+  background: #f8fafc;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 700;
+  color: #475569;
+  font-size: var(--fsh);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-bottom: 2px solid var(--bd);
+  user-select: none;
+  resize: horizontal;
+  overflow: hidden;
+  min-width: 50px;
+}
+tbody tr {
+  transition: background-color 0.15s;
+}
+tbody tr:hover {
+  background: #f8fafc;
+}
+tbody tr.link {
+  background: #fff8f8;
+}
+tbody tr.link:hover {
+  background: #fff1f2;
+}
+
+td input, td textarea, td select {
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  font: inherit;
+  font-size: var(--fs);
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  transition: all 0.15s ease;
+}
+td input:hover, td textarea:hover {
+  border-color: #cbd5e1;
+  background: #fff;
+}
+td input:focus, td textarea:focus {
+  outline: none;
+  border-color: var(--pri);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(155, 34, 50, 0.12);
+}
+td textarea {
+  resize: vertical;
+  min-height: 38px;
+}
+td.part input {
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Miniaturas de fotos na tabela */
+.thumb {
+  width: var(--tw);
+  height: var(--tw);
+  object-fit: var(--fit);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: block;
+  border: 1px solid var(--bd);
+  background: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.thumb:hover {
+  transform: scale(1.08);
+  box-shadow: var(--shadow);
+}
+.nothumb {
+  width: var(--tw);
+  height: var(--tw);
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s;
+  background: #f8fafc;
+}
+.nothumb:hover {
+  border-color: var(--pri);
+  color: var(--pri);
+  background: var(--pri-bg);
+}
+
+/* Botões de Ações nas Tabelas */
 .acts { white-space: nowrap; }
-.acts button { border: none; background: transparent; cursor: pointer; font-size: 16px; padding: 6px; border-radius: 6px; color: #64748b; transition: all 0.2s; }
-.acts button:hover { background: #f1f5f9; color: var(--pri); transform: scale(1.15); }
-.chip { display: inline-block; background: #fce7f3; color: var(--pri); border-radius: 20px; padding: 4px 10px; margin: 2px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid #fbcfe8; transition: all 0.2s; }
-.chip:hover { background: var(--pri); color: #fff; border-color: var(--pri); }
-.warn { color: #d97706; font-size: 13px; font-weight: 700; }
-table.dz th:first-child, table.dz td:first-child { position: sticky; left: 0; background: #fff; z-index: 1; border-right: 2px solid var(--bd); }
-table.dz th:first-child { z-index: 3; background: #f8fafc; }
-table.dz td input { width: 60px; text-align: center; }
-table.dz td:first-child input { width: 160px; text-align: left; font-weight: 700; }
-table.dz th { text-align: center; font-size: 12px; }
-table.dz th a { color: var(--pri); text-decoration: none; transition: color 0.2s; }
-table.dz th a:hover { color: var(--pri2); text-decoration: underline; }
-#md, #ck, #lb, #bkDlg { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 60; }
-#md .box, #ck .box, #bkDlg .box { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
-#md .box { max-width: 440px; width: 92%; }
-#ck .box { max-width: 560px; width: 94%; max-height: 86vh; display: flex; flex-direction: column; }
-#md .box p { margin: 0 0 20px; white-space: pre-line; font-size: 15px; color: #334155; }
-#md .box .btn { display: block; width: 100%; margin: 8px 0; text-align: left; padding: 12px 16px; }
-.link { background: #fff1f2 !important; }
-.ro { padding: 6px 8px; display: block; min-height: 32px; color: #334155; }
-.tag { display: inline-block; background: var(--pri); color: #fff; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 4px rgba(155, 34, 50, 0.2); transition: transform 0.2s; }
+.acts button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 6px;
+  border-radius: 6px;
+  color: #64748b;
+  transition: all 0.15s ease;
+}
+.acts button:hover {
+  background: #f1f5f9;
+  color: var(--pri);
+  transform: scale(1.15);
+}
+
+/* Chips e Tags */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #fce7f3;
+  color: var(--pri-dark);
+  border-radius: var(--radius-full);
+  padding: 3px 9px;
+  margin: 2px;
+  font-size: calc(var(--fs) - 2px);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #fbcfe8;
+  transition: all 0.15s ease;
+}
+.chip:hover {
+  background: var(--pri);
+  color: #fff;
+  border-color: var(--pri);
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--pri);
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(155, 34, 50, 0.2);
+  transition: transform 0.15s;
+}
 .tag:hover { transform: scale(1.05); }
-#ck .list { overflow: auto; columns: 2; margin: 16px 0; border: 1px solid var(--bd); border-radius: 8px; padding: 12px; background: #f8fafc; gap: 16px; }
-#ck label { display: flex; align-items: center; gap: 8px; padding: 8px 6px; break-inside: avoid; cursor: pointer; font-size: 14px; border-radius: 6px; transition: background 0.2s; }
+.ro {
+  padding: 6px 8px;
+  display: block;
+  min-height: 32px;
+  color: #334155;
+}
+.warn {
+  color: #d97706;
+  font-size: 12px;
+  font-weight: 700;
+}
+.note {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+h2 {
+  margin-top: 0;
+  color: var(--text);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+/* Tabela de Dançarinos */
+table.dz th:first-child, table.dz td:first-child {
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 1;
+  border-right: 2px solid var(--bd);
+}
+table.dz th:first-child { z-index: 3; background: #f8fafc; }
+table.dz td input { width: 64px; text-align: center; }
+table.dz td:first-child input { width: 170px; text-align: left; font-weight: 700; }
+table.dz th { text-align: center; font-size: 12px; }
+table.dz th a { color: var(--pri); text-decoration: none; transition: color 0.2s; font-weight: 700; }
+table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
+
+/* ===== MODAIS ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+.modal-overlay.active { display: flex; }
+.modal-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--bd);
+  animation: modalIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.modal-card.lg { max-width: 860px; }
+.modal-card h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: -0.4px;
+}
+
+/* Modais de Peças Comuns Checkbox */
+#ck .list {
+  overflow-y: auto;
+  columns: 2;
+  margin: 16px 0;
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 14px;
+  background: #f8fafc;
+  gap: 16px;
+  max-height: 50vh;
+}
+#ck label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  break-inside: avoid;
+  cursor: pointer;
+  font-size: 13px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
 #ck label:hover { background: #e2e8f0; }
 #ck label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--pri); cursor: pointer; }
-#toast { position: fixed; bottom: 24px; right: 24px; background: #1e293b; color: #fff; padding: 12px 20px; border-radius: 8px; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; font-weight: 500; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); z-index: 9999; }
-#lb { z-index: 70; }
-#lb img { max-width: 92vw; max-height: 80vh; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); }
-.note { color: var(--mut); font-size: 13px; margin-top: 8px; line-height: 1.4; }
-h2 { margin-top: 0; color: #0f172a; font-weight: 800; letter-spacing: -0.5px; }
-@media print { header, .noprint, .acts { display: none !important; } th { position: static; } body { background: #fff; } .wrap, .title, .bar, .card { box-shadow: none; border: 1px solid #ccc; } }
+
+/* Lightbox */
+#lb { z-index: 110; }
+#lb img {
+  max-width: 90vw;
+  max-height: 78vh;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  object-fit: contain;
+  background: #fff;
+}
+
+/* Toast Notificação */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #0f172a;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: var(--shadow-lg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== BANCO DE FOTOS ===== */
+.bk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 16px;
+}
+.bk-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--bd);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.bk-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+.bk-card img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  background: #fff;
+  cursor: zoom-in;
+  border-bottom: 1px solid var(--bd);
+}
+.bk-card .bd {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bk-card input {
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  padding: 6px;
+  border-radius: 6px;
+  width: 100%;
+  transition: all 0.2s;
+}
+.bk-card input:hover, .bk-card input:focus {
+  border-color: var(--pri);
+  background: #f8fafc;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(155,34,50,0.1);
+}
+.bk-card .use {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.bk-card .row {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+.bk-card .row .btn {
+  flex: 1;
+  padding: 5px;
+  font-size: 12px;
+}
+#bkDrop {
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--radius-lg);
+  padding: 32px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  background: #f8fafc;
+  margin-bottom: 20px;
+  transition: all 0.2s;
+}
+#bkDrop.over {
+  background: var(--pri-bg);
+  border-color: var(--pri);
+  color: var(--pri-dark);
+}
+
+/* ===== PAINEL DE CONFIGURAÇÕES UNIFICADO ===== */
+.settings-tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+}
+.settings-tab-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+}
+.settings-tab-btn:hover { color: var(--text); background: #f1f5f9; }
+.settings-tab-btn.active {
+  color: var(--pri);
+  background: var(--pri-bg);
+  font-weight: 700;
+}
+.settings-section { display: none; }
+.settings-section.active { display: block; }
+.form-group {
+  margin-bottom: 14px;
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+.form-group .v {
+  float: right;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.form-group input[type=range], .form-group select, .form-group input[type=text] {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--bd);
+  font-family: inherit;
+  font-size: 13px;
+}
+
+/* ===== MODO CONSULTA (BLOQUEIO POR PIN) ===== */
+body.locked .acts,
+body.locked #addC,
+body.locked #addI,
+body.locked #addCm,
+body.locked #delC,
+body.locked #addD,
+body.locked #addDz,
+body.locked #imp,
+body.locked #bkDrop,
+body.locked [data-ch],
+body.locked [data-use],
+body.locked [data-del],
+body.locked [data-mk],
+body.locked [data-dup],
+body.locked [data-mv],
+body.locked #bI,
+body.locked #bR,
+body.locked #lbchg,
+body.locked #lbdel,
+body.locked .grp button,
+body.locked .nothumb,
+body.locked #logoBox .ph0 {
+  display: none !important;
+}
+body.locked td input,
+body.locked td textarea,
+body.locked .title input,
+body.locked .bk-card input {
+  cursor: default;
+}
+
+/* Modo Impressão */
+@media print {
+  header, .noprint, .acts, .bar { display: none !important; }
+  th { position: static; }
+  body { background: #fff; font-size: 11pt; }
+  .wrap, .title, .card { box-shadow: none; border: 1px solid #ccc; }
+  main { padding: 0; max-width: 100%; }
+}
 </style>
 </head>
 <body>
+
 <header>
-  <h1 onclick="go('#/')">👔 Trajes Masculinos</h1>
-  <button class="btn" data-nav="#/">Trajes</button>
-  <button class="btn" data-nav="#/dancarinos">Dançarinos</button>
-  <button class="btn" data-nav="#/pecas">Todas as peças</button>
-  <button class="btn" data-nav="#/comuns">Peças comuns</button>
-  <button class="btn" data-nav="#/backup">Backup</button>
+  <div class="header-brand" onclick="go('#/')">
+    <span id="logoBox" title="Clique para escolher ou trocar a logo"></span>
+    <h1>👔 Trajes Masculinos</h1>
+  </div>
+  <nav class="nav-links">
+    <button class="btn" data-nav="#/">Trajes</button>
+    <button class="btn" data-nav="#/dancarinos">Dançarinos</button>
+    <button class="btn" data-nav="#/pecas">Todas as peças</button>
+    <button class="btn" data-nav="#/comuns">Peças comuns</button>
+    <button class="btn" data-nav="#/banco">📷 Fotos</button>
+    <button class="btn" data-nav="#/backup">Backup</button>
+  </nav>
+  <div class="header-actions">
+    <button class="btn" id="pinBtn" title="Controle de Consulta / PIN">🔓 Edição liberada</button>
+    <button class="btn" id="openSettingsBtn" title="Ajustes de fontes, fotos e layout">⚙️ Ajustes</button>
+  </div>
 </header>
+
 <main id="app">Carregando...</main>
+
 <div id="toast"></div>
-<div id="md"><div class="box"><p id="mdtxt"></p><div id="mdbtns"></div></div></div>
-<div id="ck"><div class="box"><b id="cktit"></b><div class="note">Marque os trajes em que esta peça é usada.</div><div class="bar" style="margin:8px 0 0; padding:8px; border:none; box-shadow:none; background:transparent"><button class="btn" id="ckall">Marcar todos</button><button class="btn" id="cknone">Desmarcar todos</button></div><div class="list" id="cklist"></div><div class="bar" style="justify-content:flex-end;margin:0; padding:8px; border:none; box-shadow:none; background:transparent"><button class="btn red" id="ckcancel">Cancelar</button><button class="btn on" id="ckok">Salvar</button></div></div></div>
-<div id="lb"><img id="lbimg" alt=""><div style="margin-top: 16px"><button class="btn" id="lbchg">Trocar foto</button> <button class="btn red" id="lbdel">Remover foto</button> <button class="btn" id="lbclose">Fechar</button></div></div>
+
+<!-- Modal Dialog Genérico -->
+<div id="md" class="modal-overlay">
+  <div class="modal-card">
+    <h3 id="mdTitle">Confirmação</h3>
+    <p id="mdtxt" style="margin-bottom: 20px; white-space: pre-line; color: #334155;"></p>
+    <div id="mdbtns" style="display:flex; flex-direction:column; gap:8px;"></div>
+  </div>
+</div>
+
+<!-- Modal Escolher Trajes de Peça Comum -->
+<div id="ck" class="modal-overlay">
+  <div class="modal-card lg">
+    <h3 id="cktit">Vincular Peça Comum</h3>
+    <div class="note" style="margin-top:-6px; margin-bottom:12px;">Marque os trajes em que esta peça é usada:</div>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <input type="search" id="ckSearch" placeholder="Filtrar traje..." style="flex:1; padding:7px 12px; border:1px solid var(--bd); border-radius:6px;">
+      <button class="btn sm" id="ckall">Marcar todos</button>
+      <button class="btn sm" id="cknone">Desmarcar todos</button>
+    </div>
+    <div class="list" id="cklist"></div>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
+      <button class="btn red" id="ckcancel">Cancelar</button>
+      <button class="btn primary" id="ckok">Salvar Vínculos</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Lightbox (Visualização de Foto) -->
+<div id="lb" class="modal-overlay">
+  <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+    <img id="lbimg" alt="Foto">
+    <div style="display:flex; gap:8px;">
+      <button class="btn" id="lbchg">Trocar foto</button>
+      <button class="btn red" id="lbdel">Remover foto</button>
+      <button class="btn" id="lbclose" style="background:#fff">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Banco de Fotos / Picker -->
+<div id="bkDlg" class="modal-overlay">
+  <div class="modal-card lg" id="bkBox"></div>
+</div>
+
+<!-- Modal Unificado de Configurações & Ajustes -->
+<div id="settingsDlg" class="modal-overlay">
+  <div class="modal-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="margin:0">⚙️ Configurações & Ajustes</h3>
+      <button class="btn sm" id="closeSettingsModalBtn" style="border:none; box-shadow:none; font-size:16px;">✕</button>
+    </div>
+    <div class="settings-tabs">
+      <button class="settings-tab-btn active" data-tab="tab-text">🔤 Textos & Colunas</button>
+      <button class="settings-tab-btn" data-tab="tab-photo">🖼 Fotos & Cartões</button>
+      <button class="settings-tab-btn" data-tab="tab-security">🔒 Segurança & PIN</button>
+    </div>
+
+    <!-- Aba 1: Textos & Colunas -->
+    <div class="settings-section active" id="tab-text">
+      <div class="form-group">
+        <label>Fonte do Sistema</label>
+        <select id="tpFf">
+          <option value="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif">Plus Jakarta Sans (Moderna)</option>
+          <option value="system-ui, -apple-system, sans-serif">Padrão do Sistema</option>
+          <option value="Arial, Helvetica, sans-serif">Arial</option>
+          <option value="Calibri, Carlito, sans-serif">Calibri</option>
+          <option value="Verdana, sans-serif">Verdana</option>
+          <option value="Tahoma, sans-serif">Tahoma</option>
+          <option value="'Times New Roman', serif">Times New Roman</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Texto das tabelas <span class="v" id="tpFsV"></span></label>
+        <input type="range" id="tpFs" min="11" max="22" step="1">
+      </div>
+      <div class="form-group">
+        <label>Título dos trajes <span class="v" id="tpFstV"></span></label>
+        <input type="range" id="tpFst" min="16" max="36" step="1">
+      </div>
+      <div class="form-group">
+        <label>Espaço entre colunas <span class="v" id="tpPxV"></span></label>
+        <input type="range" id="tpPx" min="4" max="24" step="1">
+      </div>
+      <div class="form-group">
+        <label>Espaço entre linhas <span class="v" id="tpPyV"></span></label>
+        <input type="range" id="tpPy" min="4" max="18" step="1">
+      </div>
+      <div style="display:flex; gap:8px; margin-top:12px;">
+        <button class="btn sm" id="tpReset">Restaurar Padrão</button>
+        <button class="btn sm" id="tpResetCols">Zerar Larguras de Colunas</button>
+      </div>
+    </div>
+
+    <!-- Aba 2: Fotos & Cartões -->
+    <div class="settings-section" id="tab-photo">
+      <div class="form-group">
+        <label>Encaixe da foto</label>
+        <select id="fpFit">
+          <option value="contain">Foto inteira (sem cortar)</option>
+          <option value="cover">Preencher o quadro (corta as bordas)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tamanho das fotos das peças <span class="v" id="fpTwV"></span></label>
+        <input type="range" id="fpTw" min="48" max="220" step="4">
+      </div>
+      <div class="form-group">
+        <label>Tamanho dos cartões no menu <span class="v" id="fpCwV"></span></label>
+        <input type="range" id="fpCw" min="130" max="320" step="10">
+      </div>
+      <div class="form-group">
+        <label>Formato dos cartões</label>
+        <select id="fpAr">
+          <option value="3/4">Retrato (3:4)</option>
+          <option value="1/1">Quadrado (1:1)</option>
+          <option value="4/3">Paisagem (4:3)</option>
+        </select>
+      </div>
+      <div style="margin-top:12px;">
+        <button class="btn sm" id="fpReset">Restaurar Padrão de Fotos</button>
+      </div>
+    </div>
+
+    <!-- Aba 3: Segurança -->
+    <div class="settings-section" id="tab-security">
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">
+        O PIN protege o aplicativo contra alterações acidentais durante eventos ou apresentações.
+      </p>
+      <div id="pinStatusText" style="font-weight:700; margin-bottom:14px; color:var(--text);"></div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button class="btn" id="setPinActionBtn">🔒 Definir / Alterar PIN</button>
+        <button class="btn red" id="removePinActionBtn">Remover PIN de Segurança</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-/* ===== DADOS INICIAIS ===== */
+/* ===== DADOS E ESTADO ===== */
 const ALIAS = {"SUITA LOWICKA":"LOWICZ"};
-
-/* ===== ARMAZENAMENTO (IndexedDB do navegador) ===== */
 let S = null;
+
 const uid = () => Math.random().toString(36).slice(2, 10);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const norm = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/\s+/g, " ").trim();
@@ -148,20 +1064,27 @@ function save() {
   }, 400);
 }
 
-// Inicia com um estado vazio para não sobrecarregar o editor do GitHub.
-// O usuário irá restaurar o arquivo JSON de backup logo após abrir a página.
 function seedState() {
   return {
     version: 3, 
     common: [],
     costumes: [],
     dances: [],
-    dancers: []
+    dancers: [],
+    bank: [],
+    logo: "",
+    pin: ""
   };
 }
 
 /* ===== UTILITÁRIOS ===== */
-function toast(msg) { const t = document.getElementById("toast"); t.textContent = msg; t.style.opacity = 1; clearTimeout(t._h); t._h = setTimeout(() => t.style.opacity = 0, 1200); }
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove("show"), 1600);
+}
 function go(h) { location.hash = h; }
 function download(name, text, type) {
   const a = document.createElement("a");
@@ -170,7 +1093,11 @@ function download(name, text, type) {
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
 const today = () => new Date().toISOString().slice(0, 10);
-function readImg(file, max = 900) {
+
+const bank = () => (S.bank = S.bank || []);
+const OPT = Object.assign({ enhance: true }, JSON.parse(localStorage.getItem("bancoOpc") || "{}"));
+
+function readImg(file, max = 1000) {
   return new Promise((res, rej) => {
     const fr = new FileReader();
     fr.onload = () => {
@@ -178,101 +1105,131 @@ function readImg(file, max = 900) {
       im.onload = () => {
         const k = Math.min(1, max / Math.max(im.width, im.height));
         const cv = document.createElement("canvas");
-        cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k);
-        cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height);
-        res(cv.toDataURL("image/jpeg", 0.82));
+        cv.width = Math.round(im.width * k);
+        cv.height = Math.round(im.height * k);
+        const g = cv.getContext("2d");
+        g.fillStyle = "#ffffff";
+        g.fillRect(0, 0, cv.width, cv.height);
+        if (OPT.enhance) g.filter = "brightness(1.06) contrast(1.10) saturate(1.08)";
+        g.drawImage(im, 0, 0, cv.width, cv.height);
+        res(cv.toDataURL("image/jpeg", 0.85));
       };
-      im.onerror = rej; im.src = fr.result;
+      im.onerror = () => rej(new Error("Formato de imagem não suportado"));
+      im.src = fr.result;
     };
-    fr.onerror = rej; fr.readAsDataURL(file);
+    fr.onerror = rej;
+    fr.readAsDataURL(file);
   });
 }
-function pickImg(cb) {
-  const i = document.createElement("input");
-  i.type = "file"; i.accept = "image/*";
-  i.onchange = async () => { if (i.files[0]) cb(await readImg(i.files[0])); };
-  i.click();
-}
-/* Lightbox da foto */
+
 function openPhoto(src, onChange, onDelete) {
   const lb = document.getElementById("lb");
   document.getElementById("lbimg").src = src;
-  lb.style.display = "flex";
-  document.getElementById("lbchg").onclick = () => { lb.style.display = "none"; pickImg(onChange); };
-  document.getElementById("lbdel").onclick = () => { lb.style.display = "none"; onDelete(); };
-  document.getElementById("lbclose").onclick = () => lb.style.display = "none";
+  lb.classList.add("active");
+  document.getElementById("lbchg").onclick = () => { lb.classList.remove("active"); pickImg(onChange); };
+  document.getElementById("lbdel").onclick = () => { lb.classList.remove("active"); onDelete(); };
+  document.getElementById("lbclose").onclick = () => lb.classList.remove("active");
 }
-document.getElementById("lb").addEventListener("click", e => { if (e.target.id === "lb") e.currentTarget.style.display = "none"; });
+document.getElementById("lb").addEventListener("click", e => {
+  if (e.target.id === "lb") e.currentTarget.classList.remove("active");
+});
 
 function findCostume(dance) {
   const n = norm(ALIAS[dance] || dance);
   return S.costumes.find(c => norm(c.name) === n) || S.costumes.find(c => norm(c.name).startsWith(n + " "));
 }
+
 /* ===== PEÇAS COMUNS ===== */
-/* Uma peça comum é cadastrada uma única vez (dados + foto) e vinculada aos trajes escolhidos.
-   No traje, a linha vinculada guarda só { id, cid } e mostra os dados da peça comum. */
 const commonOf = it => it.cid ? S.common.find(x => x.id === it.cid) : null;
 const eff = it => commonOf(it) || it;
 const costumesOf = cm => S.costumes.filter(c => c.items.some(i => i.cid === cm.id));
 function cmLabel(cm) { return [cm.part, cm.type, cm.color].filter(Boolean).join(" · "); }
-function ask(msg, opts) {
+
+function ask(msg, opts, title = "Confirmação") {
   return new Promise(res => {
     const md = document.getElementById("md");
+    document.getElementById("mdTitle").textContent = title;
     document.getElementById("mdtxt").textContent = msg;
-    const b = document.getElementById("mdbtns"); b.innerHTML = "";
-    opts.concat([["Cancelar", null]]).forEach(([t, v]) => { const x = document.createElement("button"); x.className = "btn" + (v === null ? " red" : ""); x.textContent = t; x.onclick = () => { md.style.display = "none"; res(v); }; b.appendChild(x); });
-    md.style.display = "flex";
+    const b = document.getElementById("mdbtns");
+    b.innerHTML = "";
+    opts.concat([["Cancelar", null]]).forEach(([t, v]) => {
+      const x = document.createElement("button");
+      x.className = "btn" + (v === null ? " red" : (v === "del" || v === "drop" ? " red" : " primary"));
+      x.textContent = t;
+      x.onclick = () => { md.classList.remove("active"); res(v); };
+      b.appendChild(x);
+    });
+    md.classList.add("active");
   });
 }
-/* Janela para escolher os trajes de uma peça comum */
+
 function chooseCostumes(cm, after) {
   const ck = document.getElementById("ck"), list = document.getElementById("cklist");
   document.getElementById("cktit").textContent = cmLabel(cm) || "Peça comum";
   const used = new Set(costumesOf(cm).map(c => c.id));
-  list.innerHTML = S.costumes.map(c => `<label><input type="checkbox" value="${c.id}" ${used.has(c.id) ? "checked" : ""}> ${esc(c.name)}</label>`).join("");
-  const boxes = () => [...list.querySelectorAll("input")];
-  document.getElementById("ckall").onclick = () => boxes().forEach(b => b.checked = true);
-  document.getElementById("cknone").onclick = () => boxes().forEach(b => b.checked = false);
-  document.getElementById("ckcancel").onclick = () => ck.style.display = "none";
+  
+  function renderList(filterTxt = "") {
+    const f = norm(filterTxt);
+    list.innerHTML = S.costumes
+      .filter(c => !f || norm(c.name).includes(f))
+      .map(c => `<label><input type="checkbox" value="${c.id}" ${used.has(c.id) ? "checked" : ""}> ${esc(c.name)}</label>`)
+      .join("");
+  }
+  renderList();
+  
+  const searchInp = document.getElementById("ckSearch");
+  searchInp.value = "";
+  searchInp.oninput = e => renderList(e.target.value);
+  
+  document.getElementById("ckall").onclick = () => list.querySelectorAll("input").forEach(b => { b.checked = true; used.add(b.value); });
+  document.getElementById("cknone").onclick = () => list.querySelectorAll("input").forEach(b => { b.checked = false; used.delete(b.value); });
+  document.getElementById("ckcancel").onclick = () => ck.classList.remove("active");
   document.getElementById("ckok").onclick = () => {
-    boxes().forEach(b => {
-      const c = S.costumes.find(x => x.id === b.value), has = c.items.some(i => i.cid === cm.id);
-      if (b.checked && !has) c.items.push({ id: uid(), cid: cm.id });
-      if (!b.checked && has) c.items = c.items.filter(i => i.cid !== cm.id);
+    list.querySelectorAll("input").forEach(b => {
+      if (b.checked) used.add(b.value);
+      else used.delete(b.value);
     });
-    ck.style.display = "none"; save(); toast("Trajes atualizados"); after();
+    S.costumes.forEach(c => {
+      const isSelected = used.has(c.id);
+      const has = c.items.some(i => i.cid === cm.id);
+      if (isSelected && !has) c.items.push({ id: uid(), cid: cm.id });
+      if (!isSelected && has) c.items = c.items.filter(i => i.cid !== cm.id);
+    });
+    ck.classList.remove("active"); save(); toast("Trajes atualizados"); after();
   };
-  ck.style.display = "flex";
+  ck.classList.add("active");
 }
+
 function newCommon(src = {}) {
   const cm = { id: uid(), part: src.part || "", type: src.type || "", color: src.color || "", qty: src.qty || "", notes: src.notes || "", photo: src.photo || "" };
   S.common.push(cm); return cm;
 }
-/* Chave usada só na importação automática (peça + tipo + cor + quantidade) */
 function itemKey(it) {
   const t = norm(it.type).replace(/^QUE /, "");
   if (!norm(it.part) || (!t && !norm(it.color))) return null;
   return [norm(it.part), t, norm(it.color), norm(it.qty)].join("|");
 }
-/* Cria peças comuns a partir das linhas idênticas que aparecem em 2 ou mais trajes */
 function importRepeated() {
   const G = {};
   S.costumes.forEach(c => c.items.forEach(it => { if (it.cid) return; const k = itemKey(it); if (!k) return; (G[k] = G[k] || []).push([c, it]); }));
   const groups = Object.entries(G).filter(([, g]) => new Set(g.map(x => x[0].id)).size >= 2);
-  if (!groups.length) { alert("Não há peças repetidas (idênticas) entre trajes para importar."); return false; }
+  if (!groups.length) { alert("Não há peças repetidas idênticas entre trajes para importar."); return false; }
   const txt = groups.map(([, g]) => `• ${cmLabel(g[0][1])} (${new Set(g.map(x => x[0].id)).size} trajes)`).join("\n");
-  if (!confirm(`Serão criadas ${groups.length} peça(s) comum(ns), já vinculadas aos trajes:\n\n${txt}\n\nContinuar?`)) return false;
-  const oldPhotos = S.photos || {};
-  groups.forEach(([k, g]) => {
+  if (!confirm(`Serão criadas ${groups.length} peça(s) comum(ns), vinculadas aos respectivos trajes:\n\n${txt}\n\nContinuar?`)) return false;
+  groups.forEach(([, g]) => {
     const f = g[0][1];
-    const cm = newCommon({ ...f, notes: "", photo: oldPhotos[k] || (g.find(x => x[1].photo) || [, {}])[1].photo || "" });
+    const cm = newCommon({ ...f, notes: "", photo: (g.find(x => x[1].photo) || [, {}])[1].photo || "" });
     g.forEach(([, it]) => { for (const p of ["part", "type", "color", "qty", "notes", "photo", "noShared"]) delete it[p]; it.cid = cm.id; });
   });
   save(); toast(groups.length + " peças comuns criadas"); return true;
 }
-/* Atualiza dados de versões anteriores */
+
 function migrate(d) {
   if (!d.common) d.common = [];
+  if (!d.costumes) d.costumes = [];
+  if (!d.dances) d.dances = [];
+  if (!d.dancers) d.dancers = [];
+  if (!d.bank) d.bank = [];
   d.version = 3; return d;
 }
 function sharedIn(it, selfId) {
@@ -284,16 +1241,36 @@ function thumb(src, attr) { return src ? `<img class="thumb" ${attr} src="${src}
 /* ===== TELAS ===== */
 const app = document.getElementById("app");
 
+/* 1. TELA TRAJES (HOME) */
 function viewHome() {
-  let h = `<div class="bar noprint"><input type="search" id="q" placeholder="Buscar traje..."><button class="btn" id="addC">+ Novo traje</button></div>`;
+  let h = `<div class="bar noprint">
+    <input type="search" id="q" placeholder="Buscar traje pelo nome...">
+    <button class="btn primary" id="addC">+ Novo traje</button>
+  </div>`;
   if(!S.costumes.length) {
-    h += `<p style="padding: 40px; text-align: center; color: var(--mut);">Nenhum traje cadastrado ainda.<br>Vá em <b>Backup</b> e restaure seu arquivo <code>.json</code> para carregar os dados!</p>`;
+    h += `<div style="padding: 60px 20px; text-align: center; background: #fff; border-radius: 16px; border: 1px dashed var(--bd);">
+      <div style="font-size: 48px; margin-bottom: 12px;">👔</div>
+      <h3 style="font-size: 18px; margin-bottom: 6px;">Nenhum traje cadastrado ainda</h3>
+      <p style="color: var(--text-muted); margin-bottom: 18px;">Comece adicionando seu primeiro traje ou restaure um backup existente.</p>
+      <div style="display:inline-flex; gap:10px;">
+        <button class="btn primary" onclick="document.getElementById('addC').click()">+ Criar Traje</button>
+        <button class="btn" onclick="go('#/backup')">Restaurar Backup (.json)</button>
+      </div>
+    </div>`;
   } else {
     h += `<div class="grid">`;
     S.costumes.forEach(c => {
+      const commonCount = c.items.filter(i => i.cid).length;
       h += `<div class="card" data-id="${c.id}" data-name="${esc(norm(c.name))}">
-        <div class="ph" style="${c.photo ? `background-image:url('${c.photo}')` : ""}">${c.photo ? "" : "👔"}</div>
-        <div class="nm">${esc(c.name)}</div><div class="sub">${c.items.length} ${c.items.length === 1 ? "item" : "itens"}</div></div>`;
+        <div class="ph" style="${c.photo ? `background-image:url('${c.photo}')` : ""}">
+          ${c.photo ? "" : "👔"}
+        </div>
+        <div class="nm">${esc(c.name)}</div>
+        <div class="sub">
+          <span class="badge-count">${c.items.length} ${c.items.length === 1 ? "peça" : "peças"}</span>
+          ${commonCount ? `<span class="badge-count" style="background:var(--pri-bg);color:var(--pri-dark)">${commonCount} comum</span>` : ""}
+        </div>
+      </div>`;
     });
     h += `</div>`;
   }
@@ -311,42 +1288,92 @@ function viewHome() {
   };
 }
 
+/* 2. TELA DETALHES DO TRAJE */
 function viewCostume(id) {
   const c = S.costumes.find(x => x.id === id);
-  if (!c) { app.innerHTML = `<p>Traje não encontrado. <a href="#/">Voltar</a></p>`; return; }
+  if (!c) { app.innerHTML = `<p style="padding:40px; text-align:center">Traje não encontrado. <a href="#/">Voltar</a></p>`; return; }
   c.items = c.items.filter(it => !it.cid || commonOf(it));
   const avail = S.common.filter(cm => !c.items.some(i => i.cid === cm.id));
-  let h = `<div class="bar noprint"><button class="btn" onclick="go('#/')">← Voltar aos trajes</button>
-    <button class="btn" id="addI">+ Adicionar peça</button>
-    <select id="addCm"><option value="">+ Adicionar peça comum...</option>${avail.map(cm => `<option value="${cm.id}">${esc(cmLabel(cm))}</option>`).join("")}</select>
+  
+  let h = `<div class="bar noprint">
+    <button class="btn" onclick="go('#/')">← Voltar</button>
+    <button class="btn primary" id="addI">+ Adicionar peça</button>
+    <select id="addCm"><option value="">+ Vincular peça comum...</option>${avail.map(cm => `<option value="${cm.id}">${esc(cmLabel(cm))}</option>`).join("")}</select>
     <button class="btn" onclick="window.print()">🖨 Imprimir</button>
-    <button class="btn red" id="delC">Excluir traje</button></div>
-    <div class="title"><div class="cover" id="cover" style="${c.photo ? `background-image:url('${c.photo}');border:none` : ""}">${c.photo ? "" : "Clique para<br>adicionar foto<br>do traje"}</div>
-    <div><input id="cname" value="${esc(c.name)}"><div class="note">${c.items.length} ${c.items.length === 1 ? "peça cadastrada" : "peças cadastradas"} · ${c.items.filter(i => i.cid).length} peça(s) comum(ns)</div></div></div>
-    <div class="wrap"><table><thead><tr><th>Peça</th><th>Foto</th><th>Tipo</th><th>Cor</th><th>Quant.</th><th>Observação</th><th>Também usada em</th><th class="acts noprint"></th></tr></thead><tbody>`;
+    <button class="btn red" id="delC" style="margin-left:auto">Excluir traje</button>
+  </div>
+  <div class="title">
+    <div class="cover" id="cover" style="${c.photo ? `background-image:url('${c.photo}');border:none` : ""}">
+      ${c.photo ? "" : "Clique para<br>adicionar foto"}
+    </div>
+    <div class="title-info">
+      <input id="cname" value="${esc(c.name)}" title="Nome do traje">
+      <div class="note" style="margin-top:4px">
+        <b>${c.items.length}</b> ${c.items.length === 1 ? "peça cadastrada" : "peças cadastradas"} · 
+        <b>${c.items.filter(i => i.cid).length}</b> peça(s) comum(ns)
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Peça</th>
+          <th>Foto</th>
+          <th>Tipo</th>
+          <th>Cor</th>
+          <th>Quant.</th>
+          <th>Observação</th>
+          <th>Também usada em</th>
+          <th class="acts noprint"></th>
+        </tr>
+      </thead>
+      <tbody>`;
+  
   c.items.forEach((it, i) => {
     const cm = commonOf(it);
     if (cm) {
       h += `<tr data-i="${i}" class="link">
-        <td class="part"><span class="ro"><b>${esc(cm.part)}</b><br><span class="tag" data-cm="${cm.id}" title="Editar na tela Peças comuns">🔗 peça comum</span></span></td>
+        <td class="part">
+          <span class="ro">
+            <b>${esc(cm.part)}</b><br>
+            <span class="tag" data-cm="${cm.id}" title="Editar na tela Peças comuns">🔗 peça comum</span>
+          </span>
+        </td>
         <td>${thumb(cm.photo, `data-cmph="${cm.id}"`)}</td>
-        <td><span class="ro">${esc(cm.type)}</span></td><td><span class="ro">${esc(cm.color)}</span></td>
-        <td><span class="ro">${esc(cm.qty)}</span></td><td><span class="ro">${esc(cm.notes)}</span></td>
+        <td><span class="ro">${esc(cm.type)}</span></td>
+        <td><span class="ro">${esc(cm.color)}</span></td>
+        <td style="width:80px"><span class="ro">${esc(cm.qty)}</span></td>
+        <td><span class="ro">${esc(cm.notes)}</span></td>
         <td>${sharedIn(it, c.id).map(s => `<span class="chip" data-go="${s.id}">${esc(s.name)}</span>`).join("")}</td>
-        <td class="acts noprint"><button title="Subir" data-mv="-1">▲</button><button title="Descer" data-mv="1">▼</button><button title="Tirar deste traje" data-del>🗑</button></td></tr>`;
+        <td class="acts noprint">
+          <button title="Subir" data-mv="-1">▲</button>
+          <button title="Descer" data-mv="1">▼</button>
+          <button title="Tirar deste traje" data-del>🗑</button>
+        </td>
+      </tr>`;
     } else {
       h += `<tr data-i="${i}">
-        <td class="part"><input data-f="part" value="${esc(it.part)}"></td>
+        <td class="part"><input data-f="part" value="${esc(it.part)}" placeholder="Ex: CAMISA"></td>
         <td>${thumb(it.photo, `data-ph="${i}"`)}</td>
-        <td><input data-f="type" value="${esc(it.type)}"></td>
-        <td><input data-f="color" value="${esc(it.color)}"></td>
-        <td style="width:90px"><input data-f="qty" value="${esc(it.qty)}"></td>
-        <td><textarea data-f="notes" rows="1">${esc(it.notes)}</textarea></td>
+        <td><input data-f="type" value="${esc(it.type)}" placeholder="Ex: GOLA PADRE"></td>
+        <td><input data-f="color" value="${esc(it.color)}" placeholder="Ex: BRANCA"></td>
+        <td style="width:80px"><input data-f="qty" value="${esc(it.qty)}" placeholder="1"></td>
+        <td><textarea data-f="notes" rows="1" placeholder="Observações...">${esc(it.notes)}</textarea></td>
         <td></td>
-        <td class="acts noprint"><button title="Subir" data-mv="-1">▲</button><button title="Descer" data-mv="1">▼</button><button title="Duplicar" data-dup>⧉</button><button title="Transformar em peça comum" data-mk>🔗</button><button title="Excluir" data-del>🗑</button></td></tr>`;
+        <td class="acts noprint">
+          <button title="Subir" data-mv="-1">▲</button>
+          <button title="Descer" data-mv="1">▼</button>
+          <button title="Duplicar" data-dup>⧉</button>
+          <button title="Transformar em peça comum" data-mk>🔗</button>
+          <button title="Excluir" data-del>🗑</button>
+        </td>
+      </tr>`;
     }
   });
-  h += `</tbody></table></div><p class="note">As alterações são salvas automaticamente neste navegador. Linhas em destaque são <b>peças comuns</b>: os dados e a foto são editados na tela "Peças comuns" e aparecem em todos os trajes marcados. Use 🔗 numa linha normal para transformá-la em peça comum.</p>`;
+  h += `</tbody></table></div>
+  <p class="note">Linhas em destaque rosa são <b>peças comuns</b>: editadas na aba "Peças comuns" e sincronizadas entre trajes. Clique em 🔗 para converter uma peça local em comum.</p>`;
+  
   app.innerHTML = h;
   const re = () => viewCostume(id);
 
@@ -358,6 +1385,7 @@ function viewCostume(id) {
   document.getElementById("addI").onclick = () => { c.items.push({ id: uid(), part: "", type: "", color: "", qty: "", notes: "", photo: "" }); save(); re(); app.querySelector("tbody tr:last-child input")?.focus(); };
   document.getElementById("addCm").onchange = e => { if (!e.target.value) return; c.items.push({ id: uid(), cid: e.target.value }); save(); re(); };
   document.getElementById("delC").onclick = () => { if (confirm(`Excluir o traje "${c.name}" e todas as suas peças?`)) { S.costumes = S.costumes.filter(x => x !== c); save(); go("#/"); } };
+  
   app.querySelectorAll("tbody tr").forEach(tr => {
     const i = +tr.dataset.i, it = c.items[i];
     tr.querySelectorAll("[data-f]").forEach(inp => {
@@ -376,51 +1404,85 @@ function viewCostume(id) {
     const dup = tr.querySelector("[data-dup]"); if (dup) dup.onclick = () => { c.items.splice(i + 1, 0, { ...it, id: uid() }); save(); re(); };
     const mk = tr.querySelector("[data-mk]"); if (mk) mk.onclick = () => {
       if (!it.part) return alert("Preencha o nome da peça primeiro.");
-      if (!confirm("Transformar esta linha em peça comum? Depois você escolhe em quais outros trajes ela aparece.")) return;
+      if (!confirm("Transformar esta peça em peça comum? Depois você escolhe em quais outros trajes ela aparece.")) return;
       const cm = newCommon(it); c.items[i] = { id: it.id, cid: cm.id }; save();
       chooseCostumes(cm, re);
     };
     tr.querySelector("[data-del]").onclick = () => {
-      if (!confirm(it.cid ? "Tirar esta peça comum deste traje? (Ela continua nos outros trajes.)" : "Excluir esta peça?")) return;
+      if (!confirm(it.cid ? "Tirar esta peça comum deste traje?" : "Excluir esta peça?")) return;
       c.items.splice(i, 1); save(); re();
     };
     tr.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
   });
 }
 
+/* 3. TELA TODAS AS PEÇAS */
 function viewPieces() {
   const parts = [...new Set(S.costumes.flatMap(c => c.items.map(i => norm(eff(i).part))).filter(Boolean))].sort();
-  let h = `<div class="bar noprint"><input type="search" id="q" placeholder="Buscar (peça, tipo, cor, observação)..."><select id="fp"><option value="">Todas as peças</option>${parts.map(p => `<option>${esc(p)}</option>`).join("")}</select><span id="cnt" class="note"></span></div>
+  let h = `<div class="bar noprint">
+    <input type="search" id="q" placeholder="Buscar (peça, tipo, cor, observação)...">
+    <select id="fp"><option value="">Todas as peças</option>${parts.map(p => `<option>${esc(p)}</option>`).join("")}</select>
+    <span id="cnt" class="note" style="margin-left:auto; font-weight:600"></span>
+  </div>
   <div class="wrap"><table><thead><tr><th>Traje</th><th>Peça</th><th>Foto</th><th>Tipo</th><th>Cor</th><th>Quant.</th><th>Observação</th></tr></thead><tbody>`;
+  
   S.costumes.forEach(c => c.items.forEach(raw => {
     const it = eff(raw); if (!it) return;
     const txt = norm([c.name, it.part, it.type, it.color, it.qty, it.notes].join(" "));
-    h += `<tr data-t="${esc(txt)}" data-p="${esc(norm(it.part))}" ${raw.cid ? 'class="link"' : ""}><td><span class="chip" data-go="${c.id}">${esc(c.name)}</span></td><td><b>${esc(it.part)}</b>${raw.cid ? ' <span class="tag" data-cm="' + raw.cid + '">🔗</span>' : ""}</td>
-      <td>${it.photo ? `<img class="thumb" src="${it.photo}" alt="">` : ""}</td><td>${esc(it.type)}</td><td>${esc(it.color)}</td><td>${esc(it.qty)}</td><td>${esc(it.notes)}</td></tr>`;
+    h += `<tr data-t="${esc(txt)}" data-p="${esc(norm(it.part))}" ${raw.cid ? 'class="link"' : ""}>
+      <td><span class="chip" data-go="${c.id}">${esc(c.name)}</span></td>
+      <td><b>${esc(it.part)}</b>${raw.cid ? ' <span class="tag" data-cm="' + raw.cid + '">🔗</span>' : ""}</td>
+      <td>${it.photo ? `<img class="thumb" src="${it.photo}" alt="">` : ""}</td>
+      <td>${esc(it.type)}</td>
+      <td>${esc(it.color)}</td>
+      <td>${esc(it.qty)}</td>
+      <td>${esc(it.notes)}</td>
+    </tr>`;
   }));
   app.innerHTML = h + `</tbody></table></div>`;
+  
   const f = () => {
     const q = norm(document.getElementById("q").value), p = document.getElementById("fp").value; let n = 0;
     app.querySelectorAll("tbody tr").forEach(tr => { const ok = tr.dataset.t.includes(q) && (!p || tr.dataset.p === p); tr.style.display = ok ? "" : "none"; if (ok) n++; });
-    document.getElementById("cnt").textContent = n + " linha(s)";
+    document.getElementById("cnt").textContent = n + " peça(s) encontrada(s)";
   };
   document.getElementById("q").oninput = f; document.getElementById("fp").onchange = f; f();
   app.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
   app.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/comuns/" + t.dataset.cm));
 }
 
+/* 4. TELA DANÇARINOS */
 function viewDancers() {
-  let h = `<div class="bar noprint"><input type="search" id="q" placeholder="Buscar dançarino..."><button class="btn" id="addD">+ Dançarino</button><button class="btn" id="addDz">+ Dança</button><button class="btn" onclick="window.print()">🖨 Imprimir</button></div>
-  <p class="note">Número da camisa de cada dançarino em cada dança. Clique no nome da dança para abrir o traje. ⚠ = dança sem traje cadastrado.</p>
+  let h = `<div class="bar noprint">
+    <input type="search" id="q" placeholder="Buscar dançarino pelo nome...">
+    <button class="btn primary" id="addD">+ Dançarino</button>
+    <button class="btn" id="addDz">+ Dança</button>
+    <button class="btn" onclick="window.print()">🖨 Imprimir Grade</button>
+    <span class="note" style="margin-left:auto">${S.dancers.length} dançarinos · ${S.dances.length} danças</span>
+  </div>
+  <p class="note" style="margin-top:-10px; margin-bottom:14px">Número da camisa/peça de cada dançarino. Clique no nome da dança para ir direto ao traje.</p>
   <div class="wrap"><table class="dz"><thead><tr><th>Dançarino</th>`;
+  
   S.dances.forEach((d, j) => {
     const c = findCostume(d);
-    h += `<th>${c ? `<a href="#/traje/${c.id}">${esc(d)}</a>` : `${esc(d)} <span class="warn" title="Nenhum traje com este nome">⚠</span>`}<br><span class="acts noprint"><button data-dl="${j}" title="Mover para a esquerda">◀</button><button data-dx="${j}" title="Excluir dança">✕</button><button data-dr="${j}" title="Mover para a direita">▶</button></span></th>`;
+    h += `<th>
+      ${c ? `<a href="#/traje/${c.id}">${esc(d)}</a>` : `${esc(d)} <span class="warn" title="Nenhum traje com este nome">⚠</span>`}
+      <br>
+      <span class="acts noprint">
+        <button data-dl="${j}" title="Mover para a esquerda">◀</button>
+        <button data-dx="${j}" title="Excluir dança">✕</button>
+        <button data-dr="${j}" title="Mover para a direita">▶</button>
+      </span>
+    </th>`;
   });
   h += `<th class="noprint"></th></tr></thead><tbody>`;
+  
   S.dancers.forEach((p, i) => {
-    h += `<tr data-i="${i}" data-n="${esc(norm(p.name))}"><td><input data-name value="${esc(p.name)}"></td>`;
-    S.dances.forEach(d => h += `<td><input data-d="${esc(d)}" value="${esc(p.nums[d] || "")}"></td>`);
+    h += `<tr data-i="${i}" data-n="${esc(norm(p.name))}">
+      <td><input data-name value="${esc(p.name)}" placeholder="NOME DO DANÇARINO"></td>`;
+    S.dances.forEach(d => {
+      h += `<td><input data-d="${esc(d)}" value="${esc(p.nums[d] || "")}" placeholder="-"></td>`;
+    });
     h += `<td class="acts noprint"><button data-del title="Excluir dançarino">🗑</button></td></tr>`;
   });
   app.innerHTML = h + `</tbody></table></div>`;
@@ -448,61 +1510,47 @@ function viewDancers() {
   });
 }
 
-function csv(rows) { return "\uFEFF" + rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(";")).join("\r\n"); }
-function viewBackup() {
-  app.innerHTML = `<h2>Backup e exportação</h2>
-  <p>Os dados ficam salvos <b>somente neste navegador, neste computador</b>. Faça backup com frequência, principalmente antes de limpar o histórico do navegador ou de trocar de computador.</p>
-  <div class="bar"><button class="btn on" id="bI">⬆ Restaurar backup (.json)</button><button class="btn" id="bJ">⬇ Baixar backup completo (.json, com fotos)</button></div>
-  <div class="bar"><button class="btn" id="bC1">⬇ Exportar peças para Excel (.csv)</button><button class="btn" id="bC2">⬇ Exportar grade de dançarinos para Excel (.csv)</button></div>
-  <div class="bar"><button class="btn red" id="bR">Limpar todos os dados (apaga tudo)</button></div>
-  <p class="note" id="info"></p>`;
-  const kb = Math.round(JSON.stringify(S).length / 1024);
-  document.getElementById("info").textContent = `${S.costumes.length} trajes · ${S.costumes.reduce((a, c) => a + c.items.length, 0)} peças · ${S.dancers.length} dançarinos · ${S.dances.length} danças · ${S.common.length} peças comuns · tamanho aprox.: ${kb} KB`;
-  document.getElementById("bJ").onclick = () => download(`trajes-backup-${today()}.json`, JSON.stringify(S), "application/json");
-  document.getElementById("bI").onclick = () => {
-    const i = document.createElement("input"); i.type = "file"; i.accept = ".json,application/json";
-    i.onchange = async () => {
-      try {
-        const d = JSON.parse(await i.files[0].text());
-        if (!Array.isArray(d.costumes) || !Array.isArray(d.dancers) || !Array.isArray(d.dances)) throw 0;
-        if (S.costumes.length && !confirm("Substituir todos os dados atuais por este backup?")) return;
-        S = migrate(d); save(); toast("Backup restaurado"); go("#/");
-      } catch (e) { alert("Arquivo de backup inválido."); }
-    };
-    i.click();
-  };
-  document.getElementById("bC1").onclick = () => download(`trajes-pecas-${today()}.csv`, csv([["Traje", "Peça", "Tipo", "Cor", "Quant.", "Observação"], ...S.costumes.flatMap(c => c.items.map(eff).filter(Boolean).map(it => [c.name, it.part, it.type, it.color, it.qty, it.notes]))]), "text/csv");
-  document.getElementById("bC2").onclick = () => download(`dancarinos-${today()}.csv`, csv([["Dançarino", ...S.dances], ...S.dancers.map(p => [p.name, ...S.dances.map(d => p.nums[d] || "")])]), "text/csv");
-  document.getElementById("bR").onclick = () => { if (confirm("Tem certeza absoluta? ISSO VAI APAGAR TODOS OS DADOS do aplicativo neste computador.")) { S = seedState(); save(); go("#/"); } };
-}
-
-/* ===== TELA PEÇAS COMUNS ===== */
+/* 5. TELA PEÇAS COMUNS */
 function viewCommon(focusId) {
-  let h = `<h2>Peças comuns</h2>
-  <p class="note" style="margin-top:0">Cadastre aqui as peças usadas em vários trajes (ex.: CAMISA QUE AMASSA). Coloque a foto <b>uma vez</b> e clique em <b>Escolher trajes</b> para marcar onde ela aparece. Qualquer alteração aqui vale para todos os trajes marcados.</p>
-  <div class="bar noprint"><input type="search" id="q" placeholder="Buscar peça comum..."><button class="btn" id="addCm">+ Nova peça comum</button><button class="btn" id="imp">Importar peças repetidas da planilha</button></div>`;
-  if (!S.common.length) h += `<p><b>Nenhuma peça comum cadastrada ainda.</b> Clique em "+ Nova peça comum" ou em "Importar peças repetidas da planilha" para criar automaticamente a partir das linhas idênticas que já existem nos trajes.</p>`;
-  else {
+  let h = `<h2>🔗 Peças comuns</h2>
+  <p class="note" style="margin-top:0">Cadastre aqui peças reutilizadas em múltiplos trajes (ex.: CAMISA QUE AMASSA). A alteração de foto e dados aqui reflete automaticamente em todos os trajes marcados.</p>
+  <div class="bar noprint">
+    <input type="search" id="q" placeholder="Buscar peça comum...">
+    <button class="btn primary" id="addCm">+ Nova peça comum</button>
+    <button class="btn" id="imp">Importar peças repetidas existentes</button>
+  </div>`;
+  
+  if (!S.common.length) {
+    h += `<div style="padding: 40px; text-align: center; background: #fff; border-radius: 16px; border: 1px dashed var(--bd);">
+      <p style="color:var(--text-muted)">Nenhuma peça comum cadastrada ainda.<br>Clique em <b>+ Nova peça comum</b> ou importe as repetidas automaticamente.</p>
+    </div>`;
+  } else {
     h += `<div class="wrap"><table><thead><tr><th>Foto</th><th>Peça</th><th>Tipo</th><th>Cor</th><th>Quant.</th><th>Observação</th><th>Trajes em que aparece</th><th class="acts noprint"></th></tr></thead><tbody>`;
     S.common.forEach((cm, i) => {
       const cs = costumesOf(cm);
       h += `<tr data-i="${i}" id="cm-${cm.id}" data-n="${esc(norm(cmLabel(cm)))}">
         <td>${thumb(cm.photo, "data-ph")}</td>
-        <td class="part"><input data-f="part" value="${esc(cm.part)}"></td>
-        <td><input data-f="type" value="${esc(cm.type)}"></td>
-        <td><input data-f="color" value="${esc(cm.color)}"></td>
-        <td style="width:90px"><input data-f="qty" value="${esc(cm.qty)}"></td>
-        <td><textarea data-f="notes" rows="1">${esc(cm.notes)}</textarea></td>
-        <td style="min-width:220px">${cs.map(c => `<span class="chip" data-go="${c.id}">${esc(c.name)}</span>`).join("") || '<span class="warn">nenhum traje</span>'}<br><button class="btn noprint" data-ch style="margin-top:4px">Escolher trajes (${cs.length})</button></td>
-        <td class="acts noprint"><button title="Excluir peça comum" data-del>🗑</button></td></tr>`;
+        <td class="part"><input data-f="part" value="${esc(cm.part)}" placeholder="NOME DA PEÇA"></td>
+        <td><input data-f="type" value="${esc(cm.type)}" placeholder="TIPO"></td>
+        <td><input data-f="color" value="${esc(cm.color)}" placeholder="COR"></td>
+        <td style="width:80px"><input data-f="qty" value="${esc(cm.qty)}" placeholder="1"></td>
+        <td><textarea data-f="notes" rows="1" placeholder="Observações...">${esc(cm.notes)}</textarea></td>
+        <td style="min-width:220px">
+          ${cs.map(c => `<span class="chip" data-go="${c.id}">${esc(c.name)}</span>`).join("") || '<span class="warn">Nenhum traje</span>'}<br>
+          <button class="btn sm noprint" data-ch style="margin-top:6px">Escolher trajes (${cs.length})</button>
+        </td>
+        <td class="acts noprint"><button title="Excluir peça comum" data-del>🗑</button></td>
+      </tr>`;
     });
     h += `</tbody></table></div>`;
   }
   app.innerHTML = h;
   const re = () => viewCommon();
+  
   document.getElementById("q").oninput = e => { const q = norm(e.target.value); app.querySelectorAll("tbody tr").forEach(tr => tr.style.display = tr.dataset.n.includes(q) ? "" : "none"); };
   document.getElementById("addCm").onclick = () => { const cm = newCommon(); save(); viewCommon(cm.id); };
   document.getElementById("imp").onclick = () => { if (importRepeated()) re(); };
+  
   app.querySelectorAll("tbody tr").forEach(tr => {
     const cm = S.common[+tr.dataset.i];
     tr.querySelectorAll("[data-f]").forEach(inp => {
@@ -517,7 +1565,7 @@ function viewCommon(focusId) {
     tr.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
     tr.querySelector("[data-del]").onclick = async () => {
       const cs = costumesOf(cm);
-      const v = cs.length ? await ask(`A peça "${cmLabel(cm) || "sem nome"}" está em ${cs.length} traje(s).`, [["Manter nos trajes como peça normal (sem vínculo)", "keep"], ["Remover também dos trajes", "drop"]]) : (confirm("Excluir esta peça comum?") ? "drop" : null);
+      const v = cs.length ? await ask(`A peça "${cmLabel(cm) || "sem nome"}" está em ${cs.length} traje(s).`, [["Manter nos trajes como peça normal (sem vínculo)", "keep"], ["Remover também dos trajes", "drop"]], "Excluir Peça Comum") : (confirm("Excluir esta peça comum?") ? "drop" : null);
       if (!v) return;
       S.costumes.forEach(c => { c.items = v === "drop" ? c.items.filter(i => i.cid !== cm.id) : c.items.map(i => i.cid === cm.id ? { id: i.id, part: cm.part, type: cm.type, color: cm.color, qty: cm.qty, notes: cm.notes, photo: cm.photo } : i); });
       S.common = S.common.filter(x => x !== cm); save(); re();
@@ -526,151 +1574,9 @@ function viewCommon(focusId) {
   if (focusId) { const r = document.getElementById("cm-" + focusId); if (r) { r.scrollIntoView({ block: "center" }); r.style.outline = "2px solid var(--pri)"; r.querySelector("input")?.focus(); } }
 }
 
-/* ===== ROTEAMENTO ===== */
-function route() {
-  const h = location.hash || "#/";
-  document.querySelectorAll("[data-nav]").forEach(b => b.classList.toggle("on", h === b.dataset.nav || (b.dataset.nav === "#/comuns" && h.startsWith("#/comuns")) || (b.dataset.nav === "#/" && h.startsWith("#/traje/"))));
-  window.scrollTo(0, 0);
-  if (h.startsWith("#/traje/")) viewCostume(h.slice(8));
-  else if (h === "#/dancarinos") viewDancers();
-  else if (h === "#/pecas") viewPieces();
-  else if (h === "#/backup") viewBackup();
-  else if (h.startsWith("#/comuns")) viewCommon(h.split("/")[2]);
-  else viewHome();
-}
-document.querySelectorAll("[data-nav]").forEach(b => b.onclick = () => go(b.dataset.nav));
-window.addEventListener("hashchange", route);
-
-(async () => {
-  if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
-  S = await loadState();
-  if (!S) { S = seedState(); save(); } else { S = migrate(S); save(); }
-  route();
-})();
-</script>
-<!-- ===== AJUSTE DAS FOTOS (tamanho e encaixe) ===== -->
-<style>
-:root{--fit:contain;--bgfit:contain;--tw:80px;--cardw:170px;--ar:3/4}
-.thumb{width:var(--tw)!important;height:var(--tw)!important;object-fit:var(--fit)!important;background:#f8fafc}
-.nothumb{width:var(--tw)!important;height:var(--tw)!important}
-.ph{aspect-ratio:var(--ar)!important;background-size:var(--bgfit)!important;background-color:#f8fafc}
-.grid{grid-template-columns:repeat(auto-fill,minmax(var(--cardw),1fr))!important}
-.cover{width:calc(var(--cardw)*.8)!important;height:auto!important;aspect-ratio:var(--ar);background-size:var(--bgfit)!important}
-#fotoPanel{position:fixed;top:64px;right:20px;background:#fff;color:#1e293b;border-radius:16px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);padding:20px;z-index:40;display:none;width:320px;font-size:14px;border:1px solid var(--bd)}
-#fotoPanel label{display:block;margin:12px 0 6px;font-weight:600}
-#fotoPanel select,#fotoPanel input[type=range]{width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd)}
-#fotoPanel .v{float:right;font-weight:500;color:#64748b}
-</style>
-<div id="fotoPanel">
-  <b style="font-size:16px;color:#0f172a">🖼 Ajuste das fotos</b>
-  <label>Encaixe da foto</label>
-  <select id="fpFit">
-    <option value="contain">Foto inteira (sem cortar)</option>
-    <option value="cover">Preencher o quadro (corta as bordas)</option>
-  </select>
-  <label>Tamanho das fotos das peças <span class="v" id="fpTwV"></span></label>
-  <input type="range" id="fpTw" min="48" max="260" step="4">
-  <label>Tamanho dos cartões do menu <span class="v" id="fpCwV"></span></label>
-  <input type="range" id="fpCw" min="120" max="360" step="10">
-  <label>Formato dos cartões e da capa</label>
-  <select id="fpAr">
-    <option value="3/4">Retrato (em pé)</option>
-    <option value="1/1">Quadrado</option>
-    <option value="4/3">Paisagem (deitado)</option>
-  </select>
-  <div style="margin-top:20px;display:flex;gap:8px;justify-content:space-between">
-    <button class="btn" id="fpReset">Padrão</button>
-    <button class="btn on" id="fpClose">Fechar</button>
-  </div>
-</div>
-<script>
-(function () {
-  const DEF = { fit: "contain", tw: 80, cw: 170, ar: "3/4" };
-  let P = Object.assign({}, DEF, JSON.parse(localStorage.getItem("fotoAjuste") || "{}"));
-  const $ = id => document.getElementById(id);
-  function apply() {
-    const r = document.documentElement.style;
-    r.setProperty("--fit", P.fit); r.setProperty("--bgfit", P.fit);
-    r.setProperty("--tw", P.tw + "px"); r.setProperty("--cardw", P.cw + "px"); r.setProperty("--ar", P.ar);
-    $("fpFit").value = P.fit; $("fpTw").value = P.tw; $("fpCw").value = P.cw; $("fpAr").value = P.ar;
-    $("fpTwV").textContent = P.tw + " px"; $("fpCwV").textContent = P.cw + " px";
-    localStorage.setItem("fotoAjuste", JSON.stringify(P));
-  }
-  $("fpFit").onchange = e => { P.fit = e.target.value; apply(); };
-  $("fpTw").oninput = e => { P.tw = +e.target.value; apply(); };
-  $("fpCw").oninput = e => { P.cw = +e.target.value; apply(); };
-  $("fpAr").onchange = e => { P.ar = e.target.value; apply(); };
-  $("fpReset").onclick = () => { P = Object.assign({}, DEF); apply(); };
-  $("fpClose").onclick = () => $("fotoPanel").style.display = "none";
-  const b = document.createElement("button");
-  b.className = "btn"; b.textContent = "🖼 Fotos"; b.title = "Ajustar tamanho e encaixe das fotos";
-  b.onclick = () => { const p = $("fotoPanel"); p.style.display = p.style.display === "block" ? "none" : "block"; };
-  document.querySelector("header").appendChild(b);
-  apply();
-})();
-</script>
-<!-- ===== BANCO DE FOTOS (fundo branco + realce) ===== -->
-<style>
-.thumb,.ph,.cover{background-color:#fff!important}
-.bk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
-.bk-card{background:#fff;border-radius:12px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--bd);transition:transform 0.2s}
-.bk-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
-.bk-card img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#fff;cursor:zoom-in;border-bottom:1px solid var(--bd)}
-.bk-card .bd{padding:10px;display:flex;flex-direction:column;gap:6px}
-.bk-card input{border:1px solid transparent;font:inherit;font-size:13px;font-weight:600;color:#0f172a;padding:6px;border-radius:6px;width:100%;transition:all 0.2s}
-.bk-card input:hover,.bk-card input:focus{border-color:var(--pri);background:#f8fafc;outline:none;box-shadow:0 0 0 3px rgba(155,34,50,0.1)}
-.bk-card .use{font-size:12px;color:var(--mut);line-height:1.4}
-.bk-card .row{display:flex;gap:6px;margin-top:4px}
-.bk-card .row .btn{flex:1;padding:6px;font-size:13px}
-#bkDrop{border:2px dashed #cbd5e1;border-radius:16px;padding:32px;text-align:center;color:#64748b;background:#f8fafc;margin-bottom:20px;transition:all 0.2s}
-#bkDrop.over{background:#fef2f2;border-color:var(--pri);color:var(--pri)}
-#bkDlg .box{width:94%;max-width:900px;max-height:88vh;display:flex;flex-direction:column;gap:12px}
-#bkDlg .list{overflow:auto;flex:1;padding:4px}
-#bkDlg label{display:block;font-weight:600;margin-top:8px;color:#1e293b}
-#bkDlg select{width:100%;padding:8px 12px;border:1px solid var(--bd);border-radius:8px;outline:none}
-#bkDlg select:focus{border-color:var(--pri)}
-</style>
-<div id="bkDlg"><div class="box" id="bkBox"></div></div>
-<script>
-(function () {
-  const $ = id => document.getElementById(id);
-  const bank = () => (S.bank = S.bank || []);
-  const OPT = Object.assign({ enhance: true }, JSON.parse(localStorage.getItem("bancoOpc") || "{}"));
-
-  /* 1) Processamento: fundo BRANCO (em vez de preto) + realce opcional */
-  window.readImg = readImg = function (file, max = 1000) {
-    return new Promise((res, rej) => {
-      const fr = new FileReader();
-      fr.onload = () => {
-        const im = new Image();
-        im.onload = () => {
-          const k = Math.min(1, max / Math.max(im.width, im.height));
-          const cv = document.createElement("canvas");
-          cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k);
-          const g = cv.getContext("2d");
-          g.fillStyle = "#ffffff"; g.fillRect(0, 0, cv.width, cv.height);
-          if (OPT.enhance) g.filter = "brightness(1.06) contrast(1.10) saturate(1.08)";
-          g.drawImage(im, 0, 0, cv.width, cv.height);
-          res(cv.toDataURL("image/jpeg", 0.85));
-        };
-        im.onerror = () => rej(new Error("Formato de imagem não suportado"));
-        im.src = fr.result;
-      };
-      fr.onerror = rej; fr.readAsDataURL(file);
-    });
-  };
-  async function addFiles(files) {
-    let n = 0, bad = 0;
-    for (const f of files) {
-      if (!f.type.startsWith("image/")) { bad++; continue; }
-      try { const img = await readImg(f); bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) }); n++; }
-      catch (e) { bad++; }
-    }
-    save(); toast(n + " foto(s) adicionada(s) ao banco" + (bad ? ` · ${bad} ignorada(s)` : ""));
-    if (bad) alert(bad + " arquivo(s) não puderam ser lidos. Use JPG ou PNG (fotos HEIC do iPhone não abrem em todos os navegadores).");
-  }
-
-  /* Onde cada foto do banco está sendo usada */
+/* 6. TELA BANCO DE FOTOS */
+function viewBank() {
+  const B = bank();
   function usage(b) {
     const r = [];
     S.costumes.forEach(c => {
@@ -681,219 +1587,316 @@ window.addEventListener("hashchange", route);
     return r;
   }
 
-  /* 2) Janela "Usar esta foto em..." */
-  function assignDlg(b) {
-    const box = $("bkBox");
-    const costOpts = S.costumes.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("");
-    box.innerHTML = `<div style="display:flex;gap:20px;flex-wrap:wrap"><img src="${b.img}" style="width:200px;height:200px;object-fit:contain;background:#fff;border:1px solid var(--bd);border-radius:12px;box-shadow:var(--shadow)">
-      <div style="flex:1;min-width:260px"><b style="font-size:18px;color:#0f172a">${esc(b.name)}</b>
-      <label>Usar esta foto como</label>
-      <select id="bkT"><option value="item">Foto de uma peça de traje</option><option value="common">Foto de uma peça comum (vale para todos os trajes marcados)</option><option value="cover">Capa de um traje</option></select>
-      <div id="bkWhere"></div></div></div>
-      <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:16px"><button class="btn red" id="bkCancel">Cancelar</button><button class="btn on" id="bkOk">Aplicar foto</button></div>`;
-    const where = () => {
-      const t = $("bkT").value;
-      if (t === "common") {
-        const cs = S.common || [];
-        $("bkWhere").innerHTML = cs.length ? `<label>Peça comum</label><select id="bkCm">${cs.map(cm => `<option value="${cm.id}">${esc([cm.part, cm.type, cm.color].filter(Boolean).join(" · "))}</option>`).join("")}</select>` : `<p class="warn">Nenhuma peça comum cadastrada ainda.</p>`;
-      } else {
-        $("bkWhere").innerHTML = `<label>Traje</label><select id="bkC">${costOpts}</select>` + (t === "item" ? `<label>Peça</label><select id="bkI"></select>` : "");
-        const fill = () => {
-          if (t !== "item") return;
-          const c = S.costumes.find(x => x.id === $("bkC").value);
-          const its = c.items.map((it, i) => [it, i]).filter(([it]) => !it.cid);
-          $("bkI").innerHTML = its.length ? its.map(([it, i]) => `<option value="${i}">${esc([it.part, it.type, it.color].filter(Boolean).join(" · ") || "(sem nome)")}${it.photo ? " 📷" : ""}</option>`).join("") : `<option value="">(sem peças próprias — use peça comum)</option>`;
-        };
-        $("bkC").onchange = fill; fill();
-      }
-    };
-    $("bkT").onchange = where; where();
-    $("bkCancel").onclick = () => $("bkDlg").style.display = "none";
-    $("bkOk").onclick = () => {
-      const t = $("bkT").value; let obj = null, label = "";
-      if (t === "common") { obj = (S.common || []).find(x => x.id === ($("bkCm") || {}).value); label = "peça comum"; }
-      else {
-        const c = S.costumes.find(x => x.id === $("bkC").value);
-        if (t === "cover") { obj = c; label = "capa de " + c.name; }
-        else { const i = ($("bkI") || {}).value; if (i !== "" && i != null) { obj = c.items[+i]; label = c.name; } }
-      }
-      if (!obj) return alert("Escolha onde usar a foto.");
-      if (obj.photo && !confirm("Já existe uma foto nesse lugar. Substituir?")) return;
-      obj.photo = b.img; save(); $("bkDlg").style.display = "none"; toast("Foto aplicada em " + label); viewBank();
-    };
-    $("bkDlg").style.display = "flex";
-  }
-
-  /* 3) Tela do banco */
-  function viewBank() {
-    const B = bank();
-    let h = `<h2>📷 Banco de fotos</h2>
-      <p class="note" style="margin-top:0">Envie várias fotos de uma vez. Elas ficam com <b>fundo branco</b>${OPT.enhance ? " e <b>realce</b> de brilho/contraste" : ""}. Depois clique em <b>Usar em...</b> para direcionar cada foto a um traje, peça ou peça comum. Você também pode escolher fotos do banco ao clicar em qualquer "+ foto".</p>
-      <div id="bkDrop"><div style="font-size:24px;margin-bottom:8px">📥</div>Arraste as fotos para cá ou <button class="btn on" id="bkUp" style="margin:0 8px">Escolher do computador</button><br><label style="font-size:13px;display:inline-block;margin-top:12px;cursor:pointer"><input type="checkbox" id="bkEnh" ${OPT.enhance ? "checked" : ""}> Realçar as fotos ao enviar (brilho, contraste e cor)</label></div>
-      <div class="bar"><input type="search" id="bkQ" placeholder="Buscar foto pelo nome..."><select id="bkF"><option value="">Todas</option><option value="free">Ainda não usadas</option><option value="used">Já usadas</option></select><span class="note">${B.length} foto(s) no banco</span></div>
-      <div class="bk-grid">`;
-    B.forEach((b, i) => {
-      const u = usage(b);
-      h += `<div class="bk-card" data-i="${i}" data-n="${esc(norm(b.name))}" data-u="${u.length ? "used" : "free"}"><img src="${b.img}" alt="" data-zoom>
-        <div class="bd"><input data-nm value="${esc(b.name)}" title="Nome da foto">
+  let h = `<h2>📷 Banco de Fotos</h2>
+    <p class="note" style="margin-top:0">Envie múltiplas fotos de uma vez com fundo branco automático. Use o botão <b>Usar em...</b> para vincular a trajes ou peças.</p>
+    <div id="bkDrop">
+      <div style="font-size:32px; margin-bottom:8px">📥</div>
+      <b>Arraste as fotos para cá</b> ou <button class="btn primary" id="bkUp" style="margin:0 8px">Escolher do Computador</button>
+      <br>
+      <label style="font-size:13px; display:inline-flex; align-items:center; gap:6px; margin-top:14px; cursor:pointer">
+        <input type="checkbox" id="bkEnh" ${OPT.enhance ? "checked" : ""}> Realçar qualidade automaticamente (brilho, contraste e cor)
+      </label>
+    </div>
+    <div class="bar">
+      <input type="search" id="bkQ" placeholder="Buscar foto pelo nome...">
+      <select id="bkF"><option value="">Todas as fotos</option><option value="free">Ainda não usadas</option><option value="used">Já utilizadas</option></select>
+      <span class="note" style="margin-left:auto">${B.length} foto(s) no banco</span>
+    </div>
+    <div class="bk-grid">`;
+  
+  B.forEach((b, i) => {
+    const u = usage(b);
+    h += `<div class="bk-card" data-i="${i}" data-n="${esc(norm(b.name))}" data-u="${u.length ? "used" : "free"}">
+      <img src="${b.img}" alt="" data-zoom>
+      <div class="bd">
+        <input data-nm value="${esc(b.name)}" title="Nome da foto">
         <div class="use" title="${esc(u.join("\n"))}">${u.length ? "Usada em " + u.length + ": " + esc(u.slice(0, 2).join(", ")) + (u.length > 2 ? "…" : "") : "Ainda não usada"}</div>
-        <div class="row"><button class="btn" data-use>Usar em...</button><button class="btn red" data-del title="Excluir do banco">🗑</button></div></div></div>`;
-    });
-    app.innerHTML = h + `</div>`;
-    const inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/*"; inp.multiple = true;
-    inp.onchange = async () => { await addFiles([...inp.files]); viewBank(); };
-    $("bkUp").onclick = () => inp.click();
-    $("bkEnh").onchange = e => { OPT.enhance = e.target.checked; localStorage.setItem("bancoOpc", JSON.stringify(OPT)); };
-    const d = $("bkDrop");
-    d.ondragover = e => { e.preventDefault(); d.classList.add("over"); };
-    d.ondragleave = () => d.classList.remove("over");
-    d.ondrop = async e => { e.preventDefault(); d.classList.remove("over"); await addFiles([...e.dataTransfer.files]); viewBank(); };
-    const filt = () => { const q = norm($("bkQ").value), s = $("bkF").value; app.querySelectorAll(".bk-card").forEach(el => el.style.display = el.dataset.n.includes(q) && (!s || el.dataset.u === s) ? "" : "none"); };
-    $("bkQ").oninput = filt; $("bkF").onchange = filt;
-    app.querySelectorAll(".bk-card").forEach(el => {
-      const b = B[+el.dataset.i];
-      el.querySelector("[data-nm]").onchange = e => { b.name = e.target.value.toUpperCase().trim(); e.target.value = b.name; el.dataset.n = norm(b.name); save(); };
-      el.querySelector("[data-zoom]").onclick = () => { $("lbimg").src = b.img; $("lb").style.display = "flex"; $("lbchg").style.display = $("lbdel").style.display = "none"; $("lbclose").onclick = () => { $("lb").style.display = "none"; $("lbchg").style.display = $("lbdel").style.display = ""; }; };
-      el.querySelector("[data-use]").onclick = () => assignDlg(b);
-      el.querySelector("[data-del]").onclick = () => {
-        const u = usage(b);
-        if (!confirm(u.length ? `Excluir do banco? A foto continua nos ${u.length} lugar(es) onde já foi aplicada.` : "Excluir esta foto do banco?")) return;
-        S.bank = B.filter(x => x !== b); save(); viewBank();
-      };
-    });
-  }
+        <div class="row">
+          <button class="btn primary" data-use>Usar em...</button>
+          <button class="btn red" data-del title="Excluir do banco">🗑</button>
+        </div>
+      </div>
+    </div>`;
+  });
+  app.innerHTML = h + `</div>`;
 
-  /* 4) Ao clicar em qualquer "+ foto": escolher do banco ou enviar do computador */
-  window.pickImg = pickImg = function (cb) {
-    const B = bank(), box = $("bkBox");
-    box.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><b style="font-size:18px">Escolher foto</b>
-      <span style="display:flex;gap:8px;align-items:center"><input type="search" id="pkQ" placeholder="Buscar no banco..." style="padding:8px 12px;border:1px solid var(--bd);border-radius:8px;outline:none"> <button class="btn on" id="pkUp">⬆ Enviar nova</button> <button class="btn red" id="pkX">Cancelar</button></span></div>
-      <div class="list"><div class="bk-grid">${B.length ? B.map((b, i) => `<div class="bk-card" data-i="${i}" data-n="${esc(norm(b.name))}" style="cursor:pointer;transition:transform 0.2s"><img src="${b.img}" alt="" style="pointer-events:none"><div class="bd"><span style="font-size:13px;font-weight:600;text-align:center">${esc(b.name)}</span></div></div>`).join("") : `<p class="note" style="grid-column:1/-1;text-align:center;padding:40px">O banco está vazio.<br>Envie do computador ou use a tela 📷 Banco de fotos.</p>`}</div></div>`;
-    $("bkDlg").style.display = "flex";
-    const close = () => $("bkDlg").style.display = "none";
-    $("pkX").onclick = close;
-    $("pkQ").oninput = e => { const q = norm(e.target.value); box.querySelectorAll(".bk-card").forEach(el => el.style.display = el.dataset.n.includes(q) ? "" : "none"); };
-    $("pkUp").onclick = () => {
-      const i = document.createElement("input"); i.type = "file"; i.accept = "image/*";
-      i.onchange = async () => { if (!i.files[0]) return; try { const img = await readImg(i.files[0]); bank().push({ id: uid(), name: i.files[0].name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) }); save(); close(); cb(img); } catch (e) { alert("Não foi possível ler esta imagem. Use JPG ou PNG."); } };
-      i.click();
-    };
-    box.querySelectorAll(".bk-card").forEach(el => el.onclick = () => { close(); cb(B[+el.dataset.i].img); });
-  };
-  $("bkDlg").addEventListener("click", e => { if (e.target.id === "bkDlg") $("bkDlg").style.display = "none"; });
-
-  /* 5) Menu e navegação */
-  const btn = document.createElement("button");
-  btn.className = "btn"; btn.textContent = "📷 Banco de fotos"; btn.onclick = () => go("#/banco");
-  const hdr = document.querySelector("header"), ref = hdr.querySelector('[data-nav="#/backup"]');
-  hdr.insertBefore(btn, ref);
-  const onRoute = () => { const on = location.hash.startsWith("#/banco"); btn.classList.toggle("on", on); if (on && S) viewBank(); };
-  window.addEventListener("hashchange", onRoute);
-  const wait = setInterval(() => { if (S) { clearInterval(wait); onRoute(); } }, 100);
-})();
-</script>
-<!-- ===== LOGO NO TOPO (escolhida do Banco de fotos) ===== -->
-<style>
-#logoBox{height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border-radius:10px;margin-right:8px;transition:transform 0.2s}
-#logoBox:hover{transform:scale(1.05)}
-#logoBox img{height:44px;max-width:140px;object-fit:contain;background:#fff;border-radius:8px;padding:4px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
-#logoBox .ph0{font-size:12px;font-weight:600;color:#fff;border:2px dashed rgba(255,255,255,0.6);border-radius:8px;padding:6px 10px;line-height:1.1;text-align:center}
-header h1{display:flex;align-items:center;gap:4px}
-</style>
-<script>
-(function () {
-  const h1 = document.querySelector("header h1");
-  const box = document.createElement("span"); box.id = "logoBox"; box.title = "Clique para escolher ou trocar a logo";
-  h1.parentNode.insertBefore(box, h1);
-  h1.textContent = "Trajes Masculinos";
-  function draw() {
-    box.innerHTML = S && S.logo ? `<img src="${S.logo}" alt="Logo">` : `<span class="ph0">+ logo</span>`;
-  }
-  box.onclick = async e => {
-    e.stopPropagation();
-    if (S.logo) {
-      const v = await ask("Logo do topo", [["Trocar a logo (escolher do banco)", "chg"], ["Remover a logo", "del"]]);
-      if (v === "del") { S.logo = ""; save(); draw(); return; }
-      if (v !== "chg") return;
+  const inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/*"; inp.multiple = true;
+  inp.onchange = async () => {
+    let n = 0, bad = 0;
+    for (const f of inp.files) {
+      if (!f.type.startsWith("image/")) { bad++; continue; }
+      try { const img = await readImg(f); bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) }); n++; }
+      catch (e) { bad++; }
     }
-    pickImg(img => { S.logo = img; save(); draw(); toast("Logo atualizada"); });
+    save(); toast(n + " foto(s) adicionada(s)"); viewBank();
   };
-  const wait = setInterval(() => { if (S) { clearInterval(wait); draw(); } }, 100);
-})();
-</script>
-<!-- ===== AJUSTE DE TEXTOS E COLUNAS ===== -->
-<style>
-:root{--fs:14px;--fsh:13px;--fst:28px;--fsc:15px;--fsm:14px;--padx:12px;--pady:10px;--ff:system-ui,-apple-system,sans-serif}
-body{font-family:var(--ff)!important}
-th,td,td input,td textarea,td select,.ro,.bk-card input{font-size:var(--fs)!important;font-family:var(--ff)!important}
-th{font-size:var(--fsh)!important}
-th,td{padding:var(--pady) var(--padx)!important}
-td input,td textarea{padding:6px 8px!important}
-.chip,.tag,.note,.use{font-size:calc(var(--fs) - 2px)!important}
-.title input{font-size:var(--fst)!important}
-.nm{font-size:var(--fsc)!important}
-header .btn,.bar .btn,.bar input,.bar select{font-size:var(--fsm)!important}
-header h1{font-size:calc(var(--fsm) + 6px)!important}
-.wrap table th{resize:horizontal;overflow:hidden;min-width:40px}
-#txtPanel{position:fixed;top:64px;right:20px;background:#fff;color:#1e293b;border-radius:16px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);padding:20px;z-index:41;display:none;width:340px;max-height:82vh;overflow:auto;font-size:14px;border:1px solid var(--bd)}
-#txtPanel label{display:block;margin:12px 0 6px;font-weight:600;font-size:13px}
-#txtPanel input[type=range],#txtPanel select{width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd)}
-#txtPanel .v{float:right;font-weight:500;color:#64748b}
-#txtPanel hr{border:none;border-top:1px solid var(--bd);margin:16px 0 8px}
-</style>
-<div id="txtPanel">
-  <b style="font-size:16px;color:#0f172a">🔤 Textos e colunas</b>
-  <label>Fonte</label>
-  <select id="tpFf">
-    <option value='system-ui,-apple-system,sans-serif'>Padrão do sistema</option>
-    <option value="Arial,Helvetica,sans-serif">Arial</option>
-    <option value="Calibri,Carlito,sans-serif">Calibri</option>
-    <option value="Verdana,sans-serif">Verdana</option>
-    <option value="Tahoma,sans-serif">Tahoma</option>
-    <option value='"Times New Roman",serif'>Times New Roman</option>
-  </select>
-  <label>Texto das tabelas <span class="v" id="tpFsV"></span></label>
-  <input type="range" id="tpFs" min="10" max="24" step="1">
-  <label>Cabeçalho das tabelas <span class="v" id="tpFshV"></span></label>
-  <input type="range" id="tpFsh" min="10" max="24" step="1">
-  <label>Título do traje <span class="v" id="tpFstV"></span></label>
-  <input type="range" id="tpFst" min="14" max="40" step="1">
-  <label>Nomes nos cartões do menu <span class="v" id="tpFscV"></span></label>
-  <input type="range" id="tpFsc" min="10" max="28" step="1">
-  <label>Botões e menu <span class="v" id="tpFsmV"></span></label>
-  <input type="range" id="tpFsm" min="10" max="20" step="1">
-  <hr>
-  <label>Espaço entre colunas <span class="v" id="tpPxV"></span></label>
-  <input type="range" id="tpPx" min="0" max="30" step="1">
-  <label>Espaço entre linhas <span class="v" id="tpPyV"></span></label>
-  <input type="range" id="tpPy" min="0" max="20" step="1">
-  <p class="note" style="margin:12px 0 0">Largura de cada coluna: arraste o <b>canto inferior direito do título da coluna</b> (◢). A largura fica salva.</p>
-  <div style="margin-top:20px;display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap">
-    <button class="btn" id="tpReset">Padrão</button>
-    <button class="btn" id="tpResetCols">Zerar larguras</button>
-    <button class="btn on" id="tpClose">Fechar</button>
-  </div>
-</div>
-<script>
-(function () {
-  const DEF = { ff: 'system-ui,-apple-system,sans-serif', fs: 14, fsh: 13, fst: 28, fsc: 15, fsm: 14, px: 12, py: 10 };
-  let P = Object.assign({}, DEF, JSON.parse(localStorage.getItem("textoAjuste") || "{}"));
-  let W = JSON.parse(localStorage.getItem("colunasLargura") || "{}");
-  const $ = id => document.getElementById(id);
-  const map = { fs: "--fs", fsh: "--fsh", fst: "--fst", fsc: "--fsc", fsm: "--fsm", px: "--padx", py: "--pady" };
-  const ids = { fs: "tpFs", fsh: "tpFsh", fst: "tpFst", fsc: "tpFsc", fsm: "tpFsm", px: "tpPx", py: "tpPy" };
-  function apply() {
-    const r = document.documentElement.style;
-    r.setProperty("--ff", P.ff); $("tpFf").value = P.ff;
-    for (const k in map) { r.setProperty(map[k], P[k] + "px"); $(ids[k]).value = P[k];$(ids[k] + "V").textContent = P[k] + " px"; }
-    localStorage.setItem("textoAjuste", JSON.stringify(P));
-  }
-  $("tpFf").onchange = e => { P.ff = e.target.value; apply(); };
-  for (const k in ids) $(ids[k]).oninput = e => { P[k] = +e.target.value; apply(); };$("tpReset").onclick = () => { P = Object.assign({}, DEF); apply(); };
-  $("tpResetCols").onclick = () => { W = {}; localStorage.setItem("colunasLargura", "{}"); document.querySelectorAll(".wrap table th").forEach(th => th.style.width = ""); toast("Larguras zeradas"); };
-  $("tpClose").onclick = () => $("txtPanel").style.display = "none";
+  document.getElementById("bkUp").onclick = () => inp.click();
+  document.getElementById("bkEnh").onchange = e => { OPT.enhance = e.target.checked; localStorage.setItem("bancoOpc", JSON.stringify(OPT)); };
 
-  /* Largura das colunas: salva por tela + nome da coluna */
+  const d = document.getElementById("bkDrop");
+  d.ondragover = e => { e.preventDefault(); d.classList.add("over"); };
+  d.ondragleave = () => d.classList.remove("over");
+  d.ondrop = async e => {
+    e.preventDefault(); d.classList.remove("over");
+    let n = 0;
+    for (const f of e.dataTransfer.files) {
+      if (!f.type.startsWith("image/")) continue;
+      try { const img = await readImg(f); bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) }); n++; }
+      catch (err) {}
+    }
+    save(); toast(n + " foto(s) adicionada(s)"); viewBank();
+  };
+
+  const filt = () => {
+    const q = norm(document.getElementById("bkQ").value), s = document.getElementById("bkF").value;
+    app.querySelectorAll(".bk-card").forEach(el => el.style.display = el.dataset.n.includes(q) && (!s || el.dataset.u === s) ? "" : "none");
+  };
+  document.getElementById("bkQ").oninput = filt;
+  document.getElementById("bkF").onchange = filt;
+
+  app.querySelectorAll(".bk-card").forEach(el => {
+    const b = B[+el.dataset.i];
+    el.querySelector("[data-nm]").onchange = e => { b.name = e.target.value.toUpperCase().trim(); e.target.value = b.name; el.dataset.n = norm(b.name); save(); };
+    el.querySelector("[data-zoom]").onclick = () => {
+      document.getElementById("lbimg").src = b.img;
+      document.getElementById("lb").classList.add("active");
+      document.getElementById("lbchg").style.display = document.getElementById("lbdel").style.display = "none";
+      document.getElementById("lbclose").onclick = () => {
+        document.getElementById("lb").classList.remove("active");
+        document.getElementById("lbchg").style.display = document.getElementById("lbdel").style.display = "";
+      };
+    };
+    el.querySelector("[data-use]").onclick = () => assignDlg(b);
+    el.querySelector("[data-del]").onclick = () => {
+      const u = usage(b);
+      if (!confirm(u.length ? `Excluir do banco? A foto continuará nos ${u.length} lugar(es) onde já foi aplicada.` : "Excluir esta foto do banco?")) return;
+      S.bank = B.filter(x => x !== b); save(); viewBank();
+    };
+  });
+}
+
+function assignDlg(b) {
+  const box = document.getElementById("bkBox");
+  const costOpts = S.costumes.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("");
+  box.innerHTML = `<h3>Vincular Foto: ${esc(b.name)}</h3>
+    <div style="display:flex; gap:20px; flex-wrap:wrap">
+      <img src="${b.img}" style="width:180px; height:180px; object-fit:contain; background:#fff; border:1px solid var(--bd); border-radius:12px;">
+      <div style="flex:1; min-width:260px;">
+        <div class="form-group">
+          <label>Usar esta foto como:</label>
+          <select id="bkT">
+            <option value="item">Foto de uma peça de traje</option>
+            <option value="common">Foto de uma peça comum</option>
+            <option value="cover">Foto de capa do traje</option>
+          </select>
+        </div>
+        <div id="bkWhere"></div>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+      <button class="btn red" id="bkCancel">Cancelar</button>
+      <button class="btn primary" id="bkOk">Aplicar Foto</button>
+    </div>`;
+
+  const where = () => {
+    const t = document.getElementById("bkT").value;
+    if (t === "common") {
+      const cs = S.common || [];
+      document.getElementById("bkWhere").innerHTML = cs.length ? `<div class="form-group"><label>Peça comum:</label><select id="bkCm">${cs.map(cm => `<option value="${cm.id}">${esc([cm.part, cm.type, cm.color].filter(Boolean).join(" · "))}</option>`).join("")}</select></div>` : `<p class="warn">Nenhuma peça comum cadastrada.</p>`;
+    } else {
+      document.getElementById("bkWhere").innerHTML = `<div class="form-group"><label>Traje:</label><select id="bkC">${costOpts}</select></div>` + (t === "item" ? `<div class="form-group"><label>Peça:</label><select id="bkI"></select></div>` : "");
+      const fill = () => {
+        if (t !== "item") return;
+        const c = S.costumes.find(x => x.id === document.getElementById("bkC").value);
+        if (!c) return;
+        const its = c.items.map((it, i) => [it, i]).filter(([it]) => !it.cid);
+        document.getElementById("bkI").innerHTML = its.length ? its.map(([it, i]) => `<option value="${i}">${esc([it.part, it.type, it.color].filter(Boolean).join(" · ") || "(sem nome)")}${it.photo ? " 📷" : ""}</option>`).join("") : `<option value="">(sem peças próprias)</option>`;
+      };
+      document.getElementById("bkC").onchange = fill; fill();
+    }
+  };
+  document.getElementById("bkT").onchange = where; where();
+  document.getElementById("bkCancel").onclick = () => document.getElementById("bkDlg").classList.remove("active");
+  document.getElementById("bkOk").onclick = () => {
+    const t = document.getElementById("bkT").value; let obj = null, label = "";
+    if (t === "common") { obj = (S.common || []).find(x => x.id === (document.getElementById("bkCm") || {}).value); label = "peça comum"; }
+    else {
+      const c = S.costumes.find(x => x.id === document.getElementById("bkC").value);
+      if (t === "cover") { obj = c; label = "capa de " + c.name; }
+      else { const i = (document.getElementById("bkI") || {}).value; if (i !== "" && i != null) { obj = c.items[+i]; label = c.name; } }
+    }
+    if (!obj) return alert("Escolha onde aplicar a foto.");
+    if (obj.photo && !confirm("Já existe uma foto neste local. Deseja substituir?")) return;
+    obj.photo = b.img; save(); document.getElementById("bkDlg").classList.remove("active"); toast("Foto aplicada em " + label); viewBank();
+  };
+  document.getElementById("bkDlg").classList.add("active");
+}
+
+/* Picker de Foto ao Clicar em "+ Foto" */
+window.pickImg = pickImg = function (cb) {
+  const B = bank(), box = document.getElementById("bkBox");
+  box.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="margin:0">Escolher Foto</h3>
+      <div style="display:flex; gap:8px;">
+        <input type="search" id="pkQ" placeholder="Filtrar foto..." style="padding:6px 10px; border:1px solid var(--bd); border-radius:6px;">
+        <button class="btn primary sm" id="pkUp">⬆ Enviar do PC</button>
+        <button class="btn red sm" id="pkX">Cancelar</button>
+      </div>
+    </div>
+    <div style="overflow-y:auto; max-height:60vh; padding:4px;">
+      <div class="bk-grid">
+        ${B.length ? B.map((b, i) => `<div class="bk-card" data-i="${i}" data-n="${esc(norm(b.name))}" style="cursor:pointer">
+          <img src="${b.img}" alt="" style="pointer-events:none">
+          <div class="bd"><span style="font-size:12px; font-weight:700; text-align:center">${esc(b.name)}</span></div>
+        </div>`).join("") : `<p style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted)">Nenhuma foto no banco ainda.<br>Clique em <b>Enviar do PC</b> para adicionar.</p>`}
+      </div>
+    </div>`;
+  document.getElementById("bkDlg").classList.add("active");
+  const close = () => document.getElementById("bkDlg").classList.remove("active");
+  document.getElementById("pkX").onclick = close;
+  document.getElementById("pkQ").oninput = e => { const q = norm(e.target.value); box.querySelectorAll(".bk-card").forEach(el => el.style.display = el.dataset.n.includes(q) ? "" : "none"); };
+  document.getElementById("pkUp").onclick = () => {
+    const i = document.createElement("input"); i.type = "file"; i.accept = "image/*";
+    i.onchange = async () => {
+      if (!i.files[0]) return;
+      try {
+        const img = await readImg(i.files[0]);
+        bank().push({ id: uid(), name: i.files[0].name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
+        save(); close(); cb(img);
+      } catch (e) { alert("Não foi possível processar a imagem."); }
+    };
+    i.click();
+  };
+  box.querySelectorAll(".bk-card").forEach(el => el.onclick = () => { close(); cb(B[+el.dataset.i].img); });
+};
+document.getElementById("bkDlg").addEventListener("click", e => { if (e.target.id === "bkDlg") document.getElementById("bkDlg").classList.remove("active"); });
+
+/* 7. TELA BACKUP */
+function csv(rows) { return "\uFEFF" + rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(";")).join("\r\n"); }
+function viewBackup() {
+  const kb = Math.round(JSON.stringify(S).length / 1024);
+  app.innerHTML = `<h2>💾 Backup e Exportação</h2>
+  <p class="note" style="margin-top:0">Os dados e fotos ficam armazenados <b>no seu navegador</b>. Mantenha sempre um backup atualizado salvo no seu computador.</p>
+  
+  <div style="background:#fff; border:1px solid var(--bd); border-radius:16px; padding:24px; margin:20px 0; box-shadow:var(--shadow-sm)">
+    <h3 style="font-size:16px; margin-bottom:12px;">Estatísticas do Banco Atual</h3>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-bottom:20px;">
+      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.costumes.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Trajes</span></div>
+      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.costumes.reduce((a, c) => a + c.items.length, 0)}</b><br><span style="font-size:12px; color:var(--text-muted)">Peças cadastradas</span></div>
+      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.common.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Peças comuns</span></div>
+      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.dancers.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Dançarinos</span></div>
+      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${(S.bank || []).length}</b><br><span style="font-size:12px; color:var(--text-muted)">Fotos no banco</span></div>
+      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${kb} KB</b><br><span style="font-size:12px; color:var(--text-muted)">Tamanho total</span></div>
+    </div>
+    
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="btn primary" id="bJ">⬇ Baixar Backup Completo (.json)</button>
+      <button class="btn" id="bI">⬆ Restaurar Backup (.json)</button>
+      <button class="btn" id="bC1">📊 Exportar Peças (.csv)</button>
+      <button class="btn" id="bC2">📊 Exportar Dançarinos (.csv)</button>
+    </div>
+  </div>
+
+  <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:16px; padding:20px;">
+    <h3 style="font-size:15px; color:#991b1b; margin-bottom:6px;">Zona de Perigo</h3>
+    <p style="font-size:13px; color:#b91c1c; margin-bottom:12px;">Ao limpar os dados, tudo que estiver armazenado neste navegador será apagado permanentemente.</p>
+    <button class="btn red" id="bR">Limpar Todos os Dados</button>
+  </div>`;
+
+  document.getElementById("bJ").onclick = () => download(`trajes-backup-${today()}.json`, JSON.stringify(S), "application/json");
+  document.getElementById("bI").onclick = () => {
+    const i = document.createElement("input"); i.type = "file"; i.accept = ".json,application/json";
+    i.onchange = async () => {
+      try {
+        const d = JSON.parse(await i.files[0].text());
+        if (!Array.isArray(d.costumes) || !Array.isArray(d.dancers) || !Array.isArray(d.dances)) throw 0;
+        if (S.costumes.length && !confirm("Substituir todos os dados atuais por este backup?")) return;
+        S = migrate(d); save(); toast("Backup restaurado com sucesso!"); go("#/");
+      } catch (e) { alert("Arquivo de backup inválido ou corrompido."); }
+    };
+    i.click();
+  };
+  document.getElementById("bC1").onclick = () => download(`trajes-pecas-${today()}.csv`, csv([["Traje", "Peça", "Tipo", "Cor", "Quant.", "Observação"], ...S.costumes.flatMap(c => c.items.map(eff).filter(Boolean).map(it => [c.name, it.part, it.type, it.color, it.qty, it.notes]))]), "text/csv");
+  document.getElementById("bC2").onclick = () => download(`dancarinos-${today()}.csv`, csv([["Dançarino", ...S.dances], ...S.dancers.map(p => [p.name, ...S.dances.map(d => p.nums[d] || "")])]), "text/csv");
+  document.getElementById("bR").onclick = () => { if (confirm("Tem certeza absoluta? ISSO VAI APAGAR TODOS OS DADOS do aplicativo neste computador.")) { S = seedState(); save(); go("#/"); } };
+}
+
+/* ===== CONFIGURAÇÕES (MODAL & ESTILOS) ===== */
+(function setupSettings() {
+  const DEF_TEXT = { ff: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif", fs: 14, fst: 26, px: 12, py: 10 };
+  const DEF_PHOTO = { fit: "contain", tw: 72, cw: 180, ar: "3/4" };
+  
+  let textP = Object.assign({}, DEF_TEXT, JSON.parse(localStorage.getItem("textoAjuste") || "{}"));
+  let photoP = Object.assign({}, DEF_PHOTO, JSON.parse(localStorage.getItem("fotoAjuste") || "{}"));
+  let W = JSON.parse(localStorage.getItem("colunasLargura") || "{}");
+
+  const $ = id => document.getElementById(id);
+
+  function applyStyles() {
+    const r = document.documentElement.style;
+    // Textos
+    r.setProperty("--ff", textP.ff);
+    r.setProperty("--fs", textP.fs + "px");
+    r.setProperty("--fsh", (textP.fs - 2) + "px");
+    r.setProperty("--fst", textP.fst + "px");
+    r.setProperty("--padx", textP.px + "px");
+    r.setProperty("--pady", textP.py + "px");
+    
+    $("tpFf").value = textP.ff;
+    $("tpFs").value = textP.fs; $("tpFsV").textContent = textP.fs + " px";
+    $("tpFst").value = textP.fst; $("tpFstV").textContent = textP.fst + " px";
+    $("tpPx").value = textP.px; $("tpPxV").textContent = textP.px + " px";
+    $("tpPy").value = textP.py; $("tpPyV").textContent = textP.py + " px";
+    localStorage.setItem("textoAjuste", JSON.stringify(textP));
+
+    // Fotos
+    r.setProperty("--fit", photoP.fit);
+    r.setProperty("--bgfit", photoP.fit);
+    r.setProperty("--tw", photoP.tw + "px");
+    r.setProperty("--cardw", photoP.cw + "px");
+    r.setProperty("--ar", photoP.ar);
+
+    $("fpFit").value = photoP.fit;
+    $("fpTw").value = photoP.tw; $("fpTwV").textContent = photoP.tw + " px";
+    $("fpCw").value = photoP.cw; $("fpCwV").textContent = photoP.cw + " px";
+    $("fpAr").value = photoP.ar;
+    localStorage.setItem("fotoAjuste", JSON.stringify(photoP));
+  }
+
+  // Event Listeners Textos
+  $("tpFf").onchange = e => { textP.ff = e.target.value; applyStyles(); };
+  $("tpFs").oninput = e => { textP.fs = +e.target.value; applyStyles(); };
+  $("tpFst").oninput = e => { textP.fst = +e.target.value; applyStyles(); };
+  $("tpPx").oninput = e => { textP.px = +e.target.value; applyStyles(); };
+  $("tpPy").oninput = e => { textP.py = +e.target.value; applyStyles(); };
+  $("tpReset").onclick = () => { textP = Object.assign({}, DEF_TEXT); applyStyles(); };
+  $("tpResetCols").onclick = () => { W = {}; localStorage.setItem("colunasLargura", "{}"); document.querySelectorAll(".wrap table th").forEach(th => th.style.width = ""); toast("Larguras zeradas"); };
+
+  // Event Listeners Fotos
+  $("fpFit").onchange = e => { photoP.fit = e.target.value; applyStyles(); };
+  $("fpTw").oninput = e => { photoP.tw = +e.target.value; applyStyles(); };
+  $("fpCw").oninput = e => { photoP.cw = +e.target.value; applyStyles(); };
+  $("fpAr").onchange = e => { photoP.ar = e.target.value; applyStyles(); };
+  $("fpReset").onclick = () => { photoP = Object.assign({}, DEF_PHOTO); applyStyles(); };
+
+  // Modal Tabs
+  document.querySelectorAll(".settings-tab-btn").forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll(".settings-tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".settings-section").forEach(s => s.classList.remove("active"));
+      btn.classList.add("active");
+      $(btn.dataset.tab).classList.add("active");
+    };
+  });
+
+  $("openSettingsBtn").onclick = () => {
+    $("settingsDlg").classList.add("active");
+    updateSecurityTab();
+  };
+  $("closeSettingsModalBtn").onclick = () => $("settingsDlg").classList.remove("active");
+  $("settingsDlg").addEventListener("click", e => { if (e.target.id === "settingsDlg") $("settingsDlg").classList.remove("active"); });
+
+  // Colunas redimensionáveis
   const screenKey = () => (location.hash.split("/")[1] || "home");
   const colKey = th => screenKey() + "|" + (th.textContent || "").trim().replace(/\s+/g, " ").slice(0, 40) + "|" + th.cellIndex;
   let saveW;
@@ -913,84 +1916,100 @@ header h1{font-size:calc(var(--fsm) + 6px)!important}
   }
   new MutationObserver(hookTables).observe(document.getElementById("app"), { childList: true, subtree: true });
 
-  const b = document.createElement("button");
-  b.className = "btn"; b.textContent = "🔤 Textos"; b.title = "Ajustar tamanho dos textos e espaço entre colunas";
-  b.onclick = () => { const p = $("txtPanel"); p.style.display = p.style.display === "block" ? "none" : "block"; const f = $("fotoPanel"); if (f) f.style.display = "none"; };
-  document.querySelector("header").appendChild(b);
-  apply(); hookTables();
+  applyStyles(); hookTables();
 })();
-</script>
-<!-- ===== MODO CONSULTA COM PIN ===== -->
-<style>
-body.locked .acts,body.locked #addC,body.locked #addI,body.locked #addCm,body.locked #delC,body.locked #addD,body.locked #addDz,
-body.locked #imp,body.locked #bkDrop,body.locked [data-ch],body.locked [data-use],body.locked [data-del],body.locked [data-mk],
-body.locked #bI,body.locked #bR,body.locked #lbchg,body.locked #lbdel,body.locked .grp button,body.locked .nothumb,body.locked #logoBox .ph0{display:none!important}
-body.locked td input,body.locked td textarea,body.locked .title input,body.locked .bk-card input{cursor:default}
-#pinBtn.lk{background:#fef08a;border-color:#fde047;color:#854d0e;font-weight:700}
-</style>
-<script>
-(function () {
-  const $ = id => document.getElementById(id);
-  const hash = s => { let h = 5381; s = "trajes|" + s; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; return h.toString(36); };
-  const EDIT = ".acts button,#addC,#addI,#addCm,#delC,#addD,#addDz,#imp,#bkUp,#bkDrop,[data-ch],[data-use],[data-del],[data-mk],[data-dup],[data-mv],#cover,[data-ph],[data-cmph],.nothumb,#logoBox,#bI,#bR,#lbchg,#lbdel,.grp button,[data-dl],[data-dr],[data-dx]";
-  const KEEP = "input[type=search],#fp,#bkF";
-  let locked = false;
 
-  function freeze() {
-    if (!locked) return;
-    document.querySelectorAll("#app input,#app textarea,#app select").forEach(el => {
-      if (el.matches(KEEP)) return;
-      if (el.tagName === "SELECT" || el.type === "checkbox" || el.type === "radio") el.disabled = true; else el.readOnly = true;
-    });
-  }
-  function setLocked(v) {
-    locked = v; document.body.classList.toggle("locked", v);
-    if (v) sessionStorage.removeItem("trajesLiberado"); else sessionStorage.setItem("trajesLiberado", "1");
-    drawBtn(); route();
-  }
-  /* Bloqueia cliques de edição no modo consulta; foto abre só para ver */
-  document.addEventListener("click", e => {
-    if (!locked) return;
-    if (e.target.closest("#pinBtn")) return;
-    const img = e.target.closest("img.thumb,.bk-card img");
-    if (img) { e.preventDefault(); e.stopImmediatePropagation(); $("lbimg").src = img.src; $("lb").style.display = "flex"; $("lbclose").onclick = () => $("lb").style.display = "none"; return; }
-    if (e.target.closest(EDIT)) { e.preventDefault(); e.stopImmediatePropagation(); toast("Modo consulta: clique em 🔒 para liberar a edição"); }
-  }, true);
-  document.addEventListener("dragover", e => { if (locked) e.preventDefault(); }, true);
-  document.addEventListener("drop", e => { if (locked) { e.preventDefault(); e.stopImmediatePropagation(); } }, true);
-  new MutationObserver(freeze).observe($("app"), { childList: true, subtree: true });
+/* ===== SEGURANÇA (PIN & MODO CONSULTA) ===== */
+const hash = s => { let h = 5381; s = "trajes|" + s; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; return h.toString(36); };
+let locked = false;
 
-  const btn = document.createElement("button"); btn.id = "pinBtn"; btn.className = "btn";
-  function drawBtn() {
-    btn.textContent = locked ? "🔒 Somente consulta" : (S && S.pin ? "🔓 Edição liberada" : "🔓 Definir PIN");
-    btn.classList.toggle("lk", locked);
-    btn.title = locked ? "Digite o PIN para liberar a edição" : "Travar o app ou alterar o PIN";
-  }
-  function newPin() {
-    const a = prompt("Crie um PIN (4 a 8 números):"); if (a === null) return false;
-    if (!/^\d{4,8}$/.test(a)) { alert("O PIN deve ter de 4 a 8 números."); return false; }
-    if (prompt("Digite o PIN novamente para confirmar:") !== a) { alert("Os PINs não conferem."); return false; }
-    S.pin = hash(a); save(); toast("PIN salvo"); return true;
-  }
-  btn.onclick = async () => {
-    if (locked) {
-      const p = prompt("Digite o PIN para liberar a edição:"); if (p === null) return;
-      if (hash(p) === S.pin) { setLocked(false); toast("Edição liberada"); } else alert("PIN incorreto.");
-      return;
-    }
-    if (!S.pin) { if (newPin()) { setLocked(true); } return; }
-    const v = await ask("Controle de edição", [["🔒 Travar agora (modo consulta)", "lock"], ["Alterar o PIN", "chg"], ["Remover o PIN (sempre editável)", "del"]]);
-    if (v === "lock") setLocked(true);
-    else if (v === "chg") newPin();
-    else if (v === "del") { if (confirm("Remover o PIN? O app ficará sempre liberado para edição.")) { delete S.pin; save(); drawBtn(); toast("PIN removido"); } }
-  };
-  document.querySelector("header").appendChild(btn);
+function updateSecurityTab() {
+  const t = document.getElementById("pinStatusText");
+  if (t) t.textContent = S && S.pin ? "Status atual: 🔒 PIN cadastrado e ativo." : "Status atual: 🔓 Nenhum PIN configurado (modo sempre liberado).";
+}
+function drawPinBtn() {
+  const btn = document.getElementById("pinBtn");
+  btn.textContent = locked ? "🔒 Somente consulta" : (S && S.pin ? "🔓 Edição liberada" : "🔓 Definir PIN");
+  btn.classList.toggle("lk", locked);
+  updateSecurityTab();
+}
+function setLocked(v) {
+  locked = v;
+  document.body.classList.toggle("locked", v);
+  if (v) sessionStorage.removeItem("trajesLiberado");
+  else sessionStorage.setItem("trajesLiberado", "1");
+  drawPinBtn(); route();
+}
+function newPin() {
+  const a = prompt("Crie um PIN (4 a 8 números):"); if (a === null) return false;
+  if (!/^\d{4,8}$/.test(a)) { alert("O PIN deve ter de 4 a 8 números."); return false; }
+  if (prompt("Digite o PIN novamente para confirmar:") !== a) { alert("Os PINs não conferem."); return false; }
+  S.pin = hash(a); save(); toast("PIN salvo"); drawPinBtn(); return true;
+}
 
-  const wait = setInterval(() => {
-    if (!S) return; clearInterval(wait);
-    locked = !!S.pin && !sessionStorage.getItem("trajesLiberado");
-    document.body.classList.toggle("locked", locked); drawBtn(); freeze();
-  }, 50);
+document.getElementById("pinBtn").onclick = async () => {
+  if (locked) {
+    const p = prompt("Digite o PIN para liberar a edição:"); if (p === null) return;
+    if (hash(p) === S.pin) { setLocked(false); toast("Edição liberada"); } else alert("PIN incorreto.");
+    return;
+  }
+  if (!S.pin) { if (newPin()) setLocked(true); return; }
+  const v = await ask("Controle de edição", [["🔒 Travar agora (modo consulta)", "lock"], ["Alterar o PIN", "chg"], ["Remover o PIN (sempre editável)", "del"]], "Segurança & PIN");
+  if (v === "lock") setLocked(true);
+  else if (v === "chg") newPin();
+  else if (v === "del") { if (confirm("Remover o PIN? O app ficará sempre liberado para edição.")) { delete S.pin; save(); drawPinBtn(); toast("PIN removido"); } }
+};
+
+document.getElementById("setPinActionBtn").onclick = () => { if (newPin()) setLocked(false); };
+document.getElementById("removePinActionBtn").onclick = () => {
+  if (!S.pin) return alert("Nenhum PIN cadastrado.");
+  if (confirm("Remover o PIN de segurança?")) { delete S.pin; save(); setLocked(false); toast("PIN removido"); }
+};
+
+/* ===== LOGO DO TOPO ===== */
+function drawLogo() {
+  const box = document.getElementById("logoBox");
+  box.innerHTML = S && S.logo ? `<img src="${S.logo}" alt="Logo">` : `<span class="ph0">+ logo</span>`;
+}
+document.getElementById("logoBox").onclick = async e => {
+  e.stopPropagation();
+  if (S.logo) {
+    const v = await ask("Deseja trocar ou remover a logo?", [["Trocar a logo (escolher do banco)", "chg"], ["Remover a logo", "del"]], "Logo do Topo");
+    if (v === "del") { S.logo = ""; save(); drawLogo(); return; }
+    if (v !== "chg") return;
+  }
+  pickImg(img => { S.logo = img; save(); drawLogo(); toast("Logo atualizada"); });
+};
+
+/* ===== ROTEAMENTO ===== */
+function route() {
+  const h = location.hash || "#/";
+  document.querySelectorAll("[data-nav]").forEach(b => {
+    const nav = b.dataset.nav;
+    b.classList.toggle("on", h === nav || (nav === "#/comuns" && h.startsWith("#/comuns")) || (nav === "#/" && h.startsWith("#/traje/")) || (nav === "#/banco" && h.startsWith("#/banco")));
+  });
+  window.scrollTo(0, 0);
+  if (h.startsWith("#/traje/")) viewCostume(h.slice(8));
+  else if (h === "#/dancarinos") viewDancers();
+  else if (h === "#/pecas") viewPieces();
+  else if (h === "#/backup") viewBackup();
+  else if (h.startsWith("#/comuns")) viewCommon(h.split("/")[2]);
+  else if (h.startsWith("#/banco")) viewBank();
+  else viewHome();
+}
+document.querySelectorAll("[data-nav]").forEach(b => b.onclick = () => go(b.dataset.nav));
+window.addEventListener("hashchange", route);
+
+/* ===== INICIALIZAÇÃO ===== */
+(async () => {
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
+  S = await loadState();
+  if (!S) { S = seedState(); save(); } else { S = migrate(S); save(); }
+  locked = !!S.pin && !sessionStorage.getItem("trajesLiberado");
+  document.body.classList.toggle("locked", locked);
+  drawPinBtn();
+  drawLogo();
+  route();
 })();
 </script>
 </body>
