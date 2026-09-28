@@ -6,75 +6,97 @@
 <title>Trajes Masculinos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --pri: #9b2232;
-  --pri-dark: #7b1825;
-  --pri-light: #be2b40;
-  --pri-bg: #fff1f2;
-  --pri-border: #fecdd3;
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --bd: #e2e8f0;
-  --bd-focus: #9b2232;
-  --text: #0f172a;
-  --text-muted: #64748b;
-  --text-light: #94a3b8;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  /* Paleta Dark Theme (Obsidian & Deep Ruby / Midnight Blue) */
+  --bg: #070a13;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #170b18 0%, #070a13 70%);
+  --surface: #0f172a;
+  --surface-card: #111c33;
+  --surface-hover: #172440;
+  --surface-active: #1e2f52;
+  --bd: #1e293b;
+  --bd-hover: #334155;
+  --bd-focus: #e11d48;
+  --bd-glow: rgba(225, 29, 72, 0.35);
+  
+  --pri: #e11d48;
+  --pri-dark: #9f1239;
+  --pri-light: #fb7185;
+  --pri-bg: rgba(225, 29, 72, 0.12);
+  --pri-border: rgba(225, 29, 72, 0.3);
+  
+  --blue-accent: #38bdf8;
+  --blue-bg: rgba(56, 189, 248, 0.12);
+  --blue-border: rgba(56, 189, 248, 0.3);
+
+  --emerald: #10b981;
+  --amber: #f59e0b;
+  --rose: #f43f5e;
+  
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-light: #64748b;
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(225, 29, 72, 0.15);
+  
   --radius-sm: 6px;
-  --radius: 10px;
-  --radius-lg: 16px;
+  --radius: 12px;
+  --radius-lg: 18px;
   --radius-full: 9999px;
   
   /* Ajustes Customizáveis */
   --fit: contain;
   --bgfit: contain;
   --tw: 72px;
-  --cardw: 180px;
+  --cardw: 220px;
   --ar: 3/4;
   --ff: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --fs: 14px;
   --fsh: 12px;
   --fst: 26px;
-  --fsc: 15px;
+  --fsc: 16px;
   --fsm: 13px;
   --padx: 12px;
-  --pady: 10px;
+  --pady: 11px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: var(--ff);
   background: var(--bg);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.5;
   font-size: var(--fs);
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ===== HEADER & NAVEGAÇÃO ===== */
+/* ===== CABEÇALHO MODERNO ===== */
 header {
-  background: linear-gradient(135deg, var(--pri-dark), var(--pri-light));
+  background: rgba(11, 15, 26, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(225, 29, 72, 0.2);
   color: #fff;
-  padding: 10px 20px;
+  padding: 10px 24px;
   display: flex;
-  gap: 12px;
+  gap: 16px;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 50;
-  box-shadow: 0 4px 12px rgba(123, 24, 37, 0.2);
-  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 .header-brand {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-right: auto;
   cursor: pointer;
   user-select: none;
 }
@@ -83,10 +105,12 @@ header {
   font-weight: 800;
   letter-spacing: -0.5px;
   margin: 0;
-  color: #fff;
+  background: linear-gradient(135deg, #ffffff, #fda4af, #f43f5e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 #logoBox {
   height: 38px;
@@ -101,28 +125,30 @@ header {
 #logoBox:hover { transform: scale(1.05); }
 #logoBox img {
   height: 38px;
-  max-width: 120px;
+  max-width: 130px;
   object-fit: contain;
-  background: #fff;
-  border-radius: 6px;
-  padding: 3px;
-  box-shadow: var(--shadow-sm);
+  background: #0f172a;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  padding: 4px;
 }
 #logoBox .ph0 {
   font-size: 11px;
   font-weight: 700;
-  color: #fff;
-  border: 1.5px dashed rgba(255,255,255,0.6);
-  border-radius: 6px;
-  padding: 4px 8px;
+  color: var(--pri-light);
+  background: var(--pri-bg);
+  border: 1.5px dashed var(--pri-border);
+  border-radius: 8px;
+  padding: 5px 10px;
   line-height: 1;
 }
 
 .nav-links {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   align-items: center;
   flex-wrap: wrap;
+  margin: 0 auto;
 }
 .header-actions {
   display: flex;
@@ -137,7 +163,7 @@ header {
   justify-content: center;
   gap: 6px;
   background: var(--surface);
-  color: var(--pri);
+  color: var(--text);
   border: 1px solid var(--bd);
   border-radius: var(--radius-sm);
   padding: 7px 14px;
@@ -151,36 +177,43 @@ header {
   white-space: nowrap;
 }
 .btn:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: var(--surface-hover);
+  border-color: var(--bd-hover);
+  color: #fff;
   transform: translateY(-1px);
-  box-shadow: var(--shadow);
 }
 .btn:active { transform: translateY(0); }
 .btn.primary {
-  background: var(--pri);
+  background: linear-gradient(135deg, var(--pri), var(--pri-dark));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.4);
+}
+.btn.primary:hover {
+  background: linear-gradient(135deg, #f43f5e, var(--pri));
+  box-shadow: 0 4px 15px rgba(225, 29, 72, 0.6);
+}
+.btn.blue {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
   color: #fff;
   border-color: transparent;
 }
-.btn.primary:hover {
-  background: var(--pri-dark);
-  color: #fff;
-}
 .btn.on {
-  background: #fff;
-  color: var(--pri);
+  background: var(--pri-bg);
+  color: var(--pri-light);
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  border-color: #fff;
+  border-color: var(--pri-border);
+  box-shadow: 0 0 12px rgba(225, 29, 72, 0.25);
 }
 .btn.red {
-  color: #dc2626;
-  background: #fef2f2;
-  border-color: #fecaca;
+  color: #fca5a5;
+  background: rgba(220, 38, 38, 0.15);
+  border-color: rgba(220, 38, 38, 0.3);
 }
 .btn.red:hover {
-  background: #fee2e2;
+  background: rgba(220, 38, 38, 0.28);
   border-color: #f87171;
+  color: #fff;
 }
 .btn.sm {
   padding: 4px 10px;
@@ -188,162 +221,259 @@ header {
   border-radius: 6px;
 }
 header .btn {
-  background: rgba(255,255,255,0.12);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: none;
 }
 header .btn:hover {
-  background: rgba(255,255,255,0.24);
-  border-color: rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.18);
 }
 header .btn.on {
-  background: #fff;
-  color: var(--pri-dark);
+  background: var(--pri);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.5);
 }
-#pinBtn.lk {
-  background: #fef08a;
-  border-color: #fde047;
-  color: #854d0e;
+
+/* Indicador de Status de Autenticação */
+#authBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
   font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+#authBadge.locked {
+  background: rgba(148, 163, 184, 0.12);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+#authBadge.unlocked {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
 }
 
 /* ===== CONTAINER PRINCIPAL ===== */
 main {
-  padding: 24px;
+  padding: 28px 24px 60px;
   max-width: 1440px;
   margin: auto;
 }
 
-/* ===== BARRA DE FERRAMENTAS / FILTRO ===== */
+/* ===== PAINEL DE MÉTRICAS (KPIs DO TOPO) ===== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.kpi-card {
+  background: linear-gradient(145deg, #0f172a, #131d33);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--pri);
+}
+.kpi-card.blue::before { background: var(--blue-accent); }
+.kpi-card.emerald::before { background: var(--emerald); }
+.kpi-card.amber::before { background: var(--amber); }
+.kpi-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+.kpi-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* ===== BARRA DE FERRAMENTAS / FILTROS ===== */
 .bar {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   background: var(--surface);
-  padding: 12px 18px;
+  padding: 14px 18px;
   border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow);
   border: 1px solid var(--bd);
 }
 .bar input[type=search], .bar select, .bar input[type=text] {
-  padding: 8px 14px;
+  padding: 9px 14px;
   border: 1px solid var(--bd);
   border-radius: var(--radius-sm);
   font-family: inherit;
   font-size: var(--fsm);
-  min-width: 220px;
+  min-width: 240px;
   outline: none;
-  background: #fff;
+  background: #090d16;
   color: var(--text);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
 }
 .bar input[type=search]:focus, .bar select:focus, .bar input[type=text]:focus {
   border-color: var(--pri);
-  box-shadow: 0 0 0 3px rgba(155, 34, 50, 0.12);
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
 }
 
-/* ===== GRADE DE TRAJES ===== */
+/* ===== GRADE DE TRAJES (CARDS MODERNOS) ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--cardw), 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 .card {
-  background: var(--surface);
+  background: var(--surface-card);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow);
   cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease, border-color 0.2s ease;
-  border: 1px solid var(--bd);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   position: relative;
 }
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
   box-shadow: var(--shadow-lg);
-  border-color: var(--pri-border);
+  border-color: var(--pri);
 }
 .ph {
   aspect-ratio: var(--ar);
   background-size: var(--bgfit);
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #f1f5f9;
+  background-color: #090d16;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #cbd5e1;
-  font-size: 48px;
+  color: #334155;
+  font-size: 52px;
   border-bottom: 1px solid var(--bd);
   position: relative;
 }
-.nm {
-  padding: 12px 14px 4px;
-  font-weight: 700;
-  text-align: center;
-  color: var(--text);
-  font-size: var(--fsc);
-  letter-spacing: -0.2px;
-}
-.sub {
-  padding: 0 14px 14px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
+.card-badges {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   display: flex;
-  justify-content: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
 }
 .badge-count {
-  background: #f1f5f9;
-  color: #475569;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-full);
-  padding: 2px 8px;
+  padding: 3px 9px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+.badge-count.pri {
+  background: rgba(225, 29, 72, 0.85);
+  border-color: rgba(225, 29, 72, 0.4);
+}
+.badge-count.blue {
+  background: rgba(2, 132, 199, 0.85);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.nm {
+  padding: 14px 14px 6px;
+  font-weight: 800;
+  text-align: center;
+  color: #fff;
+  font-size: var(--fsc);
+  letter-spacing: -0.3px;
+}
+.comp-preview {
+  padding: 0 14px 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.4;
+  min-height: 34px;
+}
+.card-footer {
+  margin-top: auto;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-light);
 }
 
 /* ===== HERO DO TRAJE (DETALHES) ===== */
 .title {
   display: flex;
-  gap: 22px;
+  gap: 24px;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 20px;
-  background: var(--surface);
-  padding: 20px;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #0f172a, #15223e);
+  padding: 24px;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow);
   border: 1px solid var(--bd);
 }
 .cover {
-  width: calc(var(--cardw) * 0.85);
+  width: calc(var(--cardw) * 0.9);
   aspect-ratio: var(--ar);
   border-radius: var(--radius);
   background-size: var(--bgfit);
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #f8fafc;
+  background-color: #090d16;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   text-align: center;
-  border: 2px dashed #cbd5e1;
+  border: 2px dashed rgba(255, 255, 255, 0.15);
   transition: all 0.2s;
   padding: 8px;
 }
 .cover:hover {
   border-color: var(--pri);
-  color: var(--pri);
+  color: var(--pri-light);
   background-color: var(--pri-bg);
 }
 .title-info {
@@ -359,25 +489,41 @@ main {
   padding: 6px 12px;
   border-radius: var(--radius-sm);
   width: 100%;
-  color: var(--text);
+  color: #fff;
   letter-spacing: -0.5px;
   transition: all 0.2s;
 }
 .title input:hover, .title input:focus {
   border-color: var(--pri);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(155, 34, 50, 0.1);
+  background: #090d16;
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
   outline: none;
 }
+.composition-summary {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.comp-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.comp-chip b { color: #fff; }
 
-/* ===== TABELAS MODERNAS ===== */
+/* ===== TABELAS DARK ===== */
 .wrap {
   overflow-x: auto;
   background: var(--surface);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow);
   border: 1px solid var(--bd);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 table {
   border-collapse: collapse;
@@ -390,17 +536,17 @@ th, td {
   vertical-align: middle;
 }
 th {
-  background: #f8fafc;
+  background: #0b1120;
   position: sticky;
   top: 0;
   z-index: 2;
   text-align: left;
   white-space: nowrap;
   font-weight: 700;
-  color: #475569;
+  color: var(--text-muted);
   font-size: var(--fsh);
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.8px;
   border-bottom: 2px solid var(--bd);
   user-select: none;
   resize: horizontal;
@@ -411,13 +557,13 @@ tbody tr {
   transition: background-color 0.15s;
 }
 tbody tr:hover {
-  background: #f8fafc;
+  background: var(--surface-hover);
 }
 tbody tr.link {
-  background: #fff8f8;
+  background: rgba(225, 29, 72, 0.06);
 }
 tbody tr.link:hover {
-  background: #fff1f2;
+  background: rgba(225, 29, 72, 0.14);
 }
 
 td input, td textarea, td select {
@@ -432,14 +578,14 @@ td input, td textarea, td select {
   transition: all 0.15s ease;
 }
 td input:hover, td textarea:hover {
-  border-color: #cbd5e1;
-  background: #fff;
+  border-color: var(--bd);
+  background: #090d16;
 }
 td input:focus, td textarea:focus {
   outline: none;
   border-color: var(--pri);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(155, 34, 50, 0.12);
+  background: #090d16;
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
 }
 td textarea {
   resize: vertical;
@@ -447,7 +593,7 @@ td textarea {
 }
 td.part input {
   font-weight: 700;
-  color: var(--text);
+  color: #fff;
 }
 
 /* Miniaturas de fotos na tabela */
@@ -459,17 +605,18 @@ td.part input {
   cursor: pointer;
   display: block;
   border: 1px solid var(--bd);
-  background: #fff;
+  background: #090d16;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .thumb:hover {
-  transform: scale(1.08);
-  box-shadow: var(--shadow);
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--pri);
 }
 .nothumb {
   width: var(--tw);
   height: var(--tw);
-  border: 2px dashed #cbd5e1;
+  border: 2px dashed rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
@@ -480,11 +627,11 @@ td.part input {
   font-weight: 600;
   text-align: center;
   transition: all 0.2s;
-  background: #f8fafc;
+  background: #090d16;
 }
 .nothumb:hover {
   border-color: var(--pri);
-  color: var(--pri);
+  color: var(--pri-light);
   background: var(--pri-bg);
 }
 
@@ -497,12 +644,12 @@ td.part input {
   font-size: 15px;
   padding: 6px;
   border-radius: 6px;
-  color: #64748b;
+  color: var(--text-muted);
   transition: all 0.15s ease;
 }
 .acts button:hover {
-  background: #f1f5f9;
-  color: var(--pri);
+  background: var(--surface-active);
+  color: var(--pri-light);
   transform: scale(1.15);
 }
 
@@ -511,15 +658,15 @@ td.part input {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #fce7f3;
-  color: var(--pri-dark);
+  background: var(--pri-bg);
+  color: var(--pri-light);
   border-radius: var(--radius-full);
-  padding: 3px 9px;
+  padding: 3px 10px;
   margin: 2px;
   font-size: calc(var(--fs) - 2px);
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid #fbcfe8;
+  border: 1px solid var(--pri-border);
   transition: all 0.15s ease;
 }
 .chip:hover {
@@ -531,7 +678,7 @@ td.part input {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: var(--pri);
+  background: linear-gradient(135deg, var(--pri), var(--pri-dark));
   color: #fff;
   border-radius: var(--radius-full);
   padding: 2px 8px;
@@ -539,7 +686,7 @@ td.part input {
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
-  box-shadow: 0 2px 4px rgba(155, 34, 50, 0.2);
+  box-shadow: 0 2px 6px rgba(225, 29, 72, 0.4);
   transition: transform 0.15s;
 }
 .tag:hover { transform: scale(1.05); }
@@ -547,10 +694,10 @@ td.part input {
   padding: 6px 8px;
   display: block;
   min-height: 32px;
-  color: #334155;
+  color: var(--text);
 }
 .warn {
-  color: #d97706;
+  color: #fbbf24;
   font-size: 12px;
   font-weight: 700;
 }
@@ -562,7 +709,7 @@ td.part input {
 }
 h2 {
   margin-top: 0;
-  color: var(--text);
+  color: #fff;
   font-weight: 800;
   letter-spacing: -0.5px;
   font-size: 22px;
@@ -573,23 +720,24 @@ h2 {
 table.dz th:first-child, table.dz td:first-child {
   position: sticky;
   left: 0;
-  background: #fff;
+  background: #0f172a;
   z-index: 1;
   border-right: 2px solid var(--bd);
 }
-table.dz th:first-child { z-index: 3; background: #f8fafc; }
+table.dz th:first-child { z-index: 3; background: #0b1120; }
 table.dz td input { width: 64px; text-align: center; }
-table.dz td:first-child input { width: 170px; text-align: left; font-weight: 700; }
+table.dz td:first-child input { width: 170px; text-align: left; font-weight: 700; color: #fff; }
 table.dz th { text-align: center; font-size: 12px; }
-table.dz th a { color: var(--pri); text-decoration: none; transition: color 0.2s; font-weight: 700; }
-table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
+table.dz th a { color: var(--pri-light); text-decoration: none; transition: color 0.2s; font-weight: 700; }
+table.dz th a:hover { color: #fff; text-decoration: underline; }
 
-/* ===== MODAIS ===== */
+/* ===== MODAIS DARK ===== */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   display: none;
   align-items: center;
   justify-content: center;
@@ -598,11 +746,11 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
 }
 .modal-overlay.active { display: flex; }
 .modal-card {
-  background: #fff;
+  background: #0f172a;
   border-radius: var(--radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-lg);
-  max-width: 520px;
+  max-width: 540px;
   width: 100%;
   max-height: 90vh;
   display: flex;
@@ -618,7 +766,7 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
 .modal-card h3 {
   font-size: 18px;
   font-weight: 800;
-  color: var(--text);
+  color: #fff;
   margin-bottom: 12px;
   letter-spacing: -0.4px;
 }
@@ -631,7 +779,7 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
   border: 1px solid var(--bd);
   border-radius: var(--radius);
   padding: 14px;
-  background: #f8fafc;
+  background: #090d16;
   gap: 16px;
   max-height: 50vh;
 }
@@ -646,7 +794,7 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
   border-radius: 6px;
   transition: background 0.15s;
 }
-#ck label:hover { background: #e2e8f0; }
+#ck label:hover { background: var(--surface-hover); }
 #ck label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--pri); cursor: pointer; }
 
 /* Lightbox */
@@ -657,7 +805,8 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   object-fit: contain;
-  background: #fff;
+  background: #090d16;
+  border: 1px solid var(--bd);
 }
 
 /* Toast Notificação */
@@ -667,7 +816,7 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
   right: 24px;
   background: #0f172a;
   color: #fff;
-  padding: 10px 20px;
+  padding: 12px 22px;
   border-radius: var(--radius-sm);
   opacity: 0;
   transform: translateY(10px);
@@ -676,6 +825,7 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
   font-weight: 600;
   font-size: 14px;
   box-shadow: var(--shadow-lg);
+  border: 1px solid var(--bd);
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -693,7 +843,7 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
   gap: 16px;
 }
 .bk-card {
-  background: #fff;
+  background: var(--surface-card);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
@@ -705,12 +855,13 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
 .bk-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow);
+  border-color: var(--pri);
 }
 .bk-card img {
   width: 100%;
   aspect-ratio: 1/1;
   object-fit: contain;
-  background: #fff;
+  background: #090d16;
   cursor: zoom-in;
   border-bottom: 1px solid var(--bd);
 }
@@ -725,17 +876,17 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
   font: inherit;
   font-size: 13px;
   font-weight: 600;
-  color: var(--text);
+  color: #fff;
   padding: 6px;
   border-radius: 6px;
   width: 100%;
+  background: transparent;
   transition: all 0.2s;
 }
 .bk-card input:hover, .bk-card input:focus {
   border-color: var(--pri);
-  background: #f8fafc;
+  background: #090d16;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(155,34,50,0.1);
 }
 .bk-card .use {
   font-size: 11px;
@@ -753,22 +904,22 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
   font-size: 12px;
 }
 #bkDrop {
-  border: 2px dashed #cbd5e1;
+  border: 2px dashed rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-lg);
   padding: 32px 20px;
   text-align: center;
   color: var(--text-muted);
-  background: #f8fafc;
-  margin-bottom: 20px;
+  background: rgba(15, 23, 42, 0.6);
+  margin-bottom: 24px;
   transition: all 0.2s;
 }
 #bkDrop.over {
   background: var(--pri-bg);
   border-color: var(--pri);
-  color: var(--pri-dark);
+  color: var(--pri-light);
 }
 
-/* ===== PAINEL DE CONFIGURAÇÕES UNIFICADO ===== */
+/* ===== PAINEL DE CONFIGURAÇÕES ===== */
 .settings-tabs {
   display: flex;
   gap: 6px;
@@ -787,10 +938,10 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
   border-radius: var(--radius-sm);
   transition: all 0.15s;
 }
-.settings-tab-btn:hover { color: var(--text); background: #f1f5f9; }
+.settings-tab-btn:hover { color: #fff; background: var(--surface-hover); }
 .settings-tab-btn.active {
-  color: var(--pri);
-  background: var(--pri-bg);
+  color: #fff;
+  background: var(--pri);
   font-weight: 700;
 }
 .settings-section { display: none; }
@@ -815,11 +966,13 @@ table.dz th a:hover { color: var(--pri-light); text-decoration: underline; }
   padding: 8px 10px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--bd);
+  background: #090d16;
+  color: #fff;
   font-family: inherit;
   font-size: 13px;
 }
 
-/* ===== MODO CONSULTA (BLOQUEIO POR PIN) ===== */
+/* ===== MODO CONSULTA (BLOQUEIO POR PIN / VISITANTE) ===== */
 body.locked .acts,
 body.locked #addC,
 body.locked #addI,
@@ -849,23 +1002,25 @@ body.locked td textarea,
 body.locked .title input,
 body.locked .bk-card input {
   cursor: default;
+  pointer-events: none;
 }
 
 /* Modo Impressão */
 @media print {
-  header, .noprint, .acts, .bar { display: none !important; }
+  header, .noprint, .acts, .bar, .kpi-grid { display: none !important; }
   th { position: static; }
-  body { background: #fff; font-size: 11pt; }
-  .wrap, .title, .card { box-shadow: none; border: 1px solid #ccc; }
+  body { background: #fff !important; color: #000 !important; font-size: 10pt; }
+  .wrap, .title, .card { box-shadow: none !important; border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
+  th { background: #eee !important; color: #000 !important; }
   main { padding: 0; max-width: 100%; }
 }
 </style>
 </head>
-<body>
+<body class="locked">
 
 <header>
   <div class="header-brand" onclick="go('#/')">
-    <span id="logoBox" title="Clique para escolher ou trocar a logo"></span>
+    <span id="logoBox" title="Logo do grupo"></span>
     <h1>👔 Trajes Masculinos</h1>
   </div>
   <nav class="nav-links">
@@ -877,8 +1032,10 @@ body.locked .bk-card input {
     <button class="btn" data-nav="#/backup">Backup</button>
   </nav>
   <div class="header-actions">
-    <button class="btn" id="pinBtn" title="Controle de Consulta / PIN">🔓 Edição liberada</button>
-    <button class="btn" id="openSettingsBtn" title="Ajustes de fontes, fotos e layout">⚙️ Ajustes</button>
+    <div id="authBadge" class="locked" title="Clique para alternar entre Modo Consulta e Modo Edição">
+      🔒 Modo Consulta
+    </div>
+    <button class="btn" id="openSettingsBtn" title="Ajustes de layout e visual">⚙️</button>
   </div>
 </header>
 
@@ -890,7 +1047,7 @@ body.locked .bk-card input {
 <div id="md" class="modal-overlay">
   <div class="modal-card">
     <h3 id="mdTitle">Confirmação</h3>
-    <p id="mdtxt" style="margin-bottom: 20px; white-space: pre-line; color: #334155;"></p>
+    <p id="mdtxt" style="margin-bottom: 20px; white-space: pre-line; color: var(--text-muted);"></p>
     <div id="mdbtns" style="display:flex; flex-direction:column; gap:8px;"></div>
   </div>
 </div>
@@ -901,7 +1058,7 @@ body.locked .bk-card input {
     <h3 id="cktit">Vincular Peça Comum</h3>
     <div class="note" style="margin-top:-6px; margin-bottom:12px;">Marque os trajes em que esta peça é usada:</div>
     <div style="display:flex; gap:8px; align-items:center;">
-      <input type="search" id="ckSearch" placeholder="Filtrar traje..." style="flex:1; padding:7px 12px; border:1px solid var(--bd); border-radius:6px;">
+      <input type="search" id="ckSearch" placeholder="Filtrar traje..." style="flex:1; padding:8px 12px; background:#090d16; border:1px solid var(--bd); border-radius:6px; color:#fff;">
       <button class="btn sm" id="ckall">Marcar todos</button>
       <button class="btn sm" id="cknone">Desmarcar todos</button>
     </div>
@@ -920,7 +1077,7 @@ body.locked .bk-card input {
     <div style="display:flex; gap:8px;">
       <button class="btn" id="lbchg">Trocar foto</button>
       <button class="btn red" id="lbdel">Remover foto</button>
-      <button class="btn" id="lbclose" style="background:#fff">Fechar</button>
+      <button class="btn primary" id="lbclose">Fechar</button>
     </div>
   </div>
 </div>
@@ -950,11 +1107,10 @@ body.locked .bk-card input {
         <select id="tpFf">
           <option value="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif">Plus Jakarta Sans (Moderna)</option>
           <option value="system-ui, -apple-system, sans-serif">Padrão do Sistema</option>
+          <option value="'JetBrains Mono', monospace">JetBrains Mono (Técnica)</option>
           <option value="Arial, Helvetica, sans-serif">Arial</option>
           <option value="Calibri, Carlito, sans-serif">Calibri</option>
           <option value="Verdana, sans-serif">Verdana</option>
-          <option value="Tahoma, sans-serif">Tahoma</option>
-          <option value="'Times New Roman', serif">Times New Roman</option>
         </select>
       </div>
       <div class="form-group">
@@ -993,8 +1149,8 @@ body.locked .bk-card input {
         <input type="range" id="fpTw" min="48" max="220" step="4">
       </div>
       <div class="form-group">
-        <label>Tamanho dos cartões no menu <span class="v" id="fpCwV"></span></label>
-        <input type="range" id="fpCw" min="130" max="320" step="10">
+        <label>Largura dos cartões no menu <span class="v" id="fpCwV"></span></label>
+        <input type="range" id="fpCw" min="160" max="360" step="10">
       </div>
       <div class="form-group">
         <label>Formato dos cartões</label>
@@ -1012,20 +1168,89 @@ body.locked .bk-card input {
     <!-- Aba 3: Segurança -->
     <div class="settings-section" id="tab-security">
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">
-        O PIN protege o aplicativo contra alterações acidentais durante eventos ou apresentações.
+        O PIN impede que visitantes alterem os dados. Apenas quem souber o PIN pode ativar o modo de edição.
       </p>
-      <div id="pinStatusText" style="font-weight:700; margin-bottom:14px; color:var(--text);"></div>
+      <div id="pinStatusText" style="font-weight:700; margin-bottom:14px; color:#fff;"></div>
       <div style="display:flex; flex-direction:column; gap:8px;">
-        <button class="btn" id="setPinActionBtn">🔒 Definir / Alterar PIN</button>
-        <button class="btn red" id="removePinActionBtn">Remover PIN de Segurança</button>
+        <button class="btn primary" id="setPinActionBtn">🔒 Definir / Alterar PIN</button>
+        <button class="btn red" id="removePinActionBtn">Remover PIN (Acesso Livre)</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-/* ===== DADOS E ESTADO ===== */
-const ALIAS = {"SUITA LOWICKA":"LOWICZ"};
+/* ===== DICIONÁRIO E CORREÇÃO DE NOMES EM POLONÊS ===== */
+const POLISH_CORRECTIONS = {
+  "LOWICZ": "ŁOWICZ",
+  "SUITA LOWICKA": "ŁOWICZ",
+  "SUITA ŁOWICKA": "ŁOWICZ",
+  "SACZ": "SĄCZ",
+  "LEMKO": "ŁEMKO",
+  "BILGORAJ": "BIŁGORAJ",
+  "GORAL ZWIECKI": "GÓRAL ŻYWIECKI",
+  "GORAL ZYWIECKI": "GÓRAL ŻYWIECKI",
+  "SILEZIA": "ŚLĄSK",
+  "SILESIA": "ŚLĄSK",
+  "KARVOEIRO - SILESIA": "CARVOEIRO - ŚLĄSK",
+  "MAZUR HALKA": "MAZUR (HALKA)",
+  "MAZUR MILITAR": "MAZUR MILITAR",
+  "PRZEWORSKI": "PRZEWORSK",
+  "CIESZYN": "CIESZYN",
+  "KASZUBY": "KASZUBY",
+  "KRAKOWIAK": "KRAKOWIAK",
+  "KUJAWIAK": "KUJAWIAK",
+  "OPOCZNO": "OPOCZNO",
+  "RZESZOW": "RZESZÓW",
+  "RZESZÓW": "RZESZÓW",
+  "SIERADZ": "SIERADZ",
+  "SPISZ": "SPISZ",
+  "WILANOW": "WILANÓW",
+  "WILANÓW": "WILANÓW",
+  "WIELKOPOLSKA": "WIELKOPOLSKA",
+  "BESKID": "BESKID"
+};
+
+const ALIAS = {
+  "SUITA LOWICKA": "ŁOWICZ",
+  "SUITA ŁOWICKA": "ŁOWICZ",
+  "LOWICZ": "ŁOWICZ",
+  "SACZ": "SĄCZ",
+  "LEMKO": "ŁEMKO",
+  "BILGORAJ": "BIŁGORAJ",
+  "GORAL ZWIECKI": "GÓRAL ŻYWIECKI",
+  "SILESIA": "ŚLĄSK"
+};
+
+function fixPolishName(n) {
+  if (!n) return "";
+  const trimmed = String(n).trim().toUpperCase();
+  return POLISH_CORRECTIONS[trimmed] || trimmed;
+}
+
+function autoCorrectPolish(d) {
+  if (!d) return d;
+  if (Array.isArray(d.costumes)) {
+    d.costumes.forEach(c => {
+      c.name = fixPolishName(c.name);
+    });
+  }
+  if (Array.isArray(d.dances)) {
+    d.dances = d.dances.map(fixPolishName);
+  }
+  if (Array.isArray(d.dancers)) {
+    d.dancers.forEach(p => {
+      const newNums = {};
+      Object.entries(p.nums || {}).forEach(([k, v]) => {
+        newNums[fixPolishName(k)] = v;
+      });
+      p.nums = newNums;
+    });
+  }
+  return d;
+}
+
+/* ===== ARMAZENAMENTO & ESTADO ===== */
 let S = null;
 
 const uid = () => Math.random().toString(36).slice(2, 10);
@@ -1108,7 +1333,7 @@ function readImg(file, max = 1000) {
         cv.width = Math.round(im.width * k);
         cv.height = Math.round(im.height * k);
         const g = cv.getContext("2d");
-        g.fillStyle = "#ffffff";
+        g.fillStyle = "#090d16";
         g.fillRect(0, 0, cv.width, cv.height);
         if (OPT.enhance) g.filter = "brightness(1.06) contrast(1.10) saturate(1.08)";
         g.drawImage(im, 0, 0, cv.width, cv.height);
@@ -1126,6 +1351,10 @@ function openPhoto(src, onChange, onDelete) {
   const lb = document.getElementById("lb");
   document.getElementById("lbimg").src = src;
   lb.classList.add("active");
+  const isAuth = !document.body.classList.contains("locked");
+  document.getElementById("lbchg").style.display = isAuth ? "" : "none";
+  document.getElementById("lbdel").style.display = isAuth ? "" : "none";
+  
   document.getElementById("lbchg").onclick = () => { lb.classList.remove("active"); pickImg(onChange); };
   document.getElementById("lbdel").onclick = () => { lb.classList.remove("active"); onDelete(); };
   document.getElementById("lbclose").onclick = () => lb.classList.remove("active");
@@ -1230,7 +1459,8 @@ function migrate(d) {
   if (!d.dances) d.dances = [];
   if (!d.dancers) d.dancers = [];
   if (!d.bank) d.bank = [];
-  d.version = 3; return d;
+  d.version = 3;
+  return autoCorrectPolish(d);
 }
 function sharedIn(it, selfId) {
   if (!it.cid) return [];
@@ -1238,37 +1468,85 @@ function sharedIn(it, selfId) {
 }
 function thumb(src, attr) { return src ? `<img class="thumb" ${attr} src="${src}" alt="">` : `<div class="nothumb" ${attr}>+ foto</div>`; }
 
+/* Conta quantos dançarinos usam este traje na grade */
+function dancersCountFor(costumeName) {
+  const normC = norm(costumeName);
+  return S.dancers.filter(p => {
+    return Object.keys(p.nums || {}).some(dance => {
+      return norm(ALIAS[dance] || dance) === normC;
+    });
+  }).length;
+}
+
 /* ===== TELAS ===== */
 const app = document.getElementById("app");
 
-/* 1. TELA TRAJES (HOME) */
+/* 1. TELA TRAJES (CATÁLOGO & ESTOQUE) */
 function viewHome() {
-  let h = `<div class="bar noprint">
-    <input type="search" id="q" placeholder="Buscar traje pelo nome...">
+  const totalPieces = S.costumes.reduce((acc, c) => acc + c.items.length, 0);
+  const totalDancersWithCostumes = S.dancers.filter(p => Object.keys(p.nums || {}).length > 0).length;
+
+  let h = `
+  <!-- KPIs de Inventário -->
+  <div class="kpi-grid noprint">
+    <div class="kpi-card">
+      <span class="kpi-num">${S.costumes.length}</span>
+      <span class="kpi-label">Trajes no Acervo</span>
+    </div>
+    <div class="kpi-card blue">
+      <span class="kpi-num">${totalPieces}</span>
+      <span class="kpi-label">Peças Cadastradas</span>
+    </div>
+    <div class="kpi-card emerald">
+      <span class="kpi-num">${S.common.length}</span>
+      <span class="kpi-label">Peças Comuns Compartilhadas</span>
+    </div>
+    <div class="kpi-card amber">
+      <span class="kpi-num">${totalDancersWithCostumes}</span>
+      <span class="kpi-label">Dançarinos com Traje Atribuído</span>
+    </div>
+  </div>
+
+  <div class="bar noprint">
+    <input type="search" id="q" placeholder="Buscar traje (ex: Łowicz, Śląsk, Cieszyn)...">
     <button class="btn primary" id="addC">+ Novo traje</button>
   </div>`;
+
   if(!S.costumes.length) {
-    h += `<div style="padding: 60px 20px; text-align: center; background: #fff; border-radius: 16px; border: 1px dashed var(--bd);">
+    h += `<div style="padding: 60px 20px; text-align: center; background: var(--surface); border-radius: 16px; border: 1px dashed var(--bd);">
       <div style="font-size: 48px; margin-bottom: 12px;">👔</div>
-      <h3 style="font-size: 18px; margin-bottom: 6px;">Nenhum traje cadastrado ainda</h3>
-      <p style="color: var(--text-muted); margin-bottom: 18px;">Comece adicionando seu primeiro traje ou restaure um backup existente.</p>
+      <h3 style="font-size: 18px; margin-bottom: 6px; color:#fff;">Nenhum traje cadastrado ainda</h3>
+      <p style="color: var(--text-muted); margin-bottom: 18px;">Adicione seu primeiro traje ou restaure um backup (.json).</p>
       <div style="display:inline-flex; gap:10px;">
         <button class="btn primary" onclick="document.getElementById('addC').click()">+ Criar Traje</button>
-        <button class="btn" onclick="go('#/backup')">Restaurar Backup (.json)</button>
+        <button class="btn" onclick="go('#/backup')">Restaurar Backup</button>
       </div>
     </div>`;
   } else {
     h += `<div class="grid">`;
     S.costumes.forEach(c => {
       const commonCount = c.items.filter(i => i.cid).length;
+      const exclusiveCount = c.items.length - commonCount;
+      const dancerCount = dancersCountFor(c.name);
+      
+      // Amostra das primeiras peças para preview da composição
+      const partsPreview = c.items.map(it => eff(it)?.part).filter(Boolean).slice(0, 4).join(" · ");
+
       h += `<div class="card" data-id="${c.id}" data-name="${esc(norm(c.name))}">
         <div class="ph" style="${c.photo ? `background-image:url('${c.photo}')` : ""}">
           ${c.photo ? "" : "👔"}
+          <div class="card-badges">
+            <span class="badge-count pri">${c.items.length} ${c.items.length === 1 ? "peça" : "peças"}</span>
+            ${commonCount ? `<span class="badge-count blue">${commonCount} comum</span>` : ""}
+          </div>
         </div>
         <div class="nm">${esc(c.name)}</div>
-        <div class="sub">
-          <span class="badge-count">${c.items.length} ${c.items.length === 1 ? "peça" : "peças"}</span>
-          ${commonCount ? `<span class="badge-count" style="background:var(--pri-bg);color:var(--pri-dark)">${commonCount} comum</span>` : ""}
+        <div class="comp-preview" title="${partsPreview}">
+          ${partsPreview ? esc(partsPreview) : '<span style="color:var(--text-light)">(sem peças)</span>'}
+        </div>
+        <div class="card-footer">
+          <span>${exclusiveCount} exclusivas</span>
+          <span>👥 ${dancerCount} dançarinos</span>
         </div>
       </div>`;
     });
@@ -1282,38 +1560,47 @@ function viewHome() {
     app.querySelectorAll(".card").forEach(el => el.style.display = el.dataset.name.includes(q) ? "" : "none");
   };
   document.getElementById("addC").onclick = () => {
-    const name = prompt("Nome do novo traje:"); if (!name) return;
-    const c = { id: uid(), name: name.toUpperCase().trim(), photo: "", items: [] };
+    const name = prompt("Nome do novo traje (ex: ŁOWICZ, SĄCZ, ŚLĄSK):"); if (!name) return;
+    const c = { id: uid(), name: fixPolishName(name), photo: "", items: [] };
     S.costumes.push(c); save(); go("#/traje/" + c.id);
   };
 }
 
-/* 2. TELA DETALHES DO TRAJE */
+/* 2. TELA DETALHES DO TRAJE (COMPOSIÇÃO COMPLETA) */
 function viewCostume(id) {
   const c = S.costumes.find(x => x.id === id);
   if (!c) { app.innerHTML = `<p style="padding:40px; text-align:center">Traje não encontrado. <a href="#/">Voltar</a></p>`; return; }
   c.items = c.items.filter(it => !it.cid || commonOf(it));
   const avail = S.common.filter(cm => !c.items.some(i => i.cid === cm.id));
+  const dancerCount = dancersCountFor(c.name);
   
   let h = `<div class="bar noprint">
     <button class="btn" onclick="go('#/')">← Voltar</button>
     <button class="btn primary" id="addI">+ Adicionar peça</button>
     <select id="addCm"><option value="">+ Vincular peça comum...</option>${avail.map(cm => `<option value="${cm.id}">${esc(cmLabel(cm))}</option>`).join("")}</select>
-    <button class="btn" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn" onclick="window.print()">🖨 Imprimir Ficha</button>
     <button class="btn red" id="delC" style="margin-left:auto">Excluir traje</button>
   </div>
+  
+  <!-- Ficha do Traje -->
   <div class="title">
     <div class="cover" id="cover" style="${c.photo ? `background-image:url('${c.photo}');border:none` : ""}">
-      ${c.photo ? "" : "Clique para<br>adicionar foto"}
+      ${c.photo ? "" : "Clique para<br>adicionar foto<br>do traje"}
     </div>
     <div class="title-info">
       <input id="cname" value="${esc(c.name)}" title="Nome do traje">
-      <div class="note" style="margin-top:4px">
-        <b>${c.items.length}</b> ${c.items.length === 1 ? "peça cadastrada" : "peças cadastradas"} · 
-        <b>${c.items.filter(i => i.cid).length}</b> peça(s) comum(ns)
+      <div class="composition-summary">
+        <span class="comp-chip">Total de Peças: <b>${c.items.length}</b></span>
+        <span class="comp-chip">Peças Comuns: <b>${c.items.filter(i => i.cid).length}</b></span>
+        <span class="comp-chip">Peças Exclusivas: <b>${c.items.filter(i => !i.cid).length}</b></span>
+        <span class="comp-chip">Dançarinos Escalados: <b>${dancerCount}</b></span>
       </div>
     </div>
   </div>
+
+  <h3 style="margin-bottom:12px; font-size:16px; color:#fff; display:flex; align-items:center; gap:8px;">
+    🧩 Composição das Peças
+  </h3>
   <div class="wrap">
     <table>
       <thead>
@@ -1372,12 +1659,12 @@ function viewCostume(id) {
     }
   });
   h += `</tbody></table></div>
-  <p class="note">Linhas em destaque rosa são <b>peças comuns</b>: editadas na aba "Peças comuns" e sincronizadas entre trajes. Clique em 🔗 para converter uma peça local em comum.</p>`;
+  <p class="note">Linhas destacadas em vermelho escuro são <b>peças comuns</b>: sincronizadas em múltiplos trajes e editadas na aba Peças comuns.</p>`;
   
   app.innerHTML = h;
   const re = () => viewCostume(id);
 
-  document.getElementById("cname").onchange = e => { c.name = e.target.value.toUpperCase().trim() || c.name; e.target.value = c.name; save(); };
+  document.getElementById("cname").onchange = e => { c.name = fixPolishName(e.target.value) || c.name; e.target.value = c.name; save(); };
   document.getElementById("cover").onclick = () => {
     const set = p => { c.photo = p; save(); re(); };
     c.photo ? openPhoto(c.photo, set, () => { if (confirm("Remover a foto do traje?")) set(""); }) : pickImg(set);
@@ -1422,7 +1709,7 @@ function viewPieces() {
   let h = `<div class="bar noprint">
     <input type="search" id="q" placeholder="Buscar (peça, tipo, cor, observação)...">
     <select id="fp"><option value="">Todas as peças</option>${parts.map(p => `<option>${esc(p)}</option>`).join("")}</select>
-    <span id="cnt" class="note" style="margin-left:auto; font-weight:600"></span>
+    <span id="cnt" class="note" style="margin-left:auto; font-weight:700; color:#fff;"></span>
   </div>
   <div class="wrap"><table><thead><tr><th>Traje</th><th>Peça</th><th>Foto</th><th>Tipo</th><th>Cor</th><th>Quant.</th><th>Observação</th></tr></thead><tbody>`;
   
@@ -1432,7 +1719,7 @@ function viewPieces() {
     h += `<tr data-t="${esc(txt)}" data-p="${esc(norm(it.part))}" ${raw.cid ? 'class="link"' : ""}>
       <td><span class="chip" data-go="${c.id}">${esc(c.name)}</span></td>
       <td><b>${esc(it.part)}</b>${raw.cid ? ' <span class="tag" data-cm="' + raw.cid + '">🔗</span>' : ""}</td>
-      <td>${it.photo ? `<img class="thumb" src="${it.photo}" alt="">` : ""}</td>
+      <td>${it.photo ? `<img class="thumb" src="${it.photo}" alt="" data-zoom-src="${it.photo}">` : ""}</td>
       <td>${esc(it.type)}</td>
       <td>${esc(it.color)}</td>
       <td>${esc(it.qty)}</td>
@@ -1449,6 +1736,7 @@ function viewPieces() {
   document.getElementById("q").oninput = f; document.getElementById("fp").onchange = f; f();
   app.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
   app.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/comuns/" + t.dataset.cm));
+  app.querySelectorAll("[data-zoom-src]").forEach(img => img.onclick = () => openPhoto(img.dataset.zoomSrc, () => {}, () => {}));
 }
 
 /* 4. TELA DANÇARINOS */
@@ -1460,7 +1748,7 @@ function viewDancers() {
     <button class="btn" onclick="window.print()">🖨 Imprimir Grade</button>
     <span class="note" style="margin-left:auto">${S.dancers.length} dançarinos · ${S.dances.length} danças</span>
   </div>
-  <p class="note" style="margin-top:-10px; margin-bottom:14px">Número da camisa/peça de cada dançarino. Clique no nome da dança para ir direto ao traje.</p>
+  <p class="note" style="margin-top:-14px; margin-bottom:14px">Número da camisa/peça de cada dançarino. Clique no nome da dança para abrir o traje correspondente.</p>
   <div class="wrap"><table class="dz"><thead><tr><th>Dançarino</th>`;
   
   S.dances.forEach((d, j) => {
@@ -1490,8 +1778,8 @@ function viewDancers() {
   document.getElementById("q").oninput = e => { const q = norm(e.target.value); app.querySelectorAll("tbody tr").forEach(tr => tr.style.display = tr.dataset.n.includes(q) ? "" : "none"); };
   document.getElementById("addD").onclick = () => { const n = prompt("Nome do dançarino:"); if (!n) return; S.dancers.push({ id: uid(), name: n.toUpperCase().trim(), nums: {} }); save(); viewDancers(); };
   document.getElementById("addDz").onclick = () => {
-    const n = prompt("Nome da dança (use o mesmo nome do traje para criar o link):", ""); if (!n) return;
-    const d = n.toUpperCase().trim(); if (S.dances.includes(d)) return alert("Essa dança já existe.");
+    const n = prompt("Nome da dança (ex: ŁOWICZ, SĄCZ, ŚLĄSK):", ""); if (!n) return;
+    const d = fixPolishName(n); if (S.dances.includes(d)) return alert("Essa dança já existe.");
     S.dances.push(d); save(); viewDancers();
   };
   app.querySelectorAll("[data-dx]").forEach(b => b.onclick = () => {
@@ -1513,15 +1801,15 @@ function viewDancers() {
 /* 5. TELA PEÇAS COMUNS */
 function viewCommon(focusId) {
   let h = `<h2>🔗 Peças comuns</h2>
-  <p class="note" style="margin-top:0">Cadastre aqui peças reutilizadas em múltiplos trajes (ex.: CAMISA QUE AMASSA). A alteração de foto e dados aqui reflete automaticamente em todos os trajes marcados.</p>
+  <p class="note" style="margin-top:0">Peças reutilizadas em múltiplos trajes (ex.: CAMISA QUE AMASSA, FAIXA, COLETE). A alteração de foto e dados aqui reflete em todos os trajes vinculados.</p>
   <div class="bar noprint">
     <input type="search" id="q" placeholder="Buscar peça comum...">
     <button class="btn primary" id="addCm">+ Nova peça comum</button>
-    <button class="btn" id="imp">Importar peças repetidas existentes</button>
+    <button class="btn" id="imp">Importar peças repetidas</button>
   </div>`;
   
   if (!S.common.length) {
-    h += `<div style="padding: 40px; text-align: center; background: #fff; border-radius: 16px; border: 1px dashed var(--bd);">
+    h += `<div style="padding: 40px; text-align: center; background: var(--surface); border-radius: 16px; border: 1px dashed var(--bd);">
       <p style="color:var(--text-muted)">Nenhuma peça comum cadastrada ainda.<br>Clique em <b>+ Nova peça comum</b> ou importe as repetidas automaticamente.</p>
     </div>`;
   } else {
@@ -1588,19 +1876,19 @@ function viewBank() {
   }
 
   let h = `<h2>📷 Banco de Fotos</h2>
-    <p class="note" style="margin-top:0">Envie múltiplas fotos de uma vez com fundo branco automático. Use o botão <b>Usar em...</b> para vincular a trajes ou peças.</p>
+    <p class="note" style="margin-top:0">Galeria de fotos do acervo. Arraste arquivos para carregar ou vincule fotos existentes a trajes e peças.</p>
     <div id="bkDrop">
       <div style="font-size:32px; margin-bottom:8px">📥</div>
       <b>Arraste as fotos para cá</b> ou <button class="btn primary" id="bkUp" style="margin:0 8px">Escolher do Computador</button>
       <br>
       <label style="font-size:13px; display:inline-flex; align-items:center; gap:6px; margin-top:14px; cursor:pointer">
-        <input type="checkbox" id="bkEnh" ${OPT.enhance ? "checked" : ""}> Realçar qualidade automaticamente (brilho, contraste e cor)
+        <input type="checkbox" id="bkEnh" ${OPT.enhance ? "checked" : ""}> Otimizar nitidez e contraste automaticamente
       </label>
     </div>
     <div class="bar">
       <input type="search" id="bkQ" placeholder="Buscar foto pelo nome...">
       <select id="bkF"><option value="">Todas as fotos</option><option value="free">Ainda não usadas</option><option value="used">Já utilizadas</option></select>
-      <span class="note" style="margin-left:auto">${B.length} foto(s) no banco</span>
+      <span class="note" style="margin-left:auto; color:#fff; font-weight:700;">${B.length} foto(s) no banco</span>
     </div>
     <div class="bk-grid">`;
   
@@ -1658,13 +1946,7 @@ function viewBank() {
     const b = B[+el.dataset.i];
     el.querySelector("[data-nm]").onchange = e => { b.name = e.target.value.toUpperCase().trim(); e.target.value = b.name; el.dataset.n = norm(b.name); save(); };
     el.querySelector("[data-zoom]").onclick = () => {
-      document.getElementById("lbimg").src = b.img;
-      document.getElementById("lb").classList.add("active");
-      document.getElementById("lbchg").style.display = document.getElementById("lbdel").style.display = "none";
-      document.getElementById("lbclose").onclick = () => {
-        document.getElementById("lb").classList.remove("active");
-        document.getElementById("lbchg").style.display = document.getElementById("lbdel").style.display = "";
-      };
+      openPhoto(b.img, () => {}, () => {});
     };
     el.querySelector("[data-use]").onclick = () => assignDlg(b);
     el.querySelector("[data-del]").onclick = () => {
@@ -1680,7 +1962,7 @@ function assignDlg(b) {
   const costOpts = S.costumes.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("");
   box.innerHTML = `<h3>Vincular Foto: ${esc(b.name)}</h3>
     <div style="display:flex; gap:20px; flex-wrap:wrap">
-      <img src="${b.img}" style="width:180px; height:180px; object-fit:contain; background:#fff; border:1px solid var(--bd); border-radius:12px;">
+      <img src="${b.img}" style="width:180px; height:180px; object-fit:contain; background:#090d16; border:1px solid var(--bd); border-radius:12px;">
       <div style="flex:1; min-width:260px;">
         <div class="form-group">
           <label>Usar esta foto como:</label>
@@ -1738,7 +2020,7 @@ window.pickImg = pickImg = function (cb) {
   box.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <h3 style="margin:0">Escolher Foto</h3>
       <div style="display:flex; gap:8px;">
-        <input type="search" id="pkQ" placeholder="Filtrar foto..." style="padding:6px 10px; border:1px solid var(--bd); border-radius:6px;">
+        <input type="search" id="pkQ" placeholder="Filtrar foto..." style="padding:6px 10px; background:#090d16; border:1px solid var(--bd); border-radius:6px; color:#fff;">
         <button class="btn primary sm" id="pkUp">⬆ Enviar do PC</button>
         <button class="btn red sm" id="pkX">Cancelar</button>
       </div>
@@ -1776,30 +2058,30 @@ function csv(rows) { return "\uFEFF" + rows.map(r => r.map(v => `"${String(v ?? 
 function viewBackup() {
   const kb = Math.round(JSON.stringify(S).length / 1024);
   app.innerHTML = `<h2>💾 Backup e Exportação</h2>
-  <p class="note" style="margin-top:0">Os dados e fotos ficam armazenados <b>no seu navegador</b>. Mantenha sempre um backup atualizado salvo no seu computador.</p>
+  <p class="note" style="margin-top:0">Os dados e fotos ficam salvos localmente neste navegador. Faça backups regulares para manter os dados protegidos.</p>
   
-  <div style="background:#fff; border:1px solid var(--bd); border-radius:16px; padding:24px; margin:20px 0; box-shadow:var(--shadow-sm)">
-    <h3 style="font-size:16px; margin-bottom:12px;">Estatísticas do Banco Atual</h3>
+  <div style="background:var(--surface); border:1px solid var(--bd); border-radius:16px; padding:24px; margin:20px 0; box-shadow:var(--shadow)">
+    <h3 style="font-size:16px; margin-bottom:14px; color:#fff;">Estatísticas do Acervo</h3>
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-bottom:20px;">
-      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.costumes.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Trajes</span></div>
-      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.costumes.reduce((a, c) => a + c.items.length, 0)}</b><br><span style="font-size:12px; color:var(--text-muted)">Peças cadastradas</span></div>
-      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.common.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Peças comuns</span></div>
-      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.dancers.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Dançarinos</span></div>
-      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${(S.bank || []).length}</b><br><span style="font-size:12px; color:var(--text-muted)">Fotos no banco</span></div>
-      <div style="background:#f8fafc; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${kb} KB</b><br><span style="font-size:12px; color:var(--text-muted)">Tamanho total</span></div>
+      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.costumes.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Trajes</span></div>
+      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.costumes.reduce((a, c) => a + c.items.length, 0)}</b><br><span style="font-size:12px; color:var(--text-muted)">Peças cadastradas</span></div>
+      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.common.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Peças comuns</span></div>
+      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${S.dancers.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Dançarinos</span></div>
+      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${(S.bank || []).length}</b><br><span style="font-size:12px; color:var(--text-muted)">Fotos no banco</span></div>
+      <div style="background:#090d16; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--pri)">${kb} KB</b><br><span style="font-size:12px; color:var(--text-muted)">Tamanho aproximado</span></div>
     </div>
     
     <div style="display:flex; gap:12px; flex-wrap:wrap;">
       <button class="btn primary" id="bJ">⬇ Baixar Backup Completo (.json)</button>
-      <button class="btn" id="bI">⬆ Restaurar Backup (.json)</button>
+      <button class="btn blue" id="bI">⬆ Restaurar Backup (.json)</button>
       <button class="btn" id="bC1">📊 Exportar Peças (.csv)</button>
       <button class="btn" id="bC2">📊 Exportar Dançarinos (.csv)</button>
     </div>
   </div>
 
-  <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:16px; padding:20px;">
-    <h3 style="font-size:15px; color:#991b1b; margin-bottom:6px;">Zona de Perigo</h3>
-    <p style="font-size:13px; color:#b91c1c; margin-bottom:12px;">Ao limpar os dados, tudo que estiver armazenado neste navegador será apagado permanentemente.</p>
+  <div style="background:rgba(220, 38, 38, 0.1); border:1px solid rgba(220, 38, 38, 0.3); border-radius:16px; padding:20px;">
+    <h3 style="font-size:15px; color:#fca5a5; margin-bottom:6px;">Zona de Perigo</h3>
+    <p style="font-size:13px; color:#f87171; margin-bottom:12px;">Limpar os dados apagará permanentemente todos os trajes e fotos salvos neste navegador.</p>
     <button class="btn red" id="bR">Limpar Todos os Dados</button>
   </div>`;
 
@@ -1811,7 +2093,7 @@ function viewBackup() {
         const d = JSON.parse(await i.files[0].text());
         if (!Array.isArray(d.costumes) || !Array.isArray(d.dancers) || !Array.isArray(d.dances)) throw 0;
         if (S.costumes.length && !confirm("Substituir todos os dados atuais por este backup?")) return;
-        S = migrate(d); save(); toast("Backup restaurado com sucesso!"); go("#/");
+        S = migrate(d); save(); toast("Backup restaurado e nomes em polonês corrigidos!"); go("#/");
       } catch (e) { alert("Arquivo de backup inválido ou corrompido."); }
     };
     i.click();
@@ -1823,8 +2105,8 @@ function viewBackup() {
 
 /* ===== CONFIGURAÇÕES (MODAL & ESTILOS) ===== */
 (function setupSettings() {
-  const DEF_TEXT = { ff: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif", fs: 14, fst: 26, px: 12, py: 10 };
-  const DEF_PHOTO = { fit: "contain", tw: 72, cw: 180, ar: "3/4" };
+  const DEF_TEXT = { ff: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif", fs: 14, fst: 26, px: 12, py: 11 };
+  const DEF_PHOTO = { fit: "contain", tw: 72, cw: 220, ar: "3/4" };
   
   let textP = Object.assign({}, DEF_TEXT, JSON.parse(localStorage.getItem("textoAjuste") || "{}"));
   let photoP = Object.assign({}, DEF_PHOTO, JSON.parse(localStorage.getItem("fotoAjuste") || "{}"));
@@ -1834,7 +2116,6 @@ function viewBackup() {
 
   function applyStyles() {
     const r = document.documentElement.style;
-    // Textos
     r.setProperty("--ff", textP.ff);
     r.setProperty("--fs", textP.fs + "px");
     r.setProperty("--fsh", (textP.fs - 2) + "px");
@@ -1849,7 +2130,6 @@ function viewBackup() {
     $("tpPy").value = textP.py; $("tpPyV").textContent = textP.py + " px";
     localStorage.setItem("textoAjuste", JSON.stringify(textP));
 
-    // Fotos
     r.setProperty("--fit", photoP.fit);
     r.setProperty("--bgfit", photoP.fit);
     r.setProperty("--tw", photoP.tw + "px");
@@ -1863,7 +2143,6 @@ function viewBackup() {
     localStorage.setItem("fotoAjuste", JSON.stringify(photoP));
   }
 
-  // Event Listeners Textos
   $("tpFf").onchange = e => { textP.ff = e.target.value; applyStyles(); };
   $("tpFs").oninput = e => { textP.fs = +e.target.value; applyStyles(); };
   $("tpFst").oninput = e => { textP.fst = +e.target.value; applyStyles(); };
@@ -1872,14 +2151,12 @@ function viewBackup() {
   $("tpReset").onclick = () => { textP = Object.assign({}, DEF_TEXT); applyStyles(); };
   $("tpResetCols").onclick = () => { W = {}; localStorage.setItem("colunasLargura", "{}"); document.querySelectorAll(".wrap table th").forEach(th => th.style.width = ""); toast("Larguras zeradas"); };
 
-  // Event Listeners Fotos
   $("fpFit").onchange = e => { photoP.fit = e.target.value; applyStyles(); };
   $("fpTw").oninput = e => { photoP.tw = +e.target.value; applyStyles(); };
   $("fpCw").oninput = e => { photoP.cw = +e.target.value; applyStyles(); };
   $("fpAr").onchange = e => { photoP.ar = e.target.value; applyStyles(); };
   $("fpReset").onclick = () => { photoP = Object.assign({}, DEF_PHOTO); applyStyles(); };
 
-  // Modal Tabs
   document.querySelectorAll(".settings-tab-btn").forEach(btn => {
     btn.onclick = () => {
       document.querySelectorAll(".settings-tab-btn").forEach(b => b.classList.remove("active"));
@@ -1896,7 +2173,6 @@ function viewBackup() {
   $("closeSettingsModalBtn").onclick = () => $("settingsDlg").classList.remove("active");
   $("settingsDlg").addEventListener("click", e => { if (e.target.id === "settingsDlg") $("settingsDlg").classList.remove("active"); });
 
-  // Colunas redimensionáveis
   const screenKey = () => (location.hash.split("/")[1] || "home");
   const colKey = th => screenKey() + "|" + (th.textContent || "").trim().replace(/\s+/g, " ").slice(0, 40) + "|" + th.cellIndex;
   let saveW;
@@ -1919,18 +2195,25 @@ function viewBackup() {
   applyStyles(); hookTables();
 })();
 
-/* ===== SEGURANÇA (PIN & MODO CONSULTA) ===== */
+/* ===== SEGURANÇA & CONTROLE DE EDIÇÃO (PIN) ===== */
 const hash = s => { let h = 5381; s = "trajes|" + s; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; return h.toString(36); };
-let locked = false;
+let locked = true;
 
 function updateSecurityTab() {
   const t = document.getElementById("pinStatusText");
-  if (t) t.textContent = S && S.pin ? "Status atual: 🔒 PIN cadastrado e ativo." : "Status atual: 🔓 Nenhum PIN configurado (modo sempre liberado).";
+  if (t) t.textContent = S && S.pin ? "Status: 🔒 PIN de segurança configurado." : "Status: 🔓 Nenhum PIN configurado (acesso aberto para edição).";
 }
-function drawPinBtn() {
-  const btn = document.getElementById("pinBtn");
-  btn.textContent = locked ? "🔒 Somente consulta" : (S && S.pin ? "🔓 Edição liberada" : "🔓 Definir PIN");
-  btn.classList.toggle("lk", locked);
+function drawAuthBadge() {
+  const b = document.getElementById("authBadge");
+  if (locked) {
+    b.className = "locked";
+    b.innerHTML = `🔒 Modo Consulta`;
+    b.title = "Clique para liberar a edição (requer PIN se configurado)";
+  } else {
+    b.className = "unlocked";
+    b.innerHTML = `🔓 Modo Edição Ativo`;
+    b.title = "Edição liberada. Clique para travar em Modo Consulta.";
+  }
   updateSecurityTab();
 }
 function setLocked(v) {
@@ -1938,26 +2221,31 @@ function setLocked(v) {
   document.body.classList.toggle("locked", v);
   if (v) sessionStorage.removeItem("trajesLiberado");
   else sessionStorage.setItem("trajesLiberado", "1");
-  drawPinBtn(); route();
+  drawAuthBadge();
+  route();
 }
 function newPin() {
-  const a = prompt("Crie um PIN (4 a 8 números):"); if (a === null) return false;
+  const a = prompt("Crie um PIN de segurança (4 a 8 números):"); if (a === null) return false;
   if (!/^\d{4,8}$/.test(a)) { alert("O PIN deve ter de 4 a 8 números."); return false; }
   if (prompt("Digite o PIN novamente para confirmar:") !== a) { alert("Os PINs não conferem."); return false; }
-  S.pin = hash(a); save(); toast("PIN salvo"); drawPinBtn(); return true;
+  S.pin = hash(a); save(); toast("PIN salvo"); drawAuthBadge(); return true;
 }
 
-document.getElementById("pinBtn").onclick = async () => {
+document.getElementById("authBadge").onclick = async () => {
   if (locked) {
-    const p = prompt("Digite o PIN para liberar a edição:"); if (p === null) return;
-    if (hash(p) === S.pin) { setLocked(false); toast("Edição liberada"); } else alert("PIN incorreto.");
+    if (S && S.pin) {
+      const p = prompt("Digite o PIN para liberar o modo edição:"); if (p === null) return;
+      if (hash(p) === S.pin) { setLocked(false); toast("Modo Edição Ativado 🔓"); } else alert("PIN incorreto.");
+    } else {
+      setLocked(false);
+      toast("Modo Edição Ativado 🔓");
+    }
     return;
   }
-  if (!S.pin) { if (newPin()) setLocked(true); return; }
-  const v = await ask("Controle de edição", [["🔒 Travar agora (modo consulta)", "lock"], ["Alterar o PIN", "chg"], ["Remover o PIN (sempre editável)", "del"]], "Segurança & PIN");
-  if (v === "lock") setLocked(true);
+  const v = await ask("Controle de Acesso", [["🔒 Travar agora (Modo Consulta)", "lock"], ["Alterar PIN", "chg"], ["Remover PIN", "del"]], "Modo de Operação");
+  if (v === "lock") { setLocked(true); toast("Modo Consulta Ativado 🔒"); }
   else if (v === "chg") newPin();
-  else if (v === "del") { if (confirm("Remover o PIN? O app ficará sempre liberado para edição.")) { delete S.pin; save(); drawPinBtn(); toast("PIN removido"); } }
+  else if (v === "del") { if (confirm("Remover o PIN? O app ficará sempre aberto para edição.")) { delete S.pin; save(); drawAuthBadge(); toast("PIN removido"); } }
 };
 
 document.getElementById("setPinActionBtn").onclick = () => { if (newPin()) setLocked(false); };
@@ -1973,6 +2261,7 @@ function drawLogo() {
 }
 document.getElementById("logoBox").onclick = async e => {
   e.stopPropagation();
+  if (document.body.classList.contains("locked")) return;
   if (S.logo) {
     const v = await ask("Deseja trocar ou remover a logo?", [["Trocar a logo (escolher do banco)", "chg"], ["Remover a logo", "del"]], "Logo do Topo");
     if (v === "del") { S.logo = ""; save(); drawLogo(); return; }
@@ -2005,9 +2294,9 @@ window.addEventListener("hashchange", route);
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
   S = await loadState();
   if (!S) { S = seedState(); save(); } else { S = migrate(S); save(); }
-  locked = !!S.pin && !sessionStorage.getItem("trajesLiberado");
+  locked = !sessionStorage.getItem("trajesLiberado");
   document.body.classList.toggle("locked", locked);
-  drawPinBtn();
+  drawAuthBadge();
   drawLogo();
   route();
 })();
