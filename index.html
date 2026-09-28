@@ -2460,9 +2460,9 @@ function formatSharedTag(part) {
 function classifyPiece(part) {
   const p = norm(part);
   if (p.includes("CALCA") || p.includes("CALÇA")) return { key: "calcas", label: "Calças", icon: "👖" };
-  if (p.includes("CAMISA") || p.includes("BLUSA")) return { key: "camisas", label: "Camisas & Blusas", icon: "👔" };
-  if (p.includes("COLETE") || p.includes("CORPETE")) return { key: "coletes", label: "Coletes & Corpetes", icon: "🦺" };
-  if (p.includes("CAPOTE") || p.includes("SUKMANA") || p.includes("CASACO") || p.includes("PALETO") || p.includes("TUNICA") || p.includes("SAIA") || p.includes("VESTIDO")) return { key: "capotes", label: "Capotes, Sukmanas & Saias", icon: "🧥" };
+  if (p.includes("CAMISA") || p.includes("BLUSA")) return { key: "camisas", label: "Camisas", icon: "👔" };
+  if (p.includes("COLETE") || p.includes("CORPETE")) return { key: "coletes", label: "Coletes", icon: "🦺" };
+  if (p.includes("CAPOTE") || p.includes("SUKMANA") || p.includes("CASACO") || p.includes("PALETO") || p.includes("TUNICA") || p.includes("SAIA") || p.includes("VESTIDO")) return { key: "capotes", label: "Capotes & Sukmanas", icon: "🧥" };
   if (p.includes("BOTA") || p.includes("SAPATO") || p.includes("CALCADO") || p.includes("CALÇADO")) return { key: "calcados", label: "Botas & Calçados", icon: "👢" };
   if (p.includes("FAIXA") || p.includes("FITA") || p.includes("CINTO") || p.includes("GRAVATA") || p.includes("PUNHO") || p.includes("DRAGONA") || p.includes("LUVA") || p.includes("MEIA") || p.includes("ECHARPE") || p.includes("BORDADO") || p.includes("COROA") || p.includes("LENCO") || p.includes("LENÇO") || p.includes("CHOCALHO")) return { key: "aderecos", label: "Adereços & Acessórios", icon: "🎗️" };
   return { key: "outros", label: "Outras Peças", icon: "📦" };
@@ -2483,7 +2483,7 @@ const DEFAULT_ROOMS = {
     name: "Trajes Masculinos",
     icon: "👔",
     color: "#e11d48",
-    desc: "Acervo de trajes folclóricos masculinos",
+    desc: "Acervo de trajes masculinos",
     pin: "gyqsv4", // 230773
     costumes: [],
     common: []
@@ -2493,7 +2493,7 @@ const DEFAULT_ROOMS = {
     name: "Trajes Femininos",
     icon: "👗",
     color: "#ec4899",
-    desc: "Acervo de trajes folclóricos femininos, saias e corpetes",
+    desc: "Acervo de trajes femininos",
     pin: "",
     costumes: [],
     common: []
@@ -2503,7 +2503,7 @@ const DEFAULT_ROOMS = {
     name: "Adereços e Botas Masculinos",
     icon: "👢",
     color: "#f59e0b",
-    desc: "Botas pretas/vermelhas, chapéus, cintos e acessórios masculinos",
+    desc: "Botas, chapéus, cintos e acessórios masculinos",
     pin: "",
     costumes: [],
     common: []
@@ -2513,7 +2513,7 @@ const DEFAULT_ROOMS = {
     name: "Adereços e Botas Femininos",
     icon: "👠",
     color: "#a855f7",
-    desc: "Botas, sapatos, coroas, fitas e adornos de cabeça femininos",
+    desc: "Botas e adereços femininos",
     pin: "",
     costumes: [],
     common: []
@@ -2627,6 +2627,19 @@ function updateCloudStatus(status, text) {
   });
 }
 
+async function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(timer);
+    return res;
+  } catch (err) {
+    clearTimeout(timer);
+    throw err;
+  }
+}
+
 async function cloudSyncPush() {
   const url = getCloudDbUrl();
   if (!url) {
@@ -2638,11 +2651,11 @@ async function cloudSyncPush() {
     try {
       updateCloudStatus("syncing");
       if (S) S.lastModified = Date.now();
-      const res = await fetch(url, {
+      const res = await fetchWithTimeout(url, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(S)
-      });
+      }, 15000);
       if (res.ok) {
         updateCloudStatus("online");
         toast("☁️ Sincronizado na nuvem para todos!");
@@ -2666,7 +2679,7 @@ async function cloudSyncPull(isManual = false) {
   try {
     isSyncingCloud = true;
     updateCloudStatus("syncing");
-    const res = await fetch(url);
+    const res = await fetchWithTimeout(url, {}, 8000);
     if (res.ok) {
       const remoteData = await res.json();
       if (remoteData && typeof remoteData === "object" && (remoteData.rooms || remoteData.costumes)) {
@@ -3575,8 +3588,10 @@ function openRoomSwitcher() {
   };
 }
 
-document.getElementById("openRoomSwitcherBtn").onclick = openRoomSwitcher;
-document.getElementById("sideQuickSwitchBtn").onclick = openRoomSwitcher;
+const openRoomBtn = document.getElementById("openRoomSwitcherBtn");
+if (openRoomBtn) openRoomBtn.onclick = openRoomSwitcher;
+const sideQuickBtn = document.getElementById("sideQuickSwitchBtn");
+if (sideQuickBtn) sideQuickBtn.onclick = openRoomSwitcher;
 
 /* ===== TELAS DO SISTEMA ===== */
 const app = document.getElementById("app");
@@ -3628,12 +3643,12 @@ function viewHome() {
     <div class="kpi-card" onclick="currentPieceCategory='camisas'; go('#/pecas');">
       <span class="kpi-card-icon">👔</span>
       <span class="kpi-num">${stats.camisas} <small style="font-size:11px;font-weight:600;">un</small></span>
-      <span class="kpi-label">Camisas & Blusas</span>
+      <span class="kpi-label">Camisas</span>
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='coletes'; go('#/pecas');">
       <span class="kpi-card-icon">🦺</span>
       <span class="kpi-num">${stats.coletes} <small style="font-size:11px;font-weight:600;">un</small></span>
-      <span class="kpi-label">Coletes & Corpetes</span>
+      <span class="kpi-label">Coletes</span>
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='capotes'; go('#/pecas');">
       <span class="kpi-card-icon">🧥</span>
@@ -5044,7 +5059,10 @@ window.addEventListener("hashchange", route);
 
 /* ===== INICIALIZAÇÃO AUTOMÁTICA OFFLINE & NUVEM ===== */
 (async () => {
-  let raw = await loadState();
+  let raw = null;
+  try {
+    raw = await loadState();
+  } catch (e) {}
   
   // Se IndexedDB estiver vazio ou sem trajes, carrega automaticamente os dados padrão embutidos!
   const hasCostumes = raw && raw.rooms && Object.values(raw.rooms).some(r => r.costumes && r.costumes.length > 0);
@@ -5060,21 +5078,29 @@ window.addEventListener("hashchange", route);
   }
 
   S = migrateState(raw);
-  save();
 
   if (S.logo) {
-    document.getElementById("logoImg").src = S.logo;
+    const lImg = document.getElementById("logoImg");
+    if (lImg) lImg.src = S.logo;
   }
 
-  // Tenta puxar a versão mais recente da nuvem se configurada
+  // RENDERIZA A TELA IMEDIATAMENTE (0ms)
+  updateThemeForActiveRoom();
+  route();
+
+  // Salva no IndexedDB local de forma assíncrona
+  try {
+    const db = await openDB();
+    const tx = db.transaction("kv", "readwrite");
+    tx.objectStore("kv").put(S, "state");
+  } catch (e) {}
+
+  // Consulta a nuvem em segundo plano sem travar a interface
   if (getCloudDbUrl()) {
-    await cloudSyncPull(false);
+    cloudSyncPull(false);
   } else {
     updateCloudStatus("local");
   }
-
-  updateThemeForActiveRoom();
-  route();
 })();
 </script>
 </body>
