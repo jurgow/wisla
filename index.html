@@ -1012,6 +1012,32 @@ body:not(.is-master) .master-only {
   box-shadow: 0 0 10px var(--room-bg);
 }
 
+.btn-card-photo-edit {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  color: #fff;
+  cursor: pointer;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+.btn-card-photo-edit:hover {
+  background: var(--room-color);
+  border-color: #fff;
+  transform: scale(1.06);
+}
+
 /* Linha de Nome do Card com Botão de Renomear Rápido */
 .nm-row {
   display: flex;
@@ -1821,6 +1847,7 @@ body.locked #addDz,
 body.locked #imp,
 body.locked #bkDrop,
 body.locked .btn-rename-card,
+body.locked .btn-card-photo-edit,
 body.locked [data-ch],
 body.locked [data-use],
 body.locked [data-del],
@@ -2101,13 +2128,13 @@ body.locked .bk-card input {
         <span>Todas as Peças</span>
         <span class="badge" id="sidePiecesCount">0</span>
       </a>
-
-      <div class="nav-category-title master-only" style="margin-top:14px;">Administração</div>
-      <a class="nav-item master-only" data-nav="#/banco">
+      <a class="nav-item" data-nav="#/banco">
         <span class="icon">📷</span>
         <span>Fotos do Acervo</span>
         <span class="badge" id="sidePhotosCount">0</span>
       </a>
+
+      <div class="nav-category-title master-only" style="margin-top:14px;">Administração</div>
       <a class="nav-item master-only" data-nav="#/backup">
         <span class="icon">💾</span>
         <span>Salvar & Sincronizar</span>
@@ -2682,12 +2709,33 @@ async function cloudSyncPull(isManual = false) {
   try {
     isSyncingCloud = true;
     updateCloudStatus("syncing");
-    const res = await fetchWithTimeout(url, {}, 8000);
+
+    const localTime = (S && S.lastModified) || 0;
+    const timeUrl = url.replace(/\.json(\?.*)?$/, "/lastModified.json");
+
+    // 1. Verificação ultra-leve (15 bytes) na nuvem se não for pull manual
+    if (!isManual && localTime > 0) {
+      try {
+        const timeRes = await fetchWithTimeout(timeUrl, {}, 4000);
+        if (timeRes.ok) {
+          const remoteTime = await timeRes.json();
+          // Se a nuvem não tiver alteração (timestamp igual ou menor), não baixa nada!
+          if (remoteTime !== null && typeof remoteTime === "number" && remoteTime <= localTime) {
+            updateCloudStatus("online");
+            return;
+          }
+        }
+      } catch (timeErr) {
+        // Se a verificação de timestamp falhar ou der timeout, continua para o fluxo normal
+      }
+    }
+
+    // 2. Se for pull manual ou se houver alteração real de outro usuário, baixa o JSON
+    const res = await fetchWithTimeout(url, {}, 12000);
     if (res.ok) {
       const remoteData = await res.json();
       if (remoteData && typeof remoteData === "object" && (remoteData.rooms || remoteData.costumes)) {
         const remoteTime = remoteData.lastModified || 0;
-        const localTime = (S && S.lastModified) || 0;
         
         // Se a versão da nuvem for mais recente (ou se for pull manual)
         if (isManual || remoteTime > localTime || !S || !S.rooms) {
@@ -3810,8 +3858,8 @@ function viewHome() {
       const extraCount = comp.groups.length > 4 ? `<span class="part-pill">+${comp.groups.length - 4}</span>` : "";
 
       h += `<div class="card" data-id="${c.id}" data-name="${esc(norm(c.name))}">
-        <div class="ph" style="${c.photo ? `background-image:url('${c.photo}')` : ""}">
-          ${c.photo ? "" : r.icon || "👔"}
+        <div class="ph">
+          ${c.photo ? `<img src="${c.photo}" alt="${esc(c.name)}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block;">` : `<div style="display:flex; justify-content:center; align-items:center; height:100%; font-size:36px; opacity:0.6;">${r.icon || "👔"}</div>`}
           <div class="card-badges">
             <span class="badge-count room" style="display:inline-flex; align-items:center; gap:4px;">
               <span>${kitInfo.kits ? kitInfo.kits + ' trajes completos' : (comp.totalUnits ? comp.totalUnits + ' peças' : 'Novo')}</span>
@@ -3946,8 +3994,8 @@ function viewCostume(id) {
   </div>
   
   <div class="costume-header">
-    <div class="cover" id="cover" style="${c.photo ? `background-image:url('${c.photo}');border:none` : ""}">
-      ${c.photo ? "" : "Toque para<br>foto do traje"}
+    <div class="cover" id="cover" title="Clique para ver ou alterar a foto do traje" style="${c.photo ? 'border:none; padding:0; overflow:hidden;' : ''}">
+      ${c.photo ? `<img src="${c.photo}" alt="${esc(c.name)}" style="width:100%; height:100%; object-fit:contain; border-radius:inherit; display:block;">` : `<div style="padding:10px; text-align:center;">📷 Adicionar Foto<br><small style="font-size:11px; opacity:0.7">do Traje</small></div>`}
     </div>
     <div class="costume-info">
       <div style="display:flex; align-items:center; gap:8px;">
@@ -4238,9 +4286,20 @@ function viewCostume(id) {
     });
 
     const ph = tr.querySelector("[data-ph]");
-    if (ph) ph.onclick = () => { const set = p => { it.photo = p; save(); re(); }; it.photo ? openPhoto(it.photo, set, () => { if (confirm("Remover foto?")) set(""); }) : pickImg(set); };
+    if (ph) ph.onclick = () => {
+      const set = p => { it.photo = p; save(); re(); };
+      it.photo ? openPhoto(it.photo, isUnlocked ? set : null, isUnlocked ? () => { if (confirm("Remover foto?")) set(""); } : null) : (isUnlocked ? pickImg(set) : null);
+    };
     const cph = tr.querySelector("[data-cmph]");
-    if (cph) cph.onclick = () => go("#/compartilhadas/" + cph.dataset.cmph);
+    if (cph) {
+      const cm = commonOf(raw);
+      if (cm) {
+        cph.onclick = () => {
+          const set = p => { cm.photo = p; save(); re(); };
+          cm.photo ? openPhoto(cm.photo, isUnlocked ? set : null, isUnlocked ? () => { if (confirm("Remover foto da peça compartilhada?")) set(""); } : null) : (isUnlocked ? pickImg(set) : null);
+        };
+      }
+    }
     tr.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/compartilhadas/" + t.dataset.cm));
     tr.querySelectorAll("[data-mv]").forEach(b => b.onclick = () => {
       const j = i + +b.dataset.mv; if (j < 0 || j >= c.items.length) return;
@@ -4607,44 +4666,89 @@ function viewCommon(focusId) {
 }
 
 /* 6. TELA BANCO DE FOTOS (APENAS MASTER) */
+/* 6. TELA BANCO DE FOTOS DO ACERVO */
 function viewBank() {
-  if (!isMasterUnlocked) { go("#/"); return; }
+  const r = getActiveRoom();
+  const isUnlocked = isCurrentRoomUnlocked();
   const B = bank();
-  let h = `<h2>📷 Banco de Fotos do Acervo Wisła</h2>
-    <p class="note" style="margin-top:0">Galeria geral de fotos compartilhadas entre todas as salas e trajes.</p>
-    <div id="bkDrop">
-      <div style="font-size:30px; margin-bottom:6px">📥</div>
-      <b>Arraste as fotos para cá</b> ou <button class="btn primary sm" id="bkUp" style="margin:0 8px">Escolher do PC / Celular</button>
+
+  let h = `
+    ${renderModeBanner(r)}
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+      <div>
+        <h2 style="margin:0; font-size:20px; display:flex; align-items:center; gap:8px;">
+          <span>📷</span> <span>Acervo Central de Fotos Wisła</span>
+        </h2>
+        <p class="note" style="margin-top:2px; margin-bottom:0">Galeria geral de fotos compartilhadas e reutilizáveis entre todas as salas e trajes.</p>
+      </div>
     </div>
-    <div class="toolbar-bar">
-      <input type="search" id="bkQ" placeholder="Buscar foto pelo nome...">
-      <span class="note" style="margin-left:auto; color:#fff; font-weight:700;">${B.length} foto(s) no banco</span>
+
+    ${isUnlocked ? `
+      <div id="bkDrop">
+        <div style="font-size:30px; margin-bottom:6px">📥</div>
+        <b>Arraste as fotos para cá</b> ou <button class="btn primary sm" id="bkUp" style="margin:0 8px">⬆ Enviar do Dispositivo</button>
+      </div>
+    ` : ''}
+
+    <div class="toolbar-bar noprint">
+      <input type="search" id="bkQ" placeholder="Buscar foto pelo nome no acervo...">
+      ${isUnlocked ? `<button class="btn primary" id="bkUpBtn">+ Nova Foto</button>` : ''}
+      <span class="note" style="margin-left:auto; color:#fff; font-weight:700;">${B.length} foto(s) no acervo</span>
     </div>
+    
     <div class="bk-grid">`;
 
-  B.forEach((b, i) => {
-    h += `<div class="bk-card" data-i="${i}" data-n="${esc(norm(b.name))}">
-      <img src="${b.img}" alt="" data-zoom>
-      <div class="bd">
-        <input data-nm value="${esc(b.name)}" title="Nome da foto">
-        <div class="row">
-          <button class="btn red" data-del title="Excluir do banco">🗑 Excluir</button>
-        </div>
-      </div>
+  if (!B.length) {
+    h += `<div style="grid-column: 1/-1; text-align: center; padding: 40px; background: var(--surface-card); border-radius: 16px; border: 1px dashed var(--bd);">
+      <p style="color:var(--text-muted)">Nenhuma foto cadastrada no acervo geral ainda.<br>${isUnlocked ? 'Clique em <b>+ Nova Foto</b> para adicionar a primeira.' : 'Desbloqueie o modo de edição para adicionar fotos.'}</p>
     </div>`;
-  });
+  } else {
+    B.forEach((b, i) => {
+      h += `<div class="bk-card" data-i="${i}" data-n="${esc(norm(b.name))}">
+        <img src="${b.img}" alt="${esc(b.name)}" data-zoom style="cursor:zoom-in;">
+        <div class="bd">
+          ${isUnlocked ? `
+            <input data-nm value="${esc(b.name)}" title="Nome da foto no acervo" placeholder="Nome da foto...">
+            <div class="row">
+              <button class="btn sm" data-zoom-btn title="Ampliar foto">🔍 Ver</button>
+              <button class="btn red sm" data-del title="Excluir do acervo">🗑 Excluir</button>
+            </div>
+          ` : `
+            <span style="font-size:12px; font-weight:700; text-align:center; padding:4px 0; color:#fff;">${esc(b.name || 'FOTO')}</span>
+          `}
+        </div>
+      </div>`;
+    });
+  }
 
   app.innerHTML = h + `</div>`;
 
-  const inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/*"; inp.multiple = true;
+  const handleUploadFile = (file) => {
+    if (!file || !file.type.startsWith("image/")) return;
+    openImageResizer(file, file.name, (finalImg) => {
+      const defaultName = file.name.replace(/\.[^.]+$/, "").toUpperCase();
+      const photoName = prompt("Nome da foto para o Acervo:", defaultName) || defaultName;
+      bank().push({
+        id: uid(),
+        name: photoName.toUpperCase().trim(),
+        img: finalImg,
+        date: new Date().toISOString().slice(0, 10)
+      });
+      save();
+      toast(`Foto "${photoName.toUpperCase()}" adicionada com sucesso ao Acervo!`);
+      updateCounters();
+      viewBank();
+    });
+  };
+
+  const inp = document.createElement("input");
+  inp.type = "file";
+  inp.accept = "image/*";
+  inp.multiple = true;
   inp.onchange = async () => {
     if (!inp.files.length) return;
     if (inp.files.length === 1) {
-      const f = inp.files[0];
-      openImageResizer(f, f.name, (img) => {
-        bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
-        save(); toast("Foto adicionada com sucesso!"); updateCounters(); viewBank();
-      });
+      handleUploadFile(inp.files[0]);
       return;
     }
     let n = 0;
@@ -4656,35 +4760,44 @@ function viewBank() {
         n++;
       } catch (e) {}
     }
-    save(); toast(n + " foto(s) adicionada(s)"); updateCounters(); viewBank();
+    save();
+    toast(`${n} fotos adicionadas com sucesso ao Acervo!`);
+    updateCounters();
+    viewBank();
   };
-  document.getElementById("bkUp").onclick = () => inp.click();
+
+  const bkUpBtn1 = document.getElementById("bkUp");
+  const bkUpBtn2 = document.getElementById("bkUpBtn");
+  if (bkUpBtn1) bkUpBtn1.onclick = () => inp.click();
+  if (bkUpBtn2) bkUpBtn2.onclick = () => inp.click();
 
   const d = document.getElementById("bkDrop");
-  d.ondragover = e => { e.preventDefault(); d.classList.add("over"); };
-  d.ondragleave = () => d.classList.remove("over");
-  d.ondrop = async e => {
-    e.preventDefault(); d.classList.remove("over");
-    if (!e.dataTransfer.files.length) return;
-    if (e.dataTransfer.files.length === 1 && e.dataTransfer.files[0].type.startsWith("image/")) {
-      const f = e.dataTransfer.files[0];
-      openImageResizer(f, f.name, (img) => {
-        bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
-        save(); toast("Foto adicionada com sucesso!"); updateCounters(); viewBank();
-      });
-      return;
-    }
-    let n = 0;
-    for (const f of e.dataTransfer.files) {
-      if (!f.type.startsWith("image/")) continue;
-      try {
-        const img = await readImg(f);
-        bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
-        n++;
-      } catch (err) {}
-    }
-    save(); toast(n + " foto(s) adicionada(s)"); updateCounters(); viewBank();
-  };
+  if (d) {
+    d.ondragover = e => { e.preventDefault(); d.classList.add("over"); };
+    d.ondragleave = () => d.classList.remove("over");
+    d.ondrop = async e => {
+      e.preventDefault();
+      d.classList.remove("over");
+      if (!e.dataTransfer.files.length) return;
+      if (e.dataTransfer.files.length === 1 && e.dataTransfer.files[0].type.startsWith("image/")) {
+        handleUploadFile(e.dataTransfer.files[0]);
+        return;
+      }
+      let n = 0;
+      for (const f of e.dataTransfer.files) {
+        if (!f.type.startsWith("image/")) continue;
+        try {
+          const img = await readImg(f);
+          bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
+          n++;
+        } catch (err) {}
+      }
+      save();
+      toast(`${n} fotos adicionadas ao Acervo!`);
+      updateCounters();
+      viewBank();
+    };
+  }
 
   document.getElementById("bkQ").oninput = e => {
     const q = norm(e.target.value);
@@ -4693,55 +4806,137 @@ function viewBank() {
 
   app.querySelectorAll(".bk-card").forEach(el => {
     const b = B[+el.dataset.i];
-    el.querySelector("[data-nm]").onchange = e => { b.name = e.target.value.toUpperCase().trim(); save(); };
-    el.querySelector("[data-zoom]").onclick = () => openPhoto(b.img, () => {}, () => {});
-    el.querySelector("[data-del]").onclick = () => {
-      if (!confirm("Excluir esta foto do banco geral?")) return;
-      S.bank = B.filter(x => x !== b); save(); updateCounters(); viewBank();
-    };
+    if (!b) return;
+    const nmInp = el.querySelector("[data-nm]");
+    if (nmInp) {
+      nmInp.onchange = e => {
+        b.name = e.target.value.toUpperCase().trim();
+        save();
+        toast("Nome da foto atualizado ✓");
+      };
+    }
+    const zoomImg = el.querySelector("[data-zoom]");
+    if (zoomImg) zoomImg.onclick = () => openPhoto(b.img, null, null);
+    const zoomBtn = el.querySelector("[data-zoom-btn]");
+    if (zoomBtn) zoomBtn.onclick = () => openPhoto(b.img, null, null);
+    const delBtn = el.querySelector("[data-del]");
+    if (delBtn) {
+      delBtn.onclick = () => {
+        if (!confirm(`Excluir permanentemente a foto "${b.name}" do Acervo Geral?`)) return;
+        S.bank = B.filter(x => x !== b);
+        save();
+        updateCounters();
+        viewBank();
+        toast("Foto removida do acervo.");
+      };
+    }
   });
 }
 
-/* Picker de Fotos Modal */
+/* Modal Seletor de Fotos do Acervo (Centralizado e Imediato) */
 window.pickImg = function(cb) {
   const B = bank(), box = document.getElementById("bkBox");
-  box.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h3 style="margin:0">Escolher Foto do Acervo</h3>
-      <div style="display:flex; gap:8px;">
-        <input type="search" id="pkQ" placeholder="Filtrar foto..." style="padding:6px 10px; background:#0d1322; border:1px solid var(--bd); border-radius:6px; color:#fff;">
-        <button class="btn primary sm" id="pkUp">⬆ Enviar do Dispositivo</button>
-        <button class="btn red sm" id="pkX">Cancelar</button>
+
+  const renderPickerCards = (filter = "") => {
+    const q = norm(filter);
+    const filtered = B.filter(b => !q || norm(b.name || "").includes(q));
+    
+    if (!filtered.length) {
+      return `<div style="grid-column: 1/-1; text-align: center; padding: 36px 16px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--bd);">
+        <div style="font-size: 32px; margin-bottom: 8px;">📷</div>
+        <p style="color: var(--text-muted); margin: 0 0 12px; font-size: 13px;">${B.length ? 'Nenhuma foto encontrada com esse nome.' : 'Nenhuma foto no Acervo ainda.'}</p>
+        <button class="btn primary sm" id="pkEmptyUp">⬆ Adicionar Nova Foto ao Acervo</button>
+      </div>`;
+    }
+
+    return filtered.map(b => {
+      const idx = B.indexOf(b);
+      return `<div class="bk-card" data-i="${idx}" style="cursor: pointer; border: 1px solid var(--bd); transition: all 0.2s;" title="Clique para selecionar esta foto">
+        <div style="width:100%; aspect-ratio:1/1; background:#050811; display:flex; align-items:center; justify-content:center; overflow:hidden; border-bottom:1px solid var(--bd);">
+          <img src="${b.img}" alt="${esc(b.name)}" style="width:100%; height:100%; object-fit:contain; pointer-events:none;">
+        </div>
+        <div class="bd" style="padding: 8px; text-align: center;">
+          <span style="font-size: 12px; font-weight: 700; color: #fff; word-break: break-word;">${esc(b.name || 'FOTO')}</span>
+          <button class="btn primary sm" style="width: 100%; margin-top: 6px; padding: 4px; font-size: 11px; pointer-events:none;">✓ Selecionar</button>
+        </div>
+      </div>`;
+    }).join("");
+  };
+
+  box.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid var(--bd); padding-bottom:10px;">
+      <div>
+        <h3 style="margin:0; font-size:16px; display:flex; align-items:center; gap:8px;">
+          <span>📷</span> <span>Acervo Central de Fotos Wisła</span>
+        </h3>
+        <span style="font-size:12px; color:var(--text-muted);">Selecione uma foto existente do acervo ou adicione uma nova foto.</span>
+      </div>
+      <button class="btn sm" id="pkX" style="border:none; box-shadow:none; font-size:16px;">✕</button>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; align-items:center;">
+      <input type="search" id="pkQ" placeholder="Buscar foto no acervo por nome..." style="flex:1; min-width:200px; padding:8px 12px; background:#0d1322; border:1px solid var(--bd); border-radius:8px; color:#fff; font-size:13px;">
+      <button class="btn primary" id="pkUp" style="white-space:nowrap;">⬆ Nova Foto do Dispositivo</button>
+    </div>
+
+    <div style="overflow-y:auto; max-height:56vh; padding:2px;">
+      <div class="bk-grid" id="pkGrid">
+        ${renderPickerCards()}
       </div>
     </div>
-    <div style="overflow-y:auto; max-height:60vh; padding:4px;">
-      <div class="bk-grid">
-        ${B.length ? B.map((b, i) => `<div class="bk-card" data-i="${i}" data-n="${esc(norm(b.name))}" style="cursor:pointer">
-          <img src="${b.img}" alt="" style="pointer-events:none">
-          <div class="bd"><span style="font-size:12px; font-weight:700; text-align:center">${esc(b.name)}</span></div>
-        </div>`).join("") : `<p style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted)">Nenhuma foto no banco ainda.<br>Clique em <b>Enviar do Dispositivo</b> para adicionar.</p>`}
-      </div>
-    </div>`;
-  
+  `;
+
   document.getElementById("bkDlg").classList.add("active");
   const close = () => document.getElementById("bkDlg").classList.remove("active");
   document.getElementById("pkX").onclick = close;
-  document.getElementById("pkQ").oninput = e => { const q = norm(e.target.value); box.querySelectorAll(".bk-card").forEach(el => el.style.display = el.dataset.n.includes(q) ? "" : "none"); };
+
+  const bindCardClicks = () => {
+    box.querySelectorAll(".bk-card").forEach(el => {
+      el.onclick = () => {
+        const item = B[+el.dataset.i];
+        if (!item || !item.img) return;
+        close();
+        cb(item.img);
+        toast(`Foto "${item.name || 'Acervo'}" aplicada com sucesso!`);
+      };
+    });
+    const emptyUp = document.getElementById("pkEmptyUp");
+    if (emptyUp) emptyUp.onclick = () => document.getElementById("pkUp").click();
+  };
+
+  bindCardClicks();
+
+  document.getElementById("pkQ").oninput = e => {
+    document.getElementById("pkGrid").innerHTML = renderPickerCards(e.target.value);
+    bindCardClicks();
+  };
+
   document.getElementById("pkUp").onclick = () => {
-    const i = document.createElement("input"); i.type = "file"; i.accept = "image/*";
+    const i = document.createElement("input");
+    i.type = "file";
+    i.accept = "image/*";
     i.onchange = () => {
       if (!i.files[0]) return;
       const file = i.files[0];
       openImageResizer(file, file.name, (finalImg) => {
-        const photoName = file.name.replace(/\.[^.]+$/, "").toUpperCase();
-        bank().push({ id: uid(), name: photoName, img: finalImg, date: new Date().toISOString().slice(0, 10) });
+        const defaultName = file.name.replace(/\.[^.]+$/, "").toUpperCase();
+        const photoName = prompt("Nome desta foto para o Acervo:", defaultName) || defaultName;
+        const newPhotoObj = {
+          id: uid(),
+          name: photoName.toUpperCase().trim(),
+          img: finalImg,
+          date: new Date().toISOString().slice(0, 10)
+        };
+        bank().push(newPhotoObj);
         save();
+        updateCounters();
         close();
         cb(finalImg);
+        toast(`Foto "${newPhotoObj.name}" salva no Acervo e aplicada!`);
       });
     };
     i.click();
   };
-  box.querySelectorAll(".bk-card").forEach(el => el.onclick = () => { close(); cb(B[+el.dataset.i].img); });
 };
 document.getElementById("bkDlg").onclick = e => { if (e.target.id === "bkDlg") document.getElementById("bkDlg").classList.remove("active"); };
 
@@ -5113,10 +5308,18 @@ window.addEventListener("keydown", e => {
   }
 });
 
-/* Sincronização em segundo plano a cada 20 segundos e ao focar a aba */
+/* Sincronização em segundo plano ultra-econômica (apenas com aba visível) */
 setInterval(() => {
-  if (getCloudDbUrl()) cloudSyncPull(false);
-}, 20000);
+  if (document.visibilityState === "visible" && getCloudDbUrl()) {
+    cloudSyncPull(false);
+  }
+}, 60000);
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && getCloudDbUrl()) {
+    cloudSyncPull(false);
+  }
+});
 
 window.addEventListener("focus", () => {
   if (getCloudDbUrl()) cloudSyncPull(false);
@@ -5127,8 +5330,8 @@ function route() {
   closeSidebar();
   const h = location.hash || "#/";
   
-  // Protege rotas restritas para quem não é Master
-  if ((h === "#/banco" || h === "#/backup") && !isMasterUnlocked) {
+  // Protege rota de backup/configuração exclusiva para Master
+  if (h === "#/backup" && !isMasterUnlocked) {
     go("#/");
     return;
   }
