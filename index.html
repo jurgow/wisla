@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Wisła · Gestão de Trajes</title>
+<title>Wisła</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -249,6 +249,31 @@ body:not(.is-master) .master-only {
   flex-shrink: 0;
 }
 
+/* Hamburger Menu Button */
+.menu-toggle-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.menu-toggle-btn:hover { background: var(--surface-hover); }
+.hb-bar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
+
 /* Badge de Autenticação / Status */
 .auth-pill {
   display: inline-flex;
@@ -273,10 +298,51 @@ body:not(.is-master) .master-only {
   color: #fff;
 }
 .auth-pill.room-unlocked {
-  background: var(--room-bg);
-  color: var(--pri-light);
-  border: 1px solid var(--room-border);
-  box-shadow: 0 0 12px var(--room-bg);
+  background: rgba(16, 185, 129, 0.16);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+}
+.auth-pill.master-unlocked {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+}
+
+.cloud-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  user-select: none;
+  white-space: nowrap;
+}
+.cloud-pill.local {
+  background: rgba(148, 163, 184, 0.12);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+.cloud-pill.online {
+  background: rgba(34, 197, 94, 0.16);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+}
+.cloud-pill.syncing {
+  background: rgba(56, 189, 248, 0.16);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+.cloud-pill.error, .cloud-pill.offline {
+  background: rgba(239, 68, 68, 0.16);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
 }
 
 /* Botões do Sistema */
@@ -353,12 +419,30 @@ body:not(.is-master) .master-only {
   padding: 0;
   border-radius: 50%;
 }
+.full-width { width: 100%; }
 
 /* ===== APP LAYOUT (SIDEBAR + MAIN VIEW) ===== */
 .app-container {
   display: flex;
   flex: 1;
   min-height: calc(100vh - 58px);
+}
+
+/* Overlay Backdrop para Drawer no Mobile */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 140;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Sidebar estilo Google Navigation Rail / Drawer */
@@ -372,6 +456,81 @@ body:not(.is-master) .master-only {
   flex-direction: column;
   gap: 4px;
   flex-shrink: 0;
+  overflow-y: auto;
+}
+.sidebar-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 6px 12px;
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 8px;
+}
+.sidebar-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--bd);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar-close-btn:hover { background: var(--surface-hover); }
+
+/* Card de Sala Ativa na Sidebar */
+.sidebar-room-card {
+  background: var(--surface-card);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin: 4px 4px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.sidebar-room-card:hover {
+  background: var(--surface-hover);
+  border-color: var(--room-color);
+}
+.sidebar-room-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar-room-icon {
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--room-bg);
+  border: 1px solid var(--room-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sidebar-room-name {
+  font-weight: 800;
+  font-size: 13px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-room-action {
+  font-size: 10px;
+  color: var(--pri-light);
+  font-weight: 600;
+}
+
+.sidebar-nav-scroll {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .nav-category-title {
   font-size: 11px;
@@ -431,7 +590,81 @@ body:not(.is-master) .master-only {
   border-top: 1px solid var(--bd);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+}
+
+/* Card de Status de Autenticação na Sidebar */
+.auth-status-card {
+  width: 100%;
+}
+.auth-status-box {
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+.auth-status-box.locked {
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+.auth-status-box.unlocked {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+.auth-status-box.master {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+.auth-status-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.auth-badge-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+.auth-status-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+}
+.auth-status-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.auth-status-box.unlocked .auth-status-title { color: #34d399; }
+.auth-status-box.master .auth-status-title { color: #fbbf24; }
+
+/* Banner de Notificação de Modo no Topo */
+.mode-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+.mode-banner.locked {
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+}
+.mode-banner.unlocked {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+.mode-banner.master {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
 }
 
 /* BARRA DE NAVEGAÇÃO INFERIOR PARA CELULAR (MOBILE BOTTOM BAR) */
@@ -1616,29 +1849,48 @@ body.locked .bk-card input {
     --cardw: 155px;
     --tw: 52px;
   }
-  .sidebar { display: none; }
+  .menu-toggle-btn { display: flex; }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 290px;
+    max-width: 85vw;
+    background: #111827;
+    z-index: 150;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .sidebar-header { display: flex; }
   .mobile-bottom-nav { display: flex; }
   .content-area {
-    padding: 12px 14px 76px;
+    padding: 12px 12px 76px;
   }
   .app-bar {
-    padding: 6px 12px;
-    gap: 8px;
+    padding: 6px 10px;
+    gap: 6px;
   }
-  .brand-subtitle, .search-shortcut-badge { display: none; }
+  .brand-titles, .search-shortcut-badge { display: none; }
   .brand-logo-box { height: 32px; padding: 2px 4px; }
   .brand-logo-box img { height: 26px; }
   .room-selector-btn {
-    max-width: 140px;
+    max-width: 130px;
     font-size: 11px;
-    padding: 5px 9px;
+    padding: 5px 8px;
   }
-  .global-search-bar { max-width: 100%; }
-  .global-search-bar input {
-    font-size: 12px;
-    padding: 6px 28px 6px 30px;
+  .global-search-bar { display: none; }
+  .auth-pill {
+    padding: 4px 8px;
+    font-size: 11px;
   }
-  .search-icon { left: 9px; font-size: 12px; }
   
   .room-hero-card {
     padding: 14px;
@@ -1649,16 +1901,16 @@ body.locked .bk-card input {
   
   .kpi-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-bottom: 14px;
+    gap: 6px;
+    margin-bottom: 12px;
   }
-  .kpi-card { padding: 10px 8px; }
-  .kpi-num { font-size: 18px; }
-  .kpi-label { font-size: 10px; }
+  .kpi-card { padding: 8px 6px; }
+  .kpi-num { font-size: 17px; }
+  .kpi-label { font-size: 9px; }
 
   .grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 8px;
   }
   .nm { font-size: 13px; }
   .nm-row { padding: 8px 6px 4px; }
@@ -1763,13 +2015,20 @@ body.locked .bk-card input {
 
 <!-- Google App Bar -->
 <header class="app-bar">
-  <div class="brand-section" onclick="go('#/')">
-    <div class="brand-logo-box" id="logoBox" title="Wisła">
-      <img src="wisla-logo.png" id="logoImg" alt="Wisła">
-    </div>
-    <div class="brand-titles">
-      <div class="brand-title">Wisła</div>
-      <div class="brand-subtitle">Gestão de Trajes</div>
+  <div style="display:flex; align-items:center; gap:8px;">
+    <button class="menu-toggle-btn" id="menuToggleBtn" title="Abrir menu de navegação">
+      <span class="hb-bar"></span>
+      <span class="hb-bar"></span>
+      <span class="hb-bar"></span>
+    </button>
+    <div class="brand-section" onclick="go('#/')">
+      <div class="brand-logo-box" id="logoBox" title="Wisła">
+        <img src="wisla-logo.png" id="logoImg" alt="Wisła">
+      </div>
+      <div class="brand-titles">
+        <div class="brand-title">Wisła</div>
+        <div class="brand-subtitle">Acervo & Gestão</div>
+      </div>
     </div>
   </div>
 
@@ -1784,62 +2043,86 @@ body.locked .bk-card input {
   <!-- Google Search Bar -->
   <div class="global-search-bar">
     <span class="search-icon">🔍</span>
-    <input type="search" id="globalSearchInput" placeholder="Pesquisar traje, peça ou dançarino...">
+    <input type="search" id="globalSearchInput" placeholder="Pesquisar traje ou peça...">
     <span class="search-shortcut-badge">Ctrl K</span>
   </div>
 
   <!-- Ações e Status -->
   <div class="app-bar-actions">
-    <div id="authPill" class="auth-pill locked" title="Clique para autenticar com o PIN">
-      🔒 Consulta
+    <div id="cloudPill" class="cloud-pill local" title="Status da Nuvem (Sincronização em Tempo Real)">
+      💾 Local
+    </div>
+    <div id="authPill" class="auth-pill locked" title="Clique para gerenciar permissão de edição">
+      🔒 Modo Consulta
     </div>
     <button class="btn icon-only master-only" id="openSettingsBtn" title="Configurações e Sincronização">⚙️</button>
   </div>
 </header>
 
+<!-- Overlay Backdrop do Menu Lateral no Mobile -->
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+
 <div class="app-container">
-  <!-- Sidebar Navigation Drawer (Desktop) -->
-  <aside class="sidebar">
-    <div class="nav-category-title" id="sidebarRoomLabel">👔 Trajes Masculinos</div>
-    <a class="nav-item active" data-nav="#/">
-      <span class="icon">👔</span>
-      <span>Trajes</span>
-      <span class="badge" id="sideCostumesCount">0</span>
-    </a>
-    <a class="nav-item" data-nav="#/pecas">
-      <span class="icon">📦</span>
-      <span>Todas as Peças</span>
-      <span class="badge" id="sidePiecesCount">0</span>
-    </a>
-    <a class="nav-item" data-nav="#/compartilhadas">
-      <span class="icon">🔗</span>
-      <span>Compartilhadas</span>
-      <span class="badge" id="sideCommonCount">0</span>
-    </a>
+  <!-- Sidebar Navigation Drawer (Desktop & Mobile) -->
+  <aside class="sidebar" id="mainSidebar">
+    <div class="sidebar-header">
+      <div class="brand-section" onclick="go('#/'); closeSidebar();">
+        <div class="brand-logo-box">
+          <img src="wisla-logo.png" alt="Wisła">
+        </div>
+        <div class="brand-titles">
+          <div class="brand-title">Wisła</div>
+          <div class="brand-subtitle">Acervo & Gestão</div>
+        </div>
+      </div>
+      <button class="sidebar-close-btn" id="sidebarCloseBtn" title="Fechar Menu">✕</button>
+    </div>
 
-    <div class="nav-category-title" style="margin-top:12px;">Geral</div>
-    <a class="nav-item" data-nav="#/dancarinos">
-      <span class="icon">👥</span>
-      <span>Dançarinos</span>
-      <span class="badge" id="sideDancersCount">0</span>
-    </a>
-    <a class="nav-item master-only" data-nav="#/banco">
-      <span class="icon">📷</span>
-      <span>Fotos do Acervo</span>
-      <span class="badge" id="sidePhotosCount">0</span>
-    </a>
-    <a class="nav-item master-only" data-nav="#/backup">
-      <span class="icon">💾</span>
-      <span>Salvar & Sincronizar</span>
-    </a>
+    <!-- Card de Sala Ativa na Sidebar -->
+    <div class="sidebar-room-card" id="sideRoomCard" onclick="openRoomSwitcher(); closeSidebar();">
+      <div class="sidebar-room-info">
+        <span class="sidebar-room-icon" id="sidebarRoomIcon">👔</span>
+        <div style="flex:1; overflow:hidden;">
+          <div class="sidebar-room-name" id="sidebarRoomLabel">Trajes Masculinos</div>
+          <div class="sidebar-room-action">Toque para trocar sala ▾</div>
+        </div>
+      </div>
+    </div>
 
+    <div class="sidebar-nav-scroll">
+      <div class="nav-category-title">Acervo da Sala</div>
+      <a class="nav-item active" data-nav="#/">
+        <span class="icon">👔</span>
+        <span>Trajes</span>
+        <span class="badge" id="sideCostumesCount">0</span>
+      </a>
+      <a class="nav-item" data-nav="#/pecas">
+        <span class="icon">📦</span>
+        <span>Todas as Peças</span>
+        <span class="badge" id="sidePiecesCount">0</span>
+      </a>
+
+      <div class="nav-category-title master-only" style="margin-top:14px;">Administração</div>
+      <a class="nav-item master-only" data-nav="#/banco">
+        <span class="icon">📷</span>
+        <span>Fotos do Acervo</span>
+        <span class="badge" id="sidePhotosCount">0</span>
+      </a>
+      <a class="nav-item master-only" data-nav="#/backup">
+        <span class="icon">💾</span>
+        <span>Salvar & Sincronizar</span>
+      </a>
+      <a class="nav-item master-only" id="sideManageRoomsBtn">
+        <span class="icon">🛡️</span>
+        <span>Gerenciar Salas & PINs</span>
+      </a>
+    </div>
+
+    <!-- Rodapé da Sidebar: Status de Autenticação em Destaque -->
     <div class="sidebar-footer">
-      <button class="btn sm" id="sideQuickSwitchBtn" style="width:100%; justify-content:flex-start;">
-        <span>🔄</span> <span>Trocar Sala...</span>
-      </button>
-      <button class="btn sm master-only" id="sideManageRoomsBtn" style="width:100%; justify-content:flex-start;">
-        <span>🛡️</span> <span>Gerenciar Salas</span>
-      </button>
+      <div id="sidebarAuthCard" class="auth-status-card">
+        <!-- Renderizado dinamicamente por updateAuthUI() -->
+      </div>
     </div>
   </aside>
 
@@ -1847,7 +2130,7 @@ body.locked .bk-card input {
   <main class="content-area" id="app">Carregando...</main>
 </div>
 
-<!-- Barra de Navegação Inferior (Mobile Bottom Nav) -->
+<!-- Barra de Navegação Inferior (Mobile Bottom Nav - Compacta e Rápida) -->
 <nav class="mobile-bottom-nav">
   <a class="mobile-nav-btn active" data-nav="#/">
     <span class="icon">👔</span>
@@ -1857,17 +2140,9 @@ body.locked .bk-card input {
     <span class="icon">📦</span>
     <span>Peças</span>
   </a>
-  <a class="mobile-nav-btn" data-nav="#/compartilhadas">
-    <span class="icon">🔗</span>
-    <span>Compart.</span>
-  </a>
-  <a class="mobile-nav-btn" data-nav="#/dancarinos">
-    <span class="icon">👥</span>
-    <span>Dançarinos</span>
-  </a>
-  <a class="mobile-nav-btn" id="mobileMoreBtn">
-    <span class="icon">🔄</span>
-    <span>Salas</span>
+  <a class="mobile-nav-btn" id="mobileMenuBtn">
+    <span class="icon">☰</span>
+    <span>Menu</span>
   </a>
 </nav>
 
@@ -1950,6 +2225,80 @@ body.locked .bk-card input {
   <div class="modal-card lg" id="bkBox"></div>
 </div>
 
+<!-- Modal Redimensionar e Ajustar Imagem Antes de Aplicar -->
+<div id="imgCropModal" class="modal-overlay" style="z-index: 250;">
+  <div class="modal-card lg" style="max-width: 680px; width: 95%;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <h3 style="margin:0; font-size:16px; display:flex; align-items:center; gap:8px;">
+        <span>📐</span> <span>Redimensionar & Ajustar Foto</span>
+      </h3>
+      <button class="btn sm" id="cropCancelXBtn" style="border:none; box-shadow:none; font-size:16px;">✕</button>
+    </div>
+    
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <!-- Canvas de Pré-visualização com container responsivo -->
+      <div style="background:#050811; border:1px solid var(--bd); border-radius:12px; display:flex; justify-content:center; align-items:center; min-height:220px; max-height:42vh; overflow:hidden; position:relative; padding:10px;">
+        <canvas id="cropCanvas" style="max-width:100%; max-height:38vh; object-fit:contain; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.5);"></canvas>
+      </div>
+
+      <!-- Info de Dimensões e Tamanho Estimado -->
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--text-muted); background:var(--surface-variant); padding:6px 12px; border-radius:8px;">
+        <span>Dimensão final: <b id="cropDimInfo" style="color:#fff;">0 x 0 px</b></span>
+        <span>Tamanho estimado: <b id="cropSizeInfo" style="color:#38bdf8;">~0 KB</b></span>
+      </div>
+
+      <!-- Controles de Redimensionamento e Ajuste -->
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
+        <!-- Tamanho / Resolução Máxima -->
+        <div class="form-group">
+          <label style="font-size:12px;">Tamanho Máximo (Largura/Altura)</label>
+          <select id="cropMaxSize" style="padding:8px; font-size:13px;">
+            <option value="1200">Grande (1200 px - Alta Definição)</option>
+            <option value="800" selected>Padrão (800 px - Recomendado)</option>
+            <option value="500">Média (500 px - Leve e Rápida)</option>
+            <option value="320">Miniatura (320 px - Super Leve)</option>
+          </select>
+        </div>
+
+        <!-- Proporção de Corte -->
+        <div class="form-group">
+          <label style="font-size:12px;">Proporção / Formato</label>
+          <select id="cropAspect" style="padding:8px; font-size:13px;">
+            <option value="free" selected>Original / Livre (Sem corte)</option>
+            <option value="1:1">1:1 Quadrada (Peças, Botas e Logos)</option>
+            <option value="3:4">3:4 Retrato (Trajes Completos)</option>
+            <option value="4:3">4:3 Paisagem</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Controles de Zoom e Rotação -->
+      <div style="background:var(--surface-variant); border-radius:10px; padding:10px 14px; display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <label style="font-size:12px; min-width:80px; margin:0;">🔍 Zoom:</label>
+          <input type="range" id="cropZoom" min="1" max="2.5" step="0.05" value="1" style="flex:1;">
+          <span id="cropZoomVal" style="font-size:12px; min-width:35px; text-align:right;">1.0x</span>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+          <label style="font-size:12px; min-width:80px; margin:0;">🔄 Girar:</label>
+          <div style="display:flex; gap:6px;">
+            <button class="btn sm" id="cropRotL" title="Girar 90° à esquerda">↺ -90°</button>
+            <button class="btn sm" id="cropRotR" title="Girar 90° à direita">↻ +90°</button>
+            <button class="btn sm" id="cropResetBtn" title="Restaurar ajustes">Restaurar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
+        <button class="btn red" id="cropCancelBtn">Cancelar</button>
+        <button class="btn primary" id="cropApplyBtn">✓ Aplicar Foto</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal Unificado de Configurações, Permissões e Gestão de Salas -->
 <div id="settingsDlg" class="modal-overlay">
   <div class="modal-card lg">
@@ -1969,21 +2318,50 @@ body.locked .bk-card input {
       <div id="roomsManagementList" style="display:flex; flex-direction:column; gap:10px; max-height:45vh; overflow-y:auto; padding-right:4px;"></div>
     </div>
 
-    <!-- Aba 2: Sincronização Compartilhada -->
+    <!-- Aba 2: Sincronização em Nuvem em Tempo Real (Multi-Usuários) -->
     <div class="settings-section" id="tab-sync">
-      <div style="background:rgba(2, 132, 199, 0.12); border:1px solid rgba(2, 132, 199, 0.3); border-radius:12px; padding:16px; margin-bottom:16px;">
-        <h4 style="color:#38bdf8; margin-bottom:6px; font-size:15px;">☁️ Salvar Alterações no Repositório Compartilhado</h4>
-        <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">Quando qualquer pessoa autenticada fizer alterações, clique no botão abaixo para publicar no GitHub. Assim todos que abrirem o app verão as mudanças imediatamente!</p>
+      <!-- 1. Nuvem em Tempo Real (Recomendado para Edição Simultânea) -->
+      <div style="background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.35); border-radius:12px; padding:16px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <h4 style="color:#34d399; margin:0; font-size:15px;">☁️ Nuvem em Tempo Real (Multi-Usuários)</h4>
+          <span id="settingsCloudBadge" class="cloud-pill local" style="font-size:10px;">💾 Local</span>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
+          Permite que várias pessoas em salas ou cidades diferentes <b>editem o acervo ao mesmo tempo</b> sem precisar gerar arquivos ou fazer commits manuais. Todas as alterações são salvas e sincronizadas instantaneamente.
+        </p>
+
+        <div class="form-group" style="margin-bottom:12px;">
+          <label>URL do Banco na Nuvem (Firebase Realtime Database / REST JSON)</label>
+          <input type="text" id="cloudDbUrlInput" placeholder="https://seu-projeto-default-rtdb.firebaseio.com/acervo.json" style="font-family:monospace; font-size:12px;">
+          <small style="color:var(--text-light); font-size:11px;">Exemplo gratuito: Crie um projeto no Firebase (Google), ative o Realtime Database e cole o link terminando em <code>/acervo.json</code>.</small>
+        </div>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;">
+          <button class="btn green sm" id="btnTestCloud">🔌 Testar Conexão</button>
+          <button class="btn blue sm" id="btnPullCloud">⬇ Baixar da Nuvem Agora</button>
+          <button class="btn sm" id="btnPushCloud">⬆ Enviar Local para a Nuvem</button>
+          <button class="btn red sm" id="btnDisconnectCloud" style="margin-left:auto;">Desconectar</button>
+        </div>
+      </div>
+
+      <!-- 2. Backup / Publicação GitHub -->
+      <div style="background:rgba(2, 132, 199, 0.08); border:1px solid rgba(2, 132, 199, 0.25); border-radius:12px; padding:16px;">
+        <h4 style="color:#38bdf8; margin-bottom:6px; font-size:14px;">🐙 Publicação e Backup no Repositório GitHub</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Gera um commit definitivo no GitHub Pages para arquivamento ou implantação.</p>
         
-        <div class="form-group">
-          <label>Token de Acesso do GitHub (PAT)</label>
-          <input type="password" id="ghTokenInput" placeholder="github_pat_..." style="font-family:monospace; font-size:12px;">
-          <small style="color:var(--text-light); font-size:11px;">O token fica salvo apenas no seu navegador para sincronização segura.</small>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="font-size:12px;">Repositório GitHub (usuário/repositório)</label>
+          <input type="text" id="ghRepoInput" placeholder="jurgow/wisla" style="font-family:monospace; font-size:12px;">
         </div>
         
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
-          <button class="btn primary" id="btnSyncGithub">☁️ Sincronizar e Publicar no GitHub</button>
-          <button class="btn blue" id="btnDownloadDataJs">⬇ Baixar Arquivo trajes-data.js</button>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label style="font-size:12px;">Token de Acesso do GitHub (PAT)</label>
+          <input type="password" id="ghTokenInput" placeholder="github_pat_..." style="font-family:monospace; font-size:12px;">
+        </div>
+        
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn primary sm" id="btnSyncGithub">☁️ Publicar no GitHub</button>
+          <button class="btn blue sm" id="btnDownloadDataJs">⬇ Baixar trajes-data.js</button>
         </div>
       </div>
     </div>
@@ -2146,8 +2524,38 @@ const DEFAULT_ROOMS = {
 let S = null;
 let currentHomeView = localStorage.getItem("wislaHomeView") || "cards";
 let currentPieceCategory = "all";
-let isMasterUnlocked = false;
-let unlockedRooms = new Set(); // salas desbloqueadas na sessão atual
+
+// Persistência de autenticação por sessão do navegador (sobrevive a reloads)
+let isMasterUnlocked = sessionStorage.getItem("wisla_master_unlocked") === "true";
+let unlockedRooms = new Set(JSON.parse(sessionStorage.getItem("wisla_unlocked_rooms") || "[]"));
+
+function setMasterUnlocked(val) {
+  isMasterUnlocked = !!val;
+  if (isMasterUnlocked) sessionStorage.setItem("wisla_master_unlocked", "true");
+  else sessionStorage.removeItem("wisla_master_unlocked");
+  updateAuthUI();
+}
+
+function setRoomUnlocked(roomId, val) {
+  if (val) unlockedRooms.add(roomId);
+  else unlockedRooms.delete(roomId);
+  sessionStorage.setItem("wisla_unlocked_rooms", JSON.stringify(Array.from(unlockedRooms)));
+  updateAuthUI();
+}
+
+/* Controle do Menu Lateral Drawer (Mobile & Desktop) */
+function openSidebar() {
+  const sb = document.getElementById("mainSidebar");
+  const ov = document.getElementById("sidebarOverlay");
+  if (sb) sb.classList.add("open");
+  if (ov) ov.classList.add("active");
+}
+function closeSidebar() {
+  const sb = document.getElementById("mainSidebar");
+  const ov = document.getElementById("sidebarOverlay");
+  if (sb) sb.classList.remove("open");
+  if (ov) ov.classList.remove("active");
+}
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -2171,7 +2579,132 @@ async function loadState() {
     });
   } catch (e) { return null; }
 }
+/* ===== SINCRONIZAÇÃO EM NUVEM EM TEMPO REAL (FIREBASE / REST) ===== */
 let saveT;
+let cloudPushT;
+let isSyncingCloud = false;
+
+const DEFAULT_CLOUD_DB_URL = "https://wisla-ae9eb-default-rtdb.firebaseio.com/acervo.json";
+
+function normalizeCloudUrl(url) {
+  if (!url) return "";
+  url = url.trim();
+  if (url.endsWith("/")) url = url.slice(0, -1);
+  if (!url.endsWith(".json")) {
+    url = url + "/acervo.json";
+  }
+  return url;
+}
+
+function getCloudDbUrl() {
+  const custom = localStorage.getItem("wisla_cloud_db_url");
+  if (custom !== null && custom !== "") return normalizeCloudUrl(custom);
+  return (S && S.cloudDbUrl) ? normalizeCloudUrl(S.cloudDbUrl) : DEFAULT_CLOUD_DB_URL;
+}
+
+function setCloudDbUrl(url) {
+  url = normalizeCloudUrl(url);
+  localStorage.setItem("wisla_cloud_db_url", url);
+  if (S) S.cloudDbUrl = url;
+}
+
+function updateCloudStatus(status, text) {
+  const pill = document.getElementById("cloudPill");
+  const modalBadge = document.getElementById("settingsCloudBadge");
+  const labels = {
+    local: "💾 Local",
+    online: "🟢 Nuvem Ativa",
+    syncing: "🔄 Sincronizando...",
+    error: "⚠️ Erro Nuvem",
+    offline: "🟡 Offline"
+  };
+  const labelText = text || labels[status] || labels.local;
+  
+  [pill, modalBadge].forEach(el => {
+    if (!el) return;
+    el.className = `cloud-pill ${status}`;
+    el.innerHTML = labelText;
+  });
+}
+
+async function cloudSyncPush() {
+  const url = getCloudDbUrl();
+  if (!url) {
+    updateCloudStatus("local");
+    return;
+  }
+  clearTimeout(cloudPushT);
+  cloudPushT = setTimeout(async () => {
+    try {
+      updateCloudStatus("syncing");
+      if (S) S.lastModified = Date.now();
+      const res = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(S)
+      });
+      if (res.ok) {
+        updateCloudStatus("online");
+        toast("☁️ Sincronizado na nuvem para todos!");
+      } else {
+        updateCloudStatus("error");
+      }
+    } catch (e) {
+      console.warn("Falha ao salvar na nuvem:", e);
+      updateCloudStatus("offline");
+    }
+  }, 800);
+}
+
+async function cloudSyncPull(isManual = false) {
+  const url = getCloudDbUrl();
+  if (!url) {
+    updateCloudStatus("local");
+    return;
+  }
+  if (isSyncingCloud) return;
+  try {
+    isSyncingCloud = true;
+    updateCloudStatus("syncing");
+    const res = await fetch(url);
+    if (res.ok) {
+      const remoteData = await res.json();
+      if (remoteData && typeof remoteData === "object" && (remoteData.rooms || remoteData.costumes)) {
+        const remoteTime = remoteData.lastModified || 0;
+        const localTime = (S && S.lastModified) || 0;
+        
+        // Se a versão da nuvem for mais recente (ou se for pull manual)
+        if (isManual || remoteTime > localTime || !S || !S.rooms) {
+          S = migrateState(remoteData);
+          const db = await openDB();
+          const tx = db.transaction("kv", "readwrite");
+          tx.objectStore("kv").put(S, "state");
+          updateCloudStatus("online");
+          if (isManual) toast("✓ Dados baixados da nuvem com sucesso!");
+          else toast("☁️ Acervo atualizado por outro usuário!");
+          updateCounters();
+          route();
+        } else {
+          updateCloudStatus("online");
+        }
+      } else if (remoteData === null && S && S.rooms) {
+        // Banco na nuvem recém-criado/vazio: faz push automático da base inicial!
+        updateCloudStatus("online");
+        cloudSyncPush();
+      } else {
+        updateCloudStatus("online");
+      }
+    } else {
+      updateCloudStatus("error");
+    }
+  } catch (e) {
+    console.warn("Falha ao consultar nuvem:", e);
+    updateCloudStatus("offline");
+  } finally {
+    isSyncingCloud = false;
+  }
+}
+
 function save() {
   clearTimeout(saveT);
   saveT = setTimeout(async () => {
@@ -2179,10 +2712,13 @@ function save() {
       const db = await openDB();
       const tx = db.transaction("kv", "readwrite");
       tx.objectStore("kv").put(S, "state");
-      tx.oncomplete = () => toast("Salvo localmente ✓");
+      tx.oncomplete = () => {
+        toast("Salvo localmente ✓");
+        cloudSyncPush();
+      };
       tx.onerror = () => toast("Erro ao salvar localmente!");
     } catch (e) { toast("Erro ao salvar!"); }
-  }, 400);
+  }, 300);
 }
 
 /* Migração e Inicialização do Estado Multi-Salas */
@@ -2275,8 +2811,11 @@ function updateThemeForActiveRoom() {
   if (icon) icon.textContent = r.icon || "📁";
   const name = document.getElementById("headerRoomName");
   if (name) name.textContent = r.name;
+  
+  const sideIcon = document.getElementById("sidebarRoomIcon");
+  if (sideIcon) sideIcon.textContent = r.icon || "📁";
   const sideLbl = document.getElementById("sidebarRoomLabel");
-  if (sideLbl) sideLbl.textContent = `${r.icon || '📁'} ${r.name}`;
+  if (sideLbl) sideLbl.textContent = r.name;
 
   updateCounters();
   updateAuthUI();
@@ -2286,30 +2825,136 @@ function updateCounters() {
   const r = getActiveRoom();
   const cCount = r.costumes ? r.costumes.length : 0;
   const pCount = (r.costumes || []).reduce((acc, c) => acc + (c.items || []).length, 0);
-  const cmCount = r.common ? r.common.length : 0;
   
   const elC = document.getElementById("sideCostumesCount"); if (elC) elC.textContent = cCount;
   const elP = document.getElementById("sidePiecesCount"); if (elP) elP.textContent = pCount;
-  const elCm = document.getElementById("sideCommonCount"); if (elCm) elCm.textContent = cmCount;
-  const elD = document.getElementById("sideDancersCount"); if (elD) elD.textContent = S.dancers.length;
   const elPh = document.getElementById("sidePhotosCount"); if (elPh) elPh.textContent = (S.bank || []).length;
 }
 
 function updateAuthUI() {
-  const pill = document.getElementById("authPill");
   const isUnlocked = isCurrentRoomUnlocked();
+  const r = getActiveRoom();
   document.body.classList.toggle("locked", !isUnlocked);
   document.body.classList.toggle("is-master", isMasterUnlocked);
 
-  if (isUnlocked) {
-    pill.className = "auth-pill room-unlocked";
-    pill.innerHTML = `🔓 Modo Edição`;
-    pill.title = "Modo de edição liberado. Clique para travar.";
+  const pill = document.getElementById("authPill");
+  const authCard = document.getElementById("sidebarAuthCard");
+
+  let pillHtml = "";
+  let cardHtml = "";
+
+  if (isMasterUnlocked) {
+    if (pill) {
+      pill.className = "auth-pill master-unlocked";
+      pill.innerHTML = `👑 Modo Master`;
+      pill.title = "Acesso irrestrito a todas as salas. Toque para sair.";
+    }
+
+    cardHtml = `
+      <div class="auth-status-box master">
+        <div class="auth-status-head">
+          <span class="auth-badge-icon">👑</span>
+          <div>
+            <div class="auth-status-title">Modo Master (Acesso Total)</div>
+            <div class="auth-status-sub">Edição liberada em todas as salas</div>
+          </div>
+        </div>
+        <button class="btn sm red full-width" id="btnSideLockMaster" style="margin-top:8px;">
+          🔒 Sair do Modo Master
+        </button>
+      </div>
+    `;
+  } else if (isUnlocked) {
+    if (pill) {
+      pill.className = "auth-pill room-unlocked";
+      pill.innerHTML = `✏️ Edição: ${esc(r.name)}`;
+      pill.title = `Modo de edição liberado para ${r.name}. Toque para bloquear.`;
+    }
+
+    cardHtml = `
+      <div class="auth-status-box unlocked">
+        <div class="auth-status-head">
+          <span class="auth-badge-icon">✏️</span>
+          <div>
+            <div class="auth-status-title">Modo Edição Ativo</div>
+            <div class="auth-status-sub">Responsável: <b>${esc(r.name)}</b></div>
+          </div>
+        </div>
+        <button class="btn sm red full-width" id="btnSideLockRoom" style="margin-top:8px;">
+          🔒 Sair da Edição (Bloquear)
+        </button>
+      </div>
+    `;
   } else {
-    pill.className = "auth-pill locked";
-    pill.innerHTML = `🔒 Consulta`;
-    pill.title = "Clique para desbloquear o modo de edição com o PIN.";
+    if (pill) {
+      pill.className = "auth-pill locked";
+      pill.innerHTML = `🔒 Modo Consulta`;
+      pill.title = "Modo somente leitura. Toque para entrar no modo edição com PIN.";
+    }
+
+    cardHtml = `
+      <div class="auth-status-box locked">
+        <div class="auth-status-head">
+          <span class="auth-badge-icon">🔒</span>
+          <div>
+            <div class="auth-status-title">Modo Consulta</div>
+            <div class="auth-status-sub">Somente leitura do acervo</div>
+          </div>
+        </div>
+        <button class="btn sm primary full-width" id="btnSideUnlock" style="margin-top:8px;">
+          🔓 Liberar Edição (PIN)
+        </button>
+      </div>
+    `;
   }
+
+  if (authCard) {
+    authCard.innerHTML = cardHtml;
+    const bLockM = document.getElementById("btnSideLockMaster");
+    if (bLockM) bLockM.onclick = () => {
+      setMasterUnlocked(false);
+      toast("Modo Master encerrado 🔒");
+      route();
+    };
+    const bLockR = document.getElementById("btnSideLockRoom");
+    if (bLockR) bLockR.onclick = () => {
+      setRoomUnlocked(r.id, false);
+      toast(`Sala ${r.name} travada em Modo Consulta 🔒`);
+      route();
+    };
+    const bUnlock = document.getElementById("btnSideUnlock");
+    if (bUnlock) bUnlock.onclick = () => {
+      closeSidebar();
+      openAuthModal();
+    };
+  }
+}
+
+/* Banner Informativo de Modo de Acesso */
+function renderModeBanner(r) {
+  const isUnlocked = isCurrentRoomUnlocked();
+  if (isMasterUnlocked) {
+    return `
+      <div class="mode-banner master noprint">
+        <span>👑 <b>Modo Master Ativo</b> — Permissão total para editar trajes, configurações e salas.</span>
+        <button class="btn sm red" onclick="setMasterUnlocked(false); toast('Modo Master encerrado 🔒'); route();">🔒 Sair do Master</button>
+      </div>
+    `;
+  }
+  if (isUnlocked) {
+    return `
+      <div class="mode-banner unlocked noprint">
+        <span>✏️ <b>Modo Edição Ativo (${esc(r.name)})</b> — Você tem permissão para alterar nomes, quantidades e peças.</span>
+        <button class="btn sm red" onclick="setRoomUnlocked('${r.id}', false); toast('Sala bloqueada em Modo Consulta 🔒'); route();">🔒 Bloquear Edição</button>
+      </div>
+    `;
+  }
+  return `
+    <div class="mode-banner locked noprint">
+      <span>🔒 <b>Modo Consulta (Somente Leitura)</b> — Visualização pública do acervo.</span>
+      <button class="btn sm primary" onclick="openAuthModal()">🔓 Liberar Edição (PIN)</button>
+    </div>
+  `;
 }
 
 /* Toast */
@@ -2353,6 +2998,151 @@ function readImg(file, max = 1000) {
     fr.onerror = rej;
     fr.readAsDataURL(file);
   });
+}
+
+/* ===== REDIMENSIONADOR E AJUSTE DE IMAGENS ANTES DE APLICAR ===== */
+function openImageResizer(source, defaultName, callback) {
+  const modal = document.getElementById("imgCropModal");
+  const canvas = document.getElementById("cropCanvas");
+  const dimInfo = document.getElementById("cropDimInfo");
+  const sizeInfo = document.getElementById("cropSizeInfo");
+  const selMaxSize = document.getElementById("cropMaxSize");
+  const selAspect = document.getElementById("cropAspect");
+  const zoomInp = document.getElementById("cropZoom");
+  const zoomVal = document.getElementById("cropZoomVal");
+  const btnRotL = document.getElementById("cropRotL");
+  const btnRotR = document.getElementById("cropRotR");
+  const btnReset = document.getElementById("cropResetBtn");
+  const btnApply = document.getElementById("cropApplyBtn");
+  const btnCancel = document.getElementById("cropCancelBtn");
+  const btnCancelX = document.getElementById("cropCancelXBtn");
+
+  let rotation = 0;
+  let zoom = 1.0;
+
+  const im = new Image();
+  im.onload = () => {
+    // Reset state on modal open
+    zoomInp.value = "1";
+    zoomVal.textContent = "1.0x";
+    rotation = 0;
+    zoom = 1.0;
+    selAspect.value = "free";
+    selMaxSize.value = "800";
+
+    const redraw = () => {
+      const maxSize = parseInt(selMaxSize.value, 10) || 800;
+      const aspect = selAspect.value || "free";
+      const rot = ((rotation % 360) + 360) % 360;
+      const isSwapped = rot === 90 || rot === 270;
+      
+      const naturalW = isSwapped ? im.height : im.width;
+      const naturalH = isSwapped ? im.width : im.height;
+
+      let targetW, targetH;
+      if (aspect === "1:1") {
+        targetW = maxSize;
+        targetH = maxSize;
+      } else if (aspect === "3:4") {
+        targetW = Math.round(maxSize * 0.75);
+        targetH = maxSize;
+      } else if (aspect === "4:3") {
+        targetW = maxSize;
+        targetH = Math.round(maxSize * 0.75);
+      } else {
+        // Free / Original
+        const scale = Math.min(1, maxSize / Math.max(naturalW, naturalH));
+        targetW = Math.max(40, Math.round(naturalW * scale));
+        targetH = Math.max(40, Math.round(naturalH * scale));
+      }
+
+      canvas.width = targetW;
+      canvas.height = targetH;
+
+      const g = canvas.getContext("2d");
+      g.clearRect(0, 0, targetW, targetH);
+      g.fillStyle = "#0b101c";
+      g.fillRect(0, 0, targetW, targetH);
+
+      g.save();
+      g.translate(targetW / 2, targetH / 2);
+      g.rotate((rot * Math.PI) / 180);
+      g.scale(zoom, zoom);
+
+      let drawW, drawH;
+      if (aspect === "free") {
+        drawW = isSwapped ? targetH : targetW;
+        drawH = isSwapped ? targetW : targetH;
+      } else {
+        const rImg = im.width / im.height;
+        const rBox = isSwapped ? targetH / targetW : targetW / targetH;
+        if (rImg > rBox) {
+          drawH = isSwapped ? targetW : targetH;
+          drawW = drawH * rImg;
+        } else {
+          drawW = isSwapped ? targetH : targetW;
+          drawH = drawW / rImg;
+        }
+      }
+
+      g.filter = "brightness(1.02) contrast(1.05)";
+      g.drawImage(im, -drawW / 2, -drawH / 2, drawW, drawH);
+      g.restore();
+
+      if (dimInfo) dimInfo.textContent = `${targetW} × ${targetH} px`;
+      try {
+        const estData = canvas.toDataURL("image/jpeg", 0.85);
+        const kb = Math.round((estData.length * 0.75) / 1024);
+        if (sizeInfo) sizeInfo.textContent = `~${kb} KB (JPEG 85%)`;
+      } catch (e) {}
+    };
+
+    selMaxSize.onchange = redraw;
+    selAspect.onchange = redraw;
+    zoomInp.oninput = () => {
+      zoom = parseFloat(zoomInp.value) || 1.0;
+      zoomVal.textContent = zoom.toFixed(2) + "x";
+      redraw();
+    };
+    btnRotL.onclick = () => { rotation = (rotation - 90 + 360) % 360; redraw(); };
+    btnRotR.onclick = () => { rotation = (rotation + 90) % 360; redraw(); };
+    btnReset.onclick = () => {
+      rotation = 0;
+      zoom = 1.0;
+      zoomInp.value = "1";
+      zoomVal.textContent = "1.0x";
+      selAspect.value = "free";
+      selMaxSize.value = "800";
+      redraw();
+    };
+
+    const close = () => modal.classList.remove("active");
+    btnCancel.onclick = close;
+    btnCancelX.onclick = close;
+
+    btnApply.onclick = () => {
+      try {
+        const finalImg = canvas.toDataURL("image/jpeg", 0.85);
+        close();
+        callback(finalImg);
+      } catch (e) {
+        alert("Erro ao processar imagem final.");
+      }
+    };
+
+    redraw();
+    modal.classList.add("active");
+  };
+
+  im.onerror = () => alert("Formato de imagem não suportado.");
+
+  if (typeof source === "string") {
+    im.src = source;
+  } else if (source instanceof Blob || source instanceof File) {
+    const fr = new FileReader();
+    fr.onload = () => { im.src = fr.result; };
+    fr.readAsDataURL(source);
+  }
 }
 
 function openPhoto(src, onChange, onDelete) {
@@ -2465,36 +3255,34 @@ function calcCompleteKitsInfo(costume, commonList) {
       kits: fullKits,
       incomplete: incomplete,
       incompleteNote: incompleteNote,
+      detail: `${fullKits} completos (${fullKits} c/ capote e colete)` + (incomplete > 0 ? ` + ${incomplete} parciais (s/ capote)` : ``),
       label: incomplete > 0 ? `${fullKits} completos (+${incomplete} s/ capote)` : `${fullKits} kits`
     };
   }
 
-  // 2. Outros trajes com Colete e Capote (ex: Rzeszów, Beskid, Szot Madziar)
-  if (counts.coletes > 0 && counts.capotes > 0) {
+  // 2. Caso especial: RZESZÓW
+  // Regra expressa: pode usar Calça com Casaco OU Colete, formando mais trajes completos
+  if (cName.includes("RZESZOW") || cName.includes("RZESZÓW")) {
+    const totalTops = counts.coletes + counts.capotes; // Coletes (8) + Casacos (6) = 14
     const baseCalcas = counts.calcas || 0;
     const baseCamisas = counts.camisas || 0;
-    const reqBase = [];
-    if (baseCalcas > 0) reqBase.push(baseCalcas);
-    if (baseCamisas > 0) reqBase.push(baseCamisas);
     
-    // Se for Rzeszów ou Beskid
-    if (cName.includes("RZESZOW") || cName.includes("RZESZÓW") || cName.includes("BESKID")) {
-      const full = Math.min(...reqBase, counts.coletes, counts.capotes);
-      const partial = Math.min(...reqBase, counts.coletes);
-      fullKits = full;
-      if (partial > full) {
-        incomplete = partial - full;
-        incompleteNote = `${incomplete} sem capote`;
-      }
-    } else {
-      fullKits = Math.min(reqBase.length ? Math.min(...reqBase) : (counts.coletes + counts.capotes), Math.max(counts.coletes, counts.capotes));
-    }
+    const req = [totalTops];
+    if (baseCalcas > 0) req.push(baseCalcas);
+    if (baseCamisas > 0) req.push(baseCamisas);
+    fullKits = req.length ? Math.min(...req) : 0;
+
+    const descParts = [];
+    if (counts.coletes > 0) descParts.push(`${counts.coletes} c/ colete`);
+    if (counts.capotes > 0) descParts.push(`${counts.capotes} c/ casaco`);
+    const detailStr = descParts.length ? ` (${descParts.join(" + ")})` : "";
 
     return {
       kits: fullKits,
-      incomplete: incomplete,
-      incompleteNote: incompleteNote,
-      label: incomplete > 0 ? `${fullKits} completos (+${incomplete} s/ capote)` : `${fullKits} kits`
+      incomplete: 0,
+      incompleteNote: "",
+      detail: `${fullKits} trajes completos${detailStr}`,
+      label: `${fullKits} kits completos${detailStr}`
     };
   }
 
@@ -2513,6 +3301,7 @@ function calcCompleteKitsInfo(costume, commonList) {
     kits: fullKits,
     incomplete: 0,
     incompleteNote: "",
+    detail: `${fullKits} kits`,
     label: `${fullKits} kits`
   };
 }
@@ -2677,20 +3466,18 @@ function openAuthModal() {
     
     // Testa Master Token confidencialmente
     if (hash(val) === S.masterPin || val === MASTER_PIN_DEFAULT) {
-      isMasterUnlocked = true;
+      setMasterUnlocked(true);
       modal.classList.remove("active");
-      toast("🔓 Modo Edição Ativado!");
-      updateAuthUI();
+      toast("👑 Modo Master Ativado!");
       route();
       return;
     }
 
     // Testa PIN da sala ativa
     if (r.pin && hash(val) === r.pin) {
-      unlockedRooms.add(r.id);
+      setRoomUnlocked(r.id, true);
       modal.classList.remove("active");
       toast(`🔓 Modo Edição Ativado em ${r.name}!`);
-      updateAuthUI();
       route();
       return;
     }
@@ -2706,16 +3493,16 @@ function openAuthModal() {
 }
 
 document.getElementById("authPill").onclick = async () => {
+  const r = getActiveRoom();
   if (isCurrentRoomUnlocked()) {
-    const v = await ask("Controle de Acesso da Sala", [
-      ["🔒 Travar edição (Modo Consulta)", "lock"]
-    ], "Opções de Edição");
+    const v = await ask(`Status: ${isMasterUnlocked ? '👑 Modo Master' : `✏️ Edição (${r.name})`}`, [
+      ["🔒 Travar edição (Voltar ao Modo Consulta)", "lock"]
+    ], "Controle de Acesso");
 
     if (v === "lock") {
-      isMasterUnlocked = false;
-      unlockedRooms.delete(getActiveRoom().id);
-      toast("Sala travada em Modo Consulta 🔒");
-      updateAuthUI();
+      if (isMasterUnlocked) setMasterUnlocked(false);
+      setRoomUnlocked(r.id, false);
+      toast("Sala bloqueada em Modo Consulta 🔒");
       route();
     }
     return;
@@ -2803,6 +3590,8 @@ function viewHome() {
   r.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
 
   let h = `
+  ${renderModeBanner(r)}
+
   <!-- Banner Hero da Sala com Foco em Trajes Completos -->
   <div class="room-hero-card noprint">
     <div class="room-hero-info">
@@ -3013,7 +3802,9 @@ function viewCostume(id) {
   const kitInfo = calcCompleteKitsInfo(c, r.common || []);
   const isUnlocked = isCurrentRoomUnlocked();
 
-  let h = `<div class="toolbar-bar noprint">
+  let h = `
+  ${renderModeBanner(r)}
+  <div class="toolbar-bar noprint">
     <button class="btn" onclick="go('#/')">← Voltar</button>
     <button class="btn primary" id="addI">+ Peça Personalizada</button>
     <select id="addCm"><option value="">+ Vincular Compartilhada...</option>${avail.map(cm => `<option value="${cm.id}">${esc(cmLabel(cm))}</option>`).join("")}</select>
@@ -3045,8 +3836,17 @@ function viewCostume(id) {
   <div style="margin: 12px 0 16px; padding: 12px 16px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; font-size: 13px; color: #fde68a; display: flex; align-items: flex-start; gap: 10px;">
     <span style="font-size: 20px; line-height: 1;">ℹ️</span>
     <div>
-      <div style="font-weight: 700; color: #fbbf24; margin-bottom: 2px;">Regra de Composição deste Traje:</div>
+      <div style="font-weight: 700; color: #fbbf24; margin-bottom: 2px;">Regra de Composição de Sącz:</div>
       Para ser considerado <b>traje completo</b>, é necessário o conjunto de <b>Colete + Calça + Capote</b> (total: <b>${kitInfo.kits} trajes completos</b>). O acervo possui ainda <b>${kitInfo.incomplete} trajes não completos</b> (${kitInfo.incompleteNote}).
+    </div>
+  </div>` : ''}
+
+  ${(norm(c.name).includes("RZESZOW") || norm(c.name).includes("RZESZÓW")) ? `
+  <div style="margin: 12px 0 16px; padding: 12px 16px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 12px; font-size: 13px; color: #bae6fd; display: flex; align-items: flex-start; gap: 10px;">
+    <span style="font-size: 20px; line-height: 1;">ℹ️</span>
+    <div>
+      <div style="font-weight: 700; color: #38bdf8; margin-bottom: 2px;">Regra de Composição de Rzeszów:</div>
+      Os dançarinos podem usar a <b>Calça com Colete</b> ou <b>Calça com Casaco</b>, totalizando <b>${kitInfo.kits} trajes completos</b> ${kitInfo.detail ? `(${kitInfo.detail.replace(/^\d+\s+trajes\s+completos\s*/, '')})` : ''}.
     </div>
   </div>` : ''}
 
@@ -3331,6 +4131,7 @@ function viewCostume(id) {
 function viewPieces() {
   const r = getActiveRoom();
   const stats = getRoomInventoryStats(r);
+  const isUnlocked = isCurrentRoomUnlocked();
   
   const allRows = [];
   (r.costumes || []).forEach(c => (c.items || []).forEach(raw => {
@@ -3340,8 +4141,25 @@ function viewPieces() {
     allRows.push({ costume: c, raw, it, cat, q, txt: norm([c.name, it.part, it.type, it.color, it.qty, it.notes].join(" ")) });
   }));
 
+  // Adiciona peças compartilhadas que ainda não foram vinculadas a nenhum traje
+  (r.common || []).forEach(cm => {
+    const linked = (r.costumes || []).some(c => (c.items || []).some(i => i.cid === cm.id));
+    if (!linked) {
+      const cat = classifyPiece(cm.part);
+      const q = parseQty(cm.qty);
+      allRows.push({
+        costume: { id: "", name: "(Sem Traje Vinculado)" },
+        raw: { cid: cm.id },
+        it: cm,
+        cat,
+        q,
+        txt: norm(["Compartilhada", cm.part, cm.type, cm.color, cm.qty, cm.notes].join(" "))
+      });
+    }
+  });
+
   allRows.sort((a, b) => {
-    const cDiff = a.costume.name.localeCompare(b.costume.name, "pt-BR", { sensitivity: "base" });
+    const cDiff = (a.costume.name || "").localeCompare(b.costume.name || "", "pt-BR", { sensitivity: "base" });
     if (cDiff !== 0) return cDiff;
     return (a.it.part || "").localeCompare(b.it.part || "", "pt-BR", { sensitivity: "base" });
   });
@@ -3353,21 +4171,25 @@ function viewPieces() {
     { key: "coletes", label: "Coletes & Corpetes", icon: "🦺", count: stats.coletes },
     { key: "capotes", label: "Capotes, Sukmanas & Saias", icon: "🧥", count: stats.capotes },
     { key: "calcados", label: "Botas & Calçados", icon: "👢", count: stats.calcados },
-    { key: "aderecos", label: "Adereços & Faixas", icon: "🎗️", count: stats.aderecos }
+    { key: "aderecos", label: "Adereços & Faixas", icon: "🎗️", count: stats.aderecos },
+    { key: "compartilhadas", label: "Compartilhadas", icon: "🔗", count: (r.common || []).length }
   ];
 
   let h = `
+  ${renderModeBanner(r)}
+
   <div class="category-subnav noprint">
     ${submenus.map(sm => `
       <div class="cat-pill ${currentPieceCategory === sm.key ? 'active' : ''}" data-cat="${sm.key}">
         <span>${sm.icon} ${sm.label}</span>
-        <span class="cat-pill-count">${sm.count} un</span>
+        <span class="cat-pill-count">${sm.count} ${sm.key === 'compartilhadas' ? 'itens' : 'un'}</span>
       </div>
     `).join("")}
   </div>
 
   <div class="toolbar-bar noprint">
     <input type="search" id="q" placeholder="Buscar por modelo, cor, observação ou traje em ${esc(r.name)}...">
+    ${isUnlocked && currentPieceCategory === 'compartilhadas' ? `<button class="btn primary" id="addPieceCmBtn">+ Nova Peça Compartilhada</button>` : ''}
     <span id="cnt" class="note" style="margin-left:auto; font-weight:700; color:#fff;"></span>
   </div>
 
@@ -3385,8 +4207,8 @@ function viewPieces() {
     const { costume: c, raw, it, cat, txt } = row;
     const isShared = !!raw.cid;
     const customTag = isShared ? formatSharedTag(it.part) : "";
-    h += `<tr data-t="${esc(txt)}" data-cat="${cat.key}" ${isShared ? 'class="link"' : ""}>
-      <td><span class="chip" data-go="${c.id}">${esc(c.name)}</span></td>
+    h += `<tr data-t="${esc(txt)}" data-cat="${cat.key}" data-is-shared="${isShared ? 'true' : 'false'}" ${isShared ? 'class="link"' : ""}>
+      <td>${c.id ? `<span class="chip" data-go="${c.id}">${esc(c.name)}</span>` : `<span style="color:var(--amber); font-size:12px;">${esc(c.name)}</span>`}</td>
       <td><b>${esc(it.part)}</b>${isShared ? ' <span class="tag shared" data-cm="' + raw.cid + '">' + esc(customTag) + '</span>' : ""}</td>
       <td>${it.photo ? `<img class="thumb" src="${it.photo}" alt="" data-zoom-src="${it.photo}">` : ""}</td>
       <td>${esc(it.type)}</td>
@@ -3402,7 +4224,9 @@ function viewPieces() {
     const q = norm(document.getElementById("q").value);
     let n = 0;
     app.querySelectorAll("tbody tr").forEach(tr => {
-      const matchCat = currentPieceCategory === "all" || tr.dataset.cat === currentPieceCategory;
+      const matchCat = currentPieceCategory === "all" ? true :
+                       currentPieceCategory === "compartilhadas" ? (tr.dataset.isShared === "true") :
+                       (tr.dataset.cat === currentPieceCategory);
       const matchTxt = !q || tr.dataset.t.includes(q);
       const ok = matchCat && matchTxt;
       tr.style.display = ok ? "" : "none";
@@ -3416,9 +4240,25 @@ function viewPieces() {
     pill.onclick = () => {
       currentPieceCategory = pill.dataset.cat;
       app.querySelectorAll(".cat-pill").forEach(p => p.classList.toggle("active", p === pill));
-      filterRows();
+      const addCmBtn = document.getElementById("addPieceCmBtn");
+      if (currentPieceCategory === 'compartilhadas') {
+        viewPieces();
+      } else {
+        if (addCmBtn) addCmBtn.style.display = "none";
+        filterRows();
+      }
     };
   });
+
+  const addPieceCmBtn = document.getElementById("addPieceCmBtn");
+  if (addPieceCmBtn) {
+    addPieceCmBtn.onclick = () => {
+      const cm = newCommon();
+      save();
+      updateCounters();
+      viewCommon(cm.id);
+    };
+  }
 
   filterRows();
   app.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
@@ -3657,6 +4497,15 @@ function viewBank() {
 
   const inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/*"; inp.multiple = true;
   inp.onchange = async () => {
+    if (!inp.files.length) return;
+    if (inp.files.length === 1) {
+      const f = inp.files[0];
+      openImageResizer(f, f.name, (img) => {
+        bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
+        save(); toast("Foto adicionada com sucesso!"); updateCounters(); viewBank();
+      });
+      return;
+    }
     let n = 0;
     for (const f of inp.files) {
       if (!f.type.startsWith("image/")) continue;
@@ -3675,6 +4524,15 @@ function viewBank() {
   d.ondragleave = () => d.classList.remove("over");
   d.ondrop = async e => {
     e.preventDefault(); d.classList.remove("over");
+    if (!e.dataTransfer.files.length) return;
+    if (e.dataTransfer.files.length === 1 && e.dataTransfer.files[0].type.startsWith("image/")) {
+      const f = e.dataTransfer.files[0];
+      openImageResizer(f, f.name, (img) => {
+        bank().push({ id: uid(), name: f.name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
+        save(); toast("Foto adicionada com sucesso!"); updateCounters(); viewBank();
+      });
+      return;
+    }
     let n = 0;
     for (const f of e.dataTransfer.files) {
       if (!f.type.startsWith("image/")) continue;
@@ -3729,13 +4587,16 @@ window.pickImg = function(cb) {
   document.getElementById("pkQ").oninput = e => { const q = norm(e.target.value); box.querySelectorAll(".bk-card").forEach(el => el.style.display = el.dataset.n.includes(q) ? "" : "none"); };
   document.getElementById("pkUp").onclick = () => {
     const i = document.createElement("input"); i.type = "file"; i.accept = "image/*";
-    i.onchange = async () => {
+    i.onchange = () => {
       if (!i.files[0]) return;
-      try {
-        const img = await readImg(i.files[0]);
-        bank().push({ id: uid(), name: i.files[0].name.replace(/\.[^.]+$/, "").toUpperCase(), img, date: new Date().toISOString().slice(0, 10) });
-        save(); close(); cb(img);
-      } catch (e) { alert("Erro ao carregar imagem."); }
+      const file = i.files[0];
+      openImageResizer(file, file.name, (finalImg) => {
+        const photoName = file.name.replace(/\.[^.]+$/, "").toUpperCase();
+        bank().push({ id: uid(), name: photoName, img: finalImg, date: new Date().toISOString().slice(0, 10) });
+        save();
+        close();
+        cb(finalImg);
+      });
     };
     i.click();
   };
@@ -3747,7 +4608,10 @@ document.getElementById("bkDlg").onclick = e => { if (e.target.id === "bkDlg") d
 function viewBackup() {
   if (!isMasterUnlocked) { go("#/"); return; }
   const r = getActiveRoom();
-  const kb = Math.round(JSON.stringify(S).length / 1024);
+  const getActiveGithubRepo = () => {
+    return localStorage.getItem("wisla_gh_repo") || S.githubRepo || "jurgow/wisla";
+  };
+  const activeRepo = getActiveGithubRepo();
 
   app.innerHTML = `<h2>💾 Salvar & Sincronizar Trajes</h2>
   <p class="note" style="margin-top:0">Publique as alterações no repositório compartilhado para que todos tenham acesso aos dados atualizados.</p>
@@ -3758,7 +4622,7 @@ function viewBackup() {
       <span>☁️</span> <span>Sincronização Direta no Repositório (GitHub)</span>
     </h3>
     <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">
-      Ao salvar aqui, o arquivo de dados compartilhado (<code>trajes-data.js</code>) é atualizado diretamente na nuvem do repositório <b>jurgow/trajes-masculinos</b>.
+      Ao salvar aqui, o arquivo de dados compartilhado (<code>trajes-data.js</code>) é atualizado diretamente na nuvem do repositório <b>${esc(activeRepo)}</b>.
     </p>
     
     <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
@@ -3802,16 +4666,32 @@ function viewBackup() {
       localStorage.setItem("wisla_gh_pat", token.trim());
     }
 
-    toast("Sincronizando com o GitHub...");
+    const repoInput = document.getElementById("ghRepoInput");
+    if (repoInput && repoInput.value.trim()) {
+      localStorage.setItem("wisla_gh_repo", repoInput.value.trim());
+    }
+    const repo = getActiveGithubRepo();
+
+    toast(`Sincronizando com GitHub (${repo})...`);
     try {
-      const repo = "jurgow/trajes-masculinos";
       const path = "trajes-data.js";
-      const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
+      let apiUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
       
       let sha = "";
-      const getRes = await fetch(apiUrl, {
+      let getRes = await fetch(apiUrl, {
         headers: { "Authorization": `token ${token.trim()}`, "Accept": "application/vnd.github.v3+json" }
       });
+      // Fallback para trajes-masculinos se o repositorio wisla ainda nao foi renomeado no GitHub
+      if (getRes.status === 404 && repo.includes("wisla")) {
+        const fallbackUrl = `https://api.github.com/repos/jurgow/trajes-masculinos/contents/${path}`;
+        const fallbackRes = await fetch(fallbackUrl, {
+          headers: { "Authorization": `token ${token.trim()}`, "Accept": "application/vnd.github.v3+json" }
+        });
+        if (fallbackRes.ok) {
+          apiUrl = fallbackUrl;
+          getRes = fallbackRes;
+        }
+      }
       if (getRes.ok) {
         const getJson = await getRes.json();
         sha = getJson.sha;
@@ -3831,7 +4711,7 @@ function viewBackup() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          message: `update: alteracao de trajes via app Wisla (${today()})`,
+          message: `update: alteracao de dados via app Wisla (${today()})`,
           content: base64Content,
           sha: sha || undefined
         })
@@ -3839,10 +4719,10 @@ function viewBackup() {
 
       if (putRes.ok) {
         toast("✓ Publicado no GitHub com sucesso!");
-        alert("Sucesso! As alterações foram publicadas no repositório GitHub e estão disponíveis para todos.");
+        alert(`Sucesso! As alterações foram publicadas no repositório GitHub (${repo}) e estão disponíveis para todos.`);
       } else {
         const err = await putRes.json();
-        alert("Erro ao sincronizar com GitHub: " + (err.message || "Verifique o token."));
+        alert("Erro ao sincronizar com GitHub: " + (err.message || "Verifique o token e o repositório."));
       }
     } catch (e) {
       alert("Erro na conexão com GitHub: " + e.message);
@@ -3929,26 +4809,112 @@ function renderRoomsManagement() {
   });
 }
 
-document.getElementById("openSettingsBtn").onclick = () => {
-  if (!isMasterUnlocked) {
-    requireMasterAuth(() => {
-      document.getElementById("settingsDlg").classList.add("active");
-      const ghInp = document.getElementById("ghTokenInput");
-      if (ghInp) ghInp.value = localStorage.getItem("wisla_gh_pat") || "";
-      renderRoomsManagement();
-    });
+async function testCloudConnection(silent = false) {
+  const url = getCloudDbUrl();
+  if (!url) {
+    updateCloudStatus("local");
+    if (!silent) alert("Informe uma URL de banco na nuvem antes de testar.");
     return;
   }
+  try {
+    updateCloudStatus("syncing");
+    const res = await fetch(url);
+    if (res.ok) {
+      updateCloudStatus("online");
+      if (!silent) alert("✓ Conexão com o banco na nuvem estabelecida com sucesso!");
+    } else {
+      updateCloudStatus("error");
+      if (!silent) alert(`Erro na conexão com a nuvem (HTTP ${res.status}). Verifique as regras de leitura/escrita do Firebase.`);
+    }
+  } catch (e) {
+    updateCloudStatus("offline");
+    if (!silent) alert("Erro ao acessar a URL da nuvem. Verifique sua conexão e se a URL está correta (ex: https://...firebaseio.com/acervo.json).");
+  }
+}
+
+function initSettingsModal() {
   document.getElementById("settingsDlg").classList.add("active");
+  
+  // Nuvem / Firebase
+  const cloudInp = document.getElementById("cloudDbUrlInput");
+  if (cloudInp) {
+    cloudInp.value = getCloudDbUrl();
+    cloudInp.onchange = () => {
+      setCloudDbUrl(cloudInp.value);
+      testCloudConnection(true);
+    };
+  }
+
+  // GitHub Backup
   const ghInp = document.getElementById("ghTokenInput");
-  if (ghInp) ghInp.value = localStorage.getItem("wisla_gh_pat") || "";
+  if (ghInp) {
+    ghInp.value = localStorage.getItem("wisla_gh_pat") || "";
+    ghInp.onchange = () => localStorage.setItem("wisla_gh_pat", ghInp.value.trim());
+  }
+  const ghRepoInp = document.getElementById("ghRepoInput");
+  if (ghRepoInp) {
+    ghRepoInp.value = localStorage.getItem("wisla_gh_repo") || S.githubRepo || "jurgow/wisla";
+    ghRepoInp.onchange = () => {
+      localStorage.setItem("wisla_gh_repo", ghRepoInp.value.trim());
+      toast("Repositório atualizado!");
+    };
+  }
   renderRoomsManagement();
+}
+
+// Botões da Nuvem em Tempo Real
+const btnTestCloud = document.getElementById("btnTestCloud");
+if (btnTestCloud) btnTestCloud.onclick = () => testCloudConnection(false);
+
+const btnPullCloud = document.getElementById("btnPullCloud");
+if (btnPullCloud) btnPullCloud.onclick = () => cloudSyncPull(true);
+
+const btnPushCloud = document.getElementById("btnPushCloud");
+if (btnPushCloud) btnPushCloud.onclick = () => {
+  cloudSyncPush();
+  toast("⬆ Enviando dados para a nuvem...");
+};
+
+const btnDisconnectCloud = document.getElementById("btnDisconnectCloud");
+if (btnDisconnectCloud) btnDisconnectCloud.onclick = () => {
+  if (confirm("Desconectar do banco na nuvem? O aplicativo voltará a salvar apenas na memória local deste dispositivo.")) {
+    setCloudDbUrl("");
+    updateCloudStatus("local");
+    const cloudInp = document.getElementById("cloudDbUrlInput");
+    if (cloudInp) cloudInp.value = "";
+    toast("Desconectado da nuvem 💾");
+  }
+};
+
+// Pill de Nuvem no Header (atalho rápido)
+const cloudPill = document.getElementById("cloudPill");
+if (cloudPill) cloudPill.onclick = () => {
+  const url = getCloudDbUrl();
+  if (url) {
+    cloudSyncPull(true);
+  } else {
+    requireMasterAuth(() => {
+      initSettingsModal();
+      // Ativa aba de nuvem
+      document.querySelectorAll(".settings-tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".settings-section").forEach(s => s.classList.remove("active"));
+      const tabSyncBtn = document.querySelector(".settings-tab-btn[data-tab='tab-sync']");
+      if (tabSyncBtn) tabSyncBtn.classList.add("active");
+      const tabSyncSec = document.getElementById("tab-sync");
+      if (tabSyncSec) tabSyncSec.classList.add("active");
+    });
+  }
+};
+
+document.getElementById("openSettingsBtn").onclick = () => {
+  if (!isMasterUnlocked) {
+    requireMasterAuth(() => initSettingsModal());
+    return;
+  }
+  initSettingsModal();
 };
 document.getElementById("sideManageRoomsBtn").onclick = () => {
-  requireMasterAuth(() => {
-    document.getElementById("settingsDlg").classList.add("active");
-    renderRoomsManagement();
-  });
+  requireMasterAuth(() => initSettingsModal());
 };
 document.getElementById("closeSettingsModalBtn").onclick = () => document.getElementById("settingsDlg").classList.remove("active");
 document.getElementById("settingsDlg").onclick = e => { if (e.target.id === "settingsDlg") document.getElementById("settingsDlg").classList.remove("active"); };
@@ -3978,8 +4944,15 @@ document.getElementById("changeLogoBtn").onclick = () => {
   });
 };
 
-/* Menu Salas no Celular */
-document.getElementById("mobileMoreBtn").onclick = openRoomSwitcher;
+/* Drawer & Menu Lateral Listeners */
+const menuToggleBtn = document.getElementById("menuToggleBtn");
+if (menuToggleBtn) menuToggleBtn.onclick = openSidebar;
+const sidebarCloseBtn = document.getElementById("sidebarCloseBtn");
+if (sidebarCloseBtn) sidebarCloseBtn.onclick = closeSidebar;
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+if (sidebarOverlay) sidebarOverlay.onclick = closeSidebar;
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+if (mobileMenuBtn) mobileMenuBtn.onclick = openSidebar;
 
 /* Busca Global (Google Bar) */
 document.getElementById("globalSearchInput").oninput = e => {
@@ -3999,8 +4972,18 @@ window.addEventListener("keydown", e => {
   }
 });
 
+/* Sincronização em segundo plano a cada 20 segundos e ao focar a aba */
+setInterval(() => {
+  if (getCloudDbUrl()) cloudSyncPull(false);
+}, 20000);
+
+window.addEventListener("focus", () => {
+  if (getCloudDbUrl()) cloudSyncPull(false);
+});
+
 /* ===== ROTEAMENTO ===== */
 function route() {
+  closeSidebar();
   const h = location.hash || "#/";
   
   // Protege rotas restritas para quem não é Master
@@ -4009,35 +4992,57 @@ function route() {
     return;
   }
 
-  // Atualiza sidebar desktop
+  // Redireciona dançarinos (removido do menu) para home
+  if (h === "#/dancarinos") {
+    go("#/");
+    return;
+  }
+
+  // Atualiza sidebar desktop & mobile
   document.querySelectorAll(".sidebar .nav-item").forEach(b => {
     const nav = b.dataset.nav;
-    b.classList.toggle("active", h === nav || (nav === "#/compartilhadas" && h.startsWith("#/compartilhadas")) || (nav === "#/" && h.startsWith("#/traje/")) || (nav === "#/banco" && h.startsWith("#/banco")));
+    const isAct = (nav === "#/" && (h === "#/" || h.startsWith("#/traje/"))) ||
+                  (nav === "#/pecas" && (h === "#/pecas" || h.startsWith("#/compartilhadas") || h.startsWith("#/comuns"))) ||
+                  (nav === "#/banco" && h.startsWith("#/banco")) ||
+                  (nav === "#/backup" && h.startsWith("#/backup"));
+    b.classList.toggle("active", isAct);
   });
 
   // Atualiza bottom bar mobile
   document.querySelectorAll(".mobile-nav-btn").forEach(b => {
     const nav = b.dataset.nav;
     if (nav) {
-      b.classList.toggle("active", h === nav || (nav === "#/compartilhadas" && h.startsWith("#/compartilhadas")) || (nav === "#/" && h.startsWith("#/traje/")));
+      const isAct = (nav === "#/" && (h === "#/" || h.startsWith("#/traje/"))) ||
+                    (nav === "#/pecas" && (h === "#/pecas" || h.startsWith("#/compartilhadas") || h.startsWith("#/comuns")));
+      b.classList.toggle("active", isAct);
     }
   });
 
   window.scrollTo(0, 0);
-  if (h.startsWith("#/traje/")) viewCostume(h.slice(8));
-  else if (h === "#/dancarinos") viewDancers();
-  else if (h === "#/pecas") viewPieces();
-  else if (h === "#/backup") viewBackup();
-  else if (h.startsWith("#/compartilhadas")) viewCommon(h.split("/")[2]);
-  else if (h.startsWith("#/comuns")) viewCommon(h.split("/")[2]);
-  else if (h.startsWith("#/banco")) viewBank();
-  else viewHome();
+  if (h.startsWith("#/traje/")) {
+    viewCostume(h.slice(8));
+  } else if (h === "#/pecas") {
+    viewPieces();
+  } else if (h.startsWith("#/compartilhadas/") || h.startsWith("#/comuns/")) {
+    const cid = h.split("/")[2];
+    if (cid) viewCommon(cid);
+    else { currentPieceCategory = "compartilhadas"; viewPieces(); }
+  } else if (h === "#/compartilhadas" || h === "#/comuns") {
+    currentPieceCategory = "compartilhadas";
+    viewPieces();
+  } else if (h === "#/backup") {
+    viewBackup();
+  } else if (h.startsWith("#/banco")) {
+    viewBank();
+  } else {
+    viewHome();
+  }
 }
-document.querySelectorAll(".sidebar .nav-item").forEach(b => b.onclick = () => go(b.dataset.nav));
-document.querySelectorAll(".mobile-nav-btn[data-nav]").forEach(b => b.onclick = () => go(b.dataset.nav));
+document.querySelectorAll(".sidebar .nav-item").forEach(b => b.onclick = () => { closeSidebar(); go(b.dataset.nav); });
+document.querySelectorAll(".mobile-nav-btn[data-nav]").forEach(b => b.onclick = () => { closeSidebar(); go(b.dataset.nav); });
 window.addEventListener("hashchange", route);
 
-/* ===== INICIALIZAÇÃO AUTOMÁTICA OFFLINE ===== */
+/* ===== INICIALIZAÇÃO AUTOMÁTICA OFFLINE & NUVEM ===== */
 (async () => {
   let raw = await loadState();
   
@@ -4059,6 +5064,13 @@ window.addEventListener("hashchange", route);
 
   if (S.logo) {
     document.getElementById("logoImg").src = S.logo;
+  }
+
+  // Tenta puxar a versão mais recente da nuvem se configurada
+  if (getCloudDbUrl()) {
+    await cloudSyncPull(false);
+  } else {
+    updateCloudStatus("local");
   }
 
   updateThemeForActiveRoom();
