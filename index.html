@@ -2,11 +2,13 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wisła · Sistema de Gestão de Acervo e Trajes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Wisła · Gestão de Acervo e Trajes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<!-- Arquivo de Dados Padrão Offline Embutido -->
+<script src="trajes-data.js"></script>
 <style>
 :root {
   /* Google Material Dark Theme / Obsidian Palette */
@@ -68,12 +70,12 @@
   --fst: 24px;
   --fsc: 16px;
   --fsm: 13px;
-  --tw: 72px;
-  --cardw: 240px;
+  --tw: 68px;
+  --cardw: 230px;
   --ar: 3/4;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 body {
   font-family: var(--ff);
   background: var(--bg);
@@ -90,14 +92,14 @@ body {
 
 /* ===== GOOGLE APP BAR (CABEÇALHO SUPERIOR) ===== */
 .app-bar {
-  background: rgba(11, 15, 25, 0.92);
+  background: rgba(11, 15, 25, 0.94);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--bd);
   color: #fff;
-  padding: 8px 20px;
+  padding: 8px 16px;
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
   position: sticky;
   top: 0;
@@ -108,13 +110,14 @@ body {
 .brand-section {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
   user-select: none;
+  flex-shrink: 0;
 }
 .brand-logo-box {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-sm);
   background: #151f32;
   border: 1px solid var(--bd);
@@ -124,12 +127,12 @@ body {
   overflow: hidden;
   transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
-.brand-logo-box:hover { transform: scale(1.06); }
+.brand-logo-box:hover { transform: scale(1.05); }
 .brand-logo-box img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 3px;
+  padding: 2px;
 }
 .brand-titles {
   display: flex;
@@ -137,7 +140,7 @@ body {
   line-height: 1.15;
 }
 .brand-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   letter-spacing: -0.3px;
   background: linear-gradient(135deg, #ffffff 40%, #fda4af, #f43f5e);
@@ -145,10 +148,10 @@ body {
   -webkit-text-fill-color: transparent;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 .brand-subtitle {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--text-muted);
   letter-spacing: 0.5px;
@@ -159,18 +162,22 @@ body {
 .room-selector-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: var(--surface-variant);
   border: 1px solid var(--bd);
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: var(--radius-full);
   color: #fff;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
   box-shadow: var(--shadow-sm);
-  margin-left: 8px;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 .room-selector-btn:hover {
   background: var(--surface-hover);
@@ -183,12 +190,13 @@ body {
   border-radius: 50%;
   background: var(--room-color);
   box-shadow: 0 0 8px var(--room-color);
+  flex-shrink: 0;
 }
 
 /* Barra de Busca Global Estilo Google */
 .global-search-bar {
   flex: 1;
-  max-width: 580px;
+  max-width: 520px;
   margin: 0 auto;
   position: relative;
   display: flex;
@@ -196,7 +204,7 @@ body {
 }
 .global-search-bar input {
   width: 100%;
-  padding: 10px 42px 10px 42px;
+  padding: 8px 36px 8px 36px;
   background: #151f32;
   border: 1px solid var(--bd);
   border-radius: var(--radius-full);
@@ -209,20 +217,20 @@ body {
 .global-search-bar input:focus {
   background: #1a253c;
   border-color: var(--room-color);
-  box-shadow: 0 0 0 4px var(--room-bg);
+  box-shadow: 0 0 0 3px var(--room-bg);
 }
 .search-icon {
   position: absolute;
-  left: 14px;
+  left: 12px;
   color: var(--text-muted);
-  font-size: 15px;
+  font-size: 14px;
   pointer-events: none;
 }
 .search-shortcut-badge {
   position: absolute;
-  right: 12px;
+  right: 10px;
   background: rgba(255, 255, 255, 0.08);
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: 4px;
   font-size: 10px;
   font-weight: 700;
@@ -234,21 +242,23 @@ body {
 .app-bar-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 /* Badge de Autenticação / Status */
 .auth-pill {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 6px 14px;
+  gap: 6px;
+  padding: 6px 12px;
   border-radius: var(--radius-full);
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
   user-select: none;
+  white-space: nowrap;
 }
 .auth-pill.locked {
   background: rgba(148, 163, 184, 0.12);
@@ -282,7 +292,7 @@ body {
   color: var(--text);
   border: 1px solid var(--bd);
   border-radius: var(--radius-sm);
-  padding: 8px 16px;
+  padding: 8px 14px;
   cursor: pointer;
   font-family: inherit;
   font-size: var(--fsm);
@@ -291,14 +301,14 @@ body {
   box-shadow: var(--shadow-sm);
   text-decoration: none;
   white-space: nowrap;
+  min-height: 38px;
 }
 .btn:hover {
   background: var(--surface-hover);
   border-color: var(--bd-hover);
   color: #fff;
-  transform: translateY(-1px);
 }
-.btn:active { transform: translateY(0); }
+.btn:active { transform: scale(0.98); }
 .btn.primary {
   background: linear-gradient(135deg, var(--room-color), var(--pri-dark));
   color: #fff;
@@ -330,13 +340,14 @@ body {
   color: #fff;
 }
 .btn.sm {
-  padding: 5px 12px;
+  padding: 5px 10px;
   font-size: 12px;
   border-radius: 6px;
+  min-height: 32px;
 }
 .btn.icon-only {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   padding: 0;
   border-radius: 50%;
 }
@@ -345,7 +356,7 @@ body {
 .app-container {
   display: flex;
   flex: 1;
-  min-height: calc(100vh - 61px);
+  min-height: calc(100vh - 58px);
 }
 
 /* Sidebar estilo Google Navigation Rail / Drawer */
@@ -372,7 +383,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 9px 14px;
   border-radius: var(--radius-full);
   color: var(--text-muted);
   font-weight: 600;
@@ -395,14 +406,14 @@ body {
   box-shadow: 0 0 12px var(--room-bg);
 }
 .nav-item .icon {
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1;
 }
 .nav-item .badge {
   margin-left: auto;
   font-size: 11px;
   font-weight: 800;
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.08);
   color: var(--text-muted);
@@ -421,10 +432,53 @@ body {
   gap: 6px;
 }
 
+/* BARRA DE NAVEGAÇÃO INFERIOR PARA CELULAR (MOBILE BOTTOM BAR) */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(11, 15, 25, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--bd);
+  z-index: 70;
+  padding: 4px 6px calc(env(safe-area-inset-bottom, 0px) + 4px);
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
+}
+.mobile-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+  flex: 1;
+  max-width: 72px;
+  user-select: none;
+}
+.mobile-nav-btn .icon { font-size: 18px; margin-bottom: 2px; }
+.mobile-nav-btn.active {
+  color: #fff;
+  background: var(--room-bg);
+}
+.mobile-nav-btn.active .icon {
+  transform: scale(1.1);
+  color: var(--pri-light);
+}
+
 /* Área de Conteúdo Principal */
 .content-area {
   flex: 1;
-  padding: 24px 28px 60px;
+  padding: 20px 24px 60px;
   overflow-y: auto;
   max-width: 1480px;
   margin: 0 auto;
@@ -436,13 +490,13 @@ body {
   background: linear-gradient(135deg, rgba(21, 31, 50, 0.8), rgba(26, 35, 54, 0.95));
   border: 1px solid var(--room-border);
   border-radius: var(--radius-lg);
-  padding: 20px 24px;
-  margin-bottom: 24px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
   box-shadow: var(--shadow);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 16px;
   flex-wrap: wrap;
   position: relative;
   overflow: hidden;
@@ -460,21 +514,22 @@ body {
 .room-hero-info {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 .room-hero-icon {
-  font-size: 38px;
-  width: 60px;
-  height: 60px;
+  font-size: 34px;
+  width: 54px;
+  height: 54px;
   border-radius: var(--radius);
   background: var(--room-bg);
   border: 1px solid var(--room-border);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 .room-hero-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.4px;
@@ -485,19 +540,19 @@ body {
 }
 .room-hero-stats {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 .hero-stat-chip {
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid var(--bd);
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
 }
 .hero-stat-num {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 800;
   color: #fff;
   line-height: 1.1;
@@ -511,35 +566,35 @@ body {
 /* ===== PAINEL DE KPIS / METRICAS ===== */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 14px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
 }
 .kpi-card {
   background: var(--surface-card);
   border: 1px solid var(--bd);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 14px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), border-color 0.2s ease;
   position: relative;
   overflow: hidden;
 }
 .kpi-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: var(--room-color);
   box-shadow: var(--shadow);
 }
 .kpi-card-icon {
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 2px;
 }
 .kpi-num {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.5px;
@@ -554,23 +609,24 @@ body {
 /* ===== SUBMENUS / ABAS DE CATEGORIAS EM "TODAS AS PEÇAS" ===== */
 .category-subnav {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   overflow-x: auto;
-  padding-bottom: 10px;
-  margin-bottom: 22px;
+  padding-bottom: 8px;
+  margin-bottom: 18px;
   border-bottom: 1px solid var(--bd);
+  -webkit-overflow-scrolling: touch;
 }
 .cat-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 18px;
+  gap: 6px;
+  padding: 7px 14px;
   background: var(--surface-variant);
   border: 1px solid var(--bd);
   border-radius: var(--radius-full);
   color: var(--text-muted);
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
   white-space: nowrap;
@@ -589,7 +645,7 @@ body {
 }
 .cat-pill-count {
   background: rgba(0, 0, 0, 0.35);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: var(--radius-full);
   font-size: 11px;
   font-weight: 800;
@@ -602,23 +658,23 @@ body {
 /* ===== BARRA DE FERRAMENTAS / FILTROS ===== */
 .toolbar-bar {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   background: var(--surface-variant);
-  padding: 12px 18px;
+  padding: 10px 16px;
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--bd);
 }
 .toolbar-bar input[type=search], .toolbar-bar select, .toolbar-bar input[type=text] {
-  padding: 9px 14px;
+  padding: 8px 12px;
   border: 1px solid var(--bd);
   border-radius: var(--radius-sm);
   font-family: inherit;
   font-size: var(--fsm);
-  min-width: 240px;
+  min-width: 220px;
   outline: none;
   background: #0d1322;
   color: var(--text);
@@ -640,7 +696,7 @@ body {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  padding: 6px 14px;
+  padding: 5px 12px;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -657,7 +713,7 @@ body {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--cardw), 1fr));
-  gap: 22px;
+  gap: 18px;
 }
 .card {
   background: var(--surface-card);
@@ -672,7 +728,7 @@ body {
   position: relative;
 }
 .card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
   border-color: var(--room-color);
 }
@@ -686,17 +742,17 @@ body {
   align-items: center;
   justify-content: center;
   color: #334155;
-  font-size: 52px;
+  font-size: 46px;
   border-bottom: 1px solid var(--bd);
   position: relative;
 }
 .card-badges {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 8px;
+  right: 8px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   align-items: flex-end;
 }
 .badge-count {
@@ -705,7 +761,7 @@ body {
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-full);
-  padding: 3px 10px;
+  padding: 3px 9px;
   font-size: 11px;
   font-weight: 800;
   box-shadow: var(--shadow-sm);
@@ -715,7 +771,7 @@ body {
   border-color: transparent;
 }
 .nm {
-  padding: 14px 14px 6px;
+  padding: 12px 12px 6px;
   font-weight: 800;
   text-align: center;
   color: #fff;
@@ -723,17 +779,17 @@ body {
   letter-spacing: -0.3px;
 }
 .comp-preview {
-  padding: 0 12px 14px;
+  padding: 0 10px 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 4px;
   justify-content: center;
-  min-height: 48px;
+  min-height: 42px;
 }
 .part-pill {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 3px 8px;
+  padding: 3px 7px;
   border-radius: 6px;
   font-size: 11px;
   font-weight: 600;
@@ -748,7 +804,7 @@ body {
 }
 .card-footer {
   margin-top: auto;
-  padding: 10px 14px;
+  padding: 9px 12px;
   background: rgba(0, 0, 0, 0.28);
   border-top: 1px solid var(--bd);
   display: flex;
@@ -761,18 +817,18 @@ body {
 /* ===== FICHA DE DETALHES DO TRAJE ===== */
 .costume-header {
   display: flex;
-  gap: 24px;
+  gap: 20px;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   background: linear-gradient(135deg, #151f32, #1b2740);
-  padding: 24px;
+  padding: 20px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   border: 1px solid var(--bd);
 }
 .cover {
-  width: calc(var(--cardw) * 0.9);
+  width: calc(var(--cardw) * 0.85);
   aspect-ratio: var(--ar);
   border-radius: var(--radius);
   background-size: contain;
@@ -798,7 +854,7 @@ body {
 }
 .costume-info {
   flex: 1;
-  min-width: 280px;
+  min-width: 260px;
 }
 .costume-info input {
   font-family: inherit;
@@ -806,7 +862,7 @@ body {
   font-weight: 800;
   border: 1.5px solid transparent;
   background: transparent;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: var(--radius-sm);
   width: 100%;
   color: #fff;
@@ -821,14 +877,14 @@ body {
 }
 .composition-summary {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 .comp-chip {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 5px 14px;
+  padding: 4px 12px;
   border-radius: var(--radius-full);
   font-size: 12px;
   font-weight: 600;
@@ -839,48 +895,48 @@ body {
 /* Quadro de Composição por Peça */
 .breakdown-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 16px;
-  margin-bottom: 28px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
 }
 .breakdown-card {
   background: var(--surface-card);
   border: 1px solid var(--bd);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 14px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 .breakdown-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 8px;
+  padding-bottom: 6px;
 }
 .breakdown-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
   color: #fff;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 .breakdown-total {
   background: var(--room-bg);
   color: var(--pri-light);
   border: 1px solid var(--room-border);
   font-weight: 800;
-  font-size: 12px;
-  padding: 3px 10px;
+  font-size: 11px;
+  padding: 2px 8px;
   border-radius: var(--radius-full);
 }
 .breakdown-items {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 .breakdown-item-row {
   display: flex;
@@ -888,9 +944,9 @@ body {
   align-items: center;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.04);
-  padding: 6px 10px;
+  padding: 5px 8px;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 12px;
 }
 .breakdown-item-desc {
   color: var(--text);
@@ -912,7 +968,8 @@ body {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   border: 1px solid var(--bd);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
 }
 table {
   border-collapse: collapse;
@@ -921,7 +978,7 @@ table {
 }
 th, td {
   border-bottom: 1px solid var(--bd);
-  padding: 12px 14px;
+  padding: 10px 12px;
   vertical-align: middle;
 }
 th {
@@ -958,7 +1015,7 @@ td input, td textarea, td select {
   background: transparent;
   font: inherit;
   font-size: var(--fs);
-  padding: 6px 8px;
+  padding: 5px 7px;
   border-radius: var(--radius-xs);
   color: var(--text);
   transition: all 0.15s ease;
@@ -990,7 +1047,7 @@ td.part input {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .thumb:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
   box-shadow: var(--shadow-lg);
   border-color: var(--room-color);
 }
@@ -1026,11 +1083,13 @@ td.part input {
   border-radius: 6px;
   color: var(--text-muted);
   transition: all 0.15s ease;
+  min-height: 32px;
+  min-width: 32px;
 }
 .acts button:hover {
   background: var(--surface-active);
   color: var(--pri-light);
-  transform: scale(1.15);
+  transform: scale(1.12);
 }
 
 .chip {
@@ -1040,7 +1099,7 @@ td.part input {
   background: var(--room-bg);
   color: var(--pri-light);
   border-radius: var(--radius-full);
-  padding: 3px 10px;
+  padding: 3px 9px;
   margin: 2px;
   font-size: calc(var(--fs) - 2px);
   font-weight: 600;
@@ -1066,10 +1125,14 @@ td.part input {
   white-space: nowrap;
   box-shadow: 0 2px 6px rgba(225, 29, 72, 0.4);
 }
+.tag.shared {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.35);
+}
 .ro {
-  padding: 6px 8px;
+  padding: 5px 7px;
   display: block;
-  min-height: 32px;
+  min-height: 28px;
   color: var(--text);
 }
 .note {
@@ -1087,9 +1150,9 @@ table.dz th:first-child, table.dz td:first-child {
   border-right: 2px solid var(--bd);
 }
 table.dz th:first-child { z-index: 3; background: #0b1120; }
-table.dz td input { width: 64px; text-align: center; }
-table.dz td:first-child input { width: 170px; text-align: left; font-weight: 700; color: #fff; }
-table.dz th { text-align: center; font-size: 12px; }
+table.dz td input { width: 56px; text-align: center; }
+table.dz td:first-child input { width: 150px; text-align: left; font-weight: 700; color: #fff; }
+table.dz th { text-align: center; font-size: 11px; }
 table.dz th a { color: var(--pri-light); text-decoration: none; font-weight: 700; }
 table.dz th a:hover { color: #fff; text-decoration: underline; }
 
@@ -1110,7 +1173,7 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
 .modal-card {
   background: #111827;
   border-radius: var(--radius-lg);
-  padding: 26px;
+  padding: 24px;
   box-shadow: var(--shadow-lg);
   max-width: 560px;
   width: 100%;
@@ -1124,9 +1187,9 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   from { opacity: 0; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }
 }
-.modal-card.lg { max-width: 880px; }
+.modal-card.lg { max-width: 860px; }
 .modal-card h3 {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 800;
   color: #fff;
   margin-bottom: 8px;
@@ -1136,20 +1199,20 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
 /* Switcher de Salas Modal */
 .rooms-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-  margin: 16px 0;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 14px 0;
 }
 .room-card-option {
   background: var(--surface-card);
   border: 1px solid var(--bd);
   border-radius: var(--radius);
-  padding: 18px;
+  padding: 16px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   position: relative;
 }
 .room-card-option:hover {
@@ -1168,41 +1231,41 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   gap: 10px;
 }
 .room-card-icon {
-  font-size: 24px;
+  font-size: 22px;
 }
 .room-card-name {
   font-weight: 800;
-  font-size: 15px;
+  font-size: 14px;
   color: #fff;
 }
 .room-card-count {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
 }
 .room-card-lock-badge {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 12px;
+  top: 10px;
+  right: 10px;
+  font-size: 11px;
 }
 
-/* Modais de Peças Comuns Checkbox */
+/* Modal Checkbox */
 #ck .list {
   overflow-y: auto;
   columns: 2;
-  margin: 16px 0;
+  margin: 14px 0;
   border: 1px solid var(--bd);
   border-radius: var(--radius);
-  padding: 14px;
+  padding: 12px;
   background: #0d1322;
-  gap: 16px;
+  gap: 14px;
   max-height: 50vh;
 }
 #ck label {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 8px;
+  padding: 5px 7px;
   break-inside: avoid;
   cursor: pointer;
   font-size: 13px;
@@ -1216,7 +1279,7 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
 #lb { z-index: 110; }
 #lb img {
   max-width: 90vw;
-  max-height: 78vh;
+  max-height: 75vh;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   object-fit: contain;
@@ -1227,18 +1290,18 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
 /* Toast Notificação */
 #toast {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 68px;
+  right: 20px;
   background: #111827;
   color: #fff;
-  padding: 12px 22px;
+  padding: 10px 18px;
   border-radius: var(--radius-sm);
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.25s ease, transform 0.25s ease;
   pointer-events: none;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--bd);
   z-index: 9999;
@@ -1254,8 +1317,8 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
 /* BANCO DE FOTOS */
 .bk-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
 }
 .bk-card {
   background: var(--surface-card);
@@ -1268,7 +1331,7 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .bk-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: var(--shadow);
   border-color: var(--room-color);
 }
@@ -1281,18 +1344,18 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   border-bottom: 1px solid var(--bd);
 }
 .bk-card .bd {
-  padding: 10px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 .bk-card input {
   border: 1px solid transparent;
   font: inherit;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: #fff;
-  padding: 6px;
+  padding: 5px;
   border-radius: 6px;
   width: 100%;
   background: transparent;
@@ -1302,29 +1365,24 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   background: #0b101c;
   outline: none;
 }
-.bk-card .use {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
 .bk-card .row {
   display: flex;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 .bk-card .row .btn {
   flex: 1;
-  padding: 5px;
-  font-size: 12px;
+  padding: 4px;
+  font-size: 11px;
 }
 #bkDrop {
   border: 2px dashed rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-lg);
-  padding: 32px 20px;
+  padding: 24px 16px;
   text-align: center;
   color: var(--text-muted);
   background: rgba(17, 24, 39, 0.6);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   transition: all 0.2s;
 }
 #bkDrop.over {
@@ -1338,12 +1396,12 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
   display: flex;
   gap: 6px;
   border-bottom: 1px solid var(--bd);
-  margin-bottom: 18px;
-  padding-bottom: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 6px;
 }
 .settings-tab-btn {
-  padding: 6px 14px;
-  font-size: 13px;
+  padding: 6px 12px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
   background: transparent;
@@ -1365,10 +1423,10 @@ table.dz th a:hover { color: #fff; text-decoration: underline; }
 }
 .form-group label {
   display: block;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 .form-group input, .form-group select {
   width: 100%;
@@ -1413,18 +1471,95 @@ body.locked .bk-card input {
   pointer-events: none;
 }
 
+/* ===== REGRAS MOBILE (CELULARES & TELAS PEQUENAS) ===== */
+@media (max-width: 840px) {
+  :root {
+    --cardw: 155px;
+    --tw: 52px;
+  }
+  .sidebar { display: none; }
+  .mobile-bottom-nav { display: flex; }
+  .content-area {
+    padding: 12px 14px 76px;
+  }
+  .app-bar {
+    padding: 6px 12px;
+    gap: 8px;
+  }
+  .brand-subtitle, .search-shortcut-badge { display: none; }
+  .brand-logo-box { width: 32px; height: 32px; }
+  .room-selector-btn {
+    max-width: 140px;
+    font-size: 11px;
+    padding: 5px 9px;
+  }
+  .global-search-bar { max-width: 100%; }
+  .global-search-bar input {
+    font-size: 12px;
+    padding: 6px 28px 6px 30px;
+  }
+  .search-icon { left: 9px; font-size: 12px; }
+  
+  .room-hero-card {
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .room-hero-icon { width: 44px; height: 44px; font-size: 26px; }
+  .room-hero-title { font-size: 17px; }
+  
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .kpi-card { padding: 10px 8px; }
+  .kpi-num { font-size: 18px; }
+  .kpi-label { font-size: 10px; }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .nm { font-size: 13px; padding: 8px 6px 4px; }
+  .comp-preview { min-height: 28px; padding: 0 6px 8px; }
+  .part-pill { font-size: 10px; padding: 2px 5px; }
+
+  .costume-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 14px;
+  }
+  .cover {
+    width: 180px;
+  }
+  .costume-info input {
+    font-size: 18px;
+    text-align: center;
+  }
+  .composition-summary { justify-content: center; }
+
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .modal-card {
+    max-width: 100%;
+    border-radius: 20px 20px 0 0;
+    max-height: 85vh;
+    padding: 20px 16px;
+  }
+  #ck .list { columns: 1; }
+  #toast { bottom: 62px; right: 12px; left: 12px; text-align: center; justify-content: center; }
+}
+
 /* Modo Impressão */
 @media print {
-  .app-bar, .sidebar, .toolbar-bar, .kpi-grid, .category-subnav, .view-switcher, .acts, .noprint { display: none !important; }
+  .app-bar, .sidebar, .mobile-bottom-nav, .toolbar-bar, .kpi-grid, .category-subnav, .view-switcher, .acts, .noprint { display: none !important; }
   body { background: #fff !important; color: #000 !important; font-size: 10pt; }
   .wrap, .costume-header, .card, .breakdown-card { box-shadow: none !important; border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
   th { background: #eee !important; color: #000 !important; }
   .content-area { padding: 0; max-width: 100%; }
-}
-
-@media (max-width: 840px) {
-  .sidebar { display: none; }
-  .app-container { flex-direction: column; }
 }
 </style>
 </head>
@@ -1437,8 +1572,8 @@ body.locked .bk-card input {
       <img src="" id="logoImg" alt="Wisła">
     </div>
     <div class="brand-titles">
-      <div class="brand-title">Wisła <span style="font-size:10px; padding:2px 6px; border-radius:4px; background:var(--room-bg); color:var(--pri-light); border:1px solid var(--room-border);">ACERVO</span></div>
-      <div class="brand-subtitle">Gestão de Trajes & Dança</div>
+      <div class="brand-title">Wisła <span style="font-size:9px; padding:1px 5px; border-radius:4px; background:var(--room-bg); color:var(--pri-light); border:1px solid var(--room-border);">ACERVO</span></div>
+      <div class="brand-subtitle">Gestão de Trajes</div>
     </div>
   </div>
 
@@ -1447,27 +1582,27 @@ body.locked .bk-card input {
     <span class="room-dot" id="headerRoomDot"></span>
     <span id="headerRoomIcon">👔</span>
     <span id="headerRoomName">Trajes Masculinos</span>
-    <span style="font-size:10px; opacity:0.6;">▾</span>
+    <span style="font-size:9px; opacity:0.6;">▾</span>
   </button>
 
   <!-- Google Search Bar -->
   <div class="global-search-bar">
     <span class="search-icon">🔍</span>
-    <input type="search" id="globalSearchInput" placeholder="Pesquisar traje, peça, cor ou dançarino no Wisła...">
+    <input type="search" id="globalSearchInput" placeholder="Pesquisar traje, peça ou dançarino...">
     <span class="search-shortcut-badge">Ctrl K</span>
   </div>
 
   <!-- Ações e Status -->
   <div class="app-bar-actions">
     <div id="authPill" class="auth-pill locked" title="Clique para autenticar com o PIN da sala ou Token Master (0412)">
-      🔒 Modo Consulta
+      🔒 Consulta
     </div>
     <button class="btn icon-only" id="openSettingsBtn" title="Configurações, Layout e Gestão de Salas">⚙️</button>
   </div>
 </header>
 
 <div class="app-container">
-  <!-- Sidebar Navigation Drawer -->
+  <!-- Sidebar Navigation Drawer (Desktop) -->
   <aside class="sidebar">
     <div class="nav-category-title" id="sidebarRoomLabel">👔 Trajes Masculinos</div>
     <a class="nav-item active" data-nav="#/">
@@ -1480,13 +1615,13 @@ body.locked .bk-card input {
       <span>Todas as Peças</span>
       <span class="badge" id="sidePiecesCount">0</span>
     </a>
-    <a class="nav-item" data-nav="#/comuns">
+    <a class="nav-item" data-nav="#/compartilhadas">
       <span class="icon">🔗</span>
-      <span>Peças Comuns</span>
+      <span>Compartilhadas</span>
       <span class="badge" id="sideCommonCount">0</span>
     </a>
 
-    <div class="nav-category-title" style="margin-top:14px;">Geral & Apoio</div>
+    <div class="nav-category-title" style="margin-top:12px;">Geral & Apoio</div>
     <a class="nav-item" data-nav="#/dancarinos">
       <span class="icon">👥</span>
       <span>Dançarinos</span>
@@ -1516,6 +1651,30 @@ body.locked .bk-card input {
   <main class="content-area" id="app">Carregando...</main>
 </div>
 
+<!-- Barra de Navegação Inferior (Mobile Bottom Nav) -->
+<nav class="mobile-bottom-nav">
+  <a class="mobile-nav-btn active" data-nav="#/">
+    <span class="icon">👔</span>
+    <span>Trajes</span>
+  </a>
+  <a class="mobile-nav-btn" data-nav="#/pecas">
+    <span class="icon">📦</span>
+    <span>Peças</span>
+  </a>
+  <a class="mobile-nav-btn" data-nav="#/compartilhadas">
+    <span class="icon">🔗</span>
+    <span>Compart.</span>
+  </a>
+  <a class="mobile-nav-btn" data-nav="#/dancarinos">
+    <span class="icon">👥</span>
+    <span>Dançarinos</span>
+  </a>
+  <a class="mobile-nav-btn" id="mobileMoreBtn">
+    <span class="icon">☰</span>
+    <span>Mais</span>
+  </a>
+</nav>
+
 <div id="toast"></div>
 
 <!-- Modal Switcher de Salas (Google Workspace Project Style) -->
@@ -1529,8 +1688,8 @@ body.locked .bk-card input {
     
     <div class="rooms-grid" id="roomsListGrid"></div>
 
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px solid var(--bd); padding-top:14px;">
-      <button class="btn" id="addNewRoomBtn">+ Criar Nova Sala</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px solid var(--bd); padding-top:14px; flex-wrap:wrap; gap:8px;">
+      <button class="btn" id="addNewRoomBtn">+ Nova Sala</button>
       <button class="btn primary" id="confirmRoomBtn">Acessar Sala</button>
     </div>
   </div>
@@ -1542,7 +1701,7 @@ body.locked .bk-card input {
     <h3 id="authModalTitle">🔒 Autenticação de Edição</h3>
     <p class="note" id="authModalDesc">Digite o PIN da sala ou o <b>Token Master (0412)</b> para liberar as alterações:</p>
     <div class="form-group" style="margin: 16px 0;">
-      <input type="password" id="authPinInput" placeholder="Digite o PIN (ex: 0412)..." style="font-size:18px; text-align:center; letter-spacing:4px; padding:12px;" autofocus>
+      <input type="password" id="authPinInput" placeholder="Digite o PIN (ex: 0412)..." style="font-size:18px; text-align:center; letter-spacing:4px; padding:12px;" autofocus inputmode="numeric">
     </div>
     <div style="display:flex; justify-content:flex-end; gap:8px;">
       <button class="btn red" id="authCancelBtn">Cancelar</button>
@@ -1560,11 +1719,11 @@ body.locked .bk-card input {
   </div>
 </div>
 
-<!-- Modal Escolher Trajes de Peça Comum -->
+<!-- Modal Escolher Trajes de Peça Compartilhada -->
 <div id="ck" class="modal-overlay">
   <div class="modal-card lg">
-    <h3 id="cktit">Vincular Peça Comum</h3>
-    <div class="note" style="margin-top:-6px; margin-bottom:12px;">Marque os trajes desta sala em que esta peça é usada:</div>
+    <h3 id="cktit">Vincular Peça Compartilhada</h3>
+    <div class="note" style="margin-top:-6px; margin-bottom:12px;">Marque os trajes desta sala em que esta peça compartilhada é usada:</div>
     <div style="display:flex; gap:8px; align-items:center;">
       <input type="search" id="ckSearch" placeholder="Filtrar traje..." style="flex:1; padding:8px 12px; background:#0d1322; border:1px solid var(--bd); border-radius:6px; color:#fff;">
       <button class="btn sm" id="ckall">Marcar todos</button>
@@ -1582,7 +1741,7 @@ body.locked .bk-card input {
 <div id="lb" class="modal-overlay">
   <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
     <img id="lbimg" alt="Foto">
-    <div style="display:flex; gap:8px;">
+    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
       <button class="btn" id="lbchg">Trocar foto</button>
       <button class="btn red" id="lbdel">Remover foto</button>
       <button class="btn primary" id="lbclose">Fechar</button>
@@ -1605,12 +1764,12 @@ body.locked .bk-card input {
     <div class="settings-tabs">
       <button class="settings-tab-btn active" data-tab="tab-rooms">🏢 Gestão de Salas & PINs</button>
       <button class="settings-tab-btn" data-tab="tab-security">🛡️ Token Master & Acesso</button>
-      <button class="settings-tab-btn" data-tab="tab-text">🔤 Layout & Fontes</button>
+      <button class="settings-tab-btn" data-tab="tab-text">🔤 Layout & Mais</button>
     </div>
 
     <!-- Aba 1: Gestão de Salas & Senhas Individuais -->
     <div class="settings-section active" id="tab-rooms">
-      <p class="note" style="margin-bottom:14px;">Cada sala pode ter seu próprio PIN de edição para que uma equipe não altere o acervo da outra. O <b>Token Master (0412)</b> tem acesso irrestrito a todas.</p>
+      <p class="note" style="margin-bottom:14px;">Cada sala possui seu próprio PIN de edição para isolar as alterações. O <b>Token Master (0412)</b> tem acesso irrestrito a todas.</p>
       <div id="roomsManagementList" style="display:flex; flex-direction:column; gap:10px; max-height:45vh; overflow-y:auto; padding-right:4px;"></div>
     </div>
 
@@ -1626,15 +1785,14 @@ body.locked .bk-card input {
       </div>
     </div>
 
-    <!-- Aba 3: Layout & Fontes -->
+    <!-- Aba 3: Layout & Mais -->
     <div class="settings-section" id="tab-text">
       <div class="form-group">
-        <label>Fonte da Interface</label>
-        <select id="tpFf">
-          <option value="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif">Plus Jakarta Sans (Google Style)</option>
-          <option value="system-ui, -apple-system, sans-serif">Padrão do Sistema</option>
-          <option value="'JetBrains Mono', monospace">JetBrains Mono (Técnica)</option>
-        </select>
+        <label>Atalhos do Sistema</label>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
+          <button class="btn" onclick="document.getElementById('settingsDlg').classList.remove('active'); go('#/banco');">📷 Fotos do Acervo</button>
+          <button class="btn" onclick="document.getElementById('settingsDlg').classList.remove('active'); go('#/backup');">💾 Backup & Sincronização</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1705,6 +1863,16 @@ function normalizePartName(part, costumeName = "") {
   if (p === "PALETO") return "PALETÓ";
   if (p === "EMCHARPE") return "ECHARPE";
   return p;
+}
+
+/* Formatação Dinâmica de Nomes Compartilhados */
+function formatSharedTag(part) {
+  if (!part) return "🔗 compartilhada";
+  const p = String(part).trim().toLowerCase();
+  const mascWords = ["colete", "capote", "paletó", "paleto", "cinto", "sapato", "adereço", "adereco", "bordado", "chocalho", "casaco", "punho", "lenço", "lenco", "avental"];
+  const isMasc = mascWords.some(w => p.includes(w));
+  const suffix = isMasc ? "compartilhado" : "compartilhada";
+  return `🔗 ${p} ${suffix}`;
 }
 
 function classifyPiece(part) {
@@ -1783,7 +1951,7 @@ const norm = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "
 
 function openDB() {
   return new Promise((res, rej) => {
-    const r = indexedDB.open("wislaAcervoDB", 2);
+    const r = indexedDB.open("wislaAcervoDB", 3);
     r.onupgradeneeded = () => r.result.createObjectStore("kv");
     r.onsuccess = () => res(r.result);
     r.onerror = () => rej(r.error);
@@ -1930,15 +2098,15 @@ function updateAuthUI() {
 
   if (isMasterUnlocked) {
     pill.className = "auth-pill master-unlocked";
-    pill.innerHTML = `👑 Master (Acesso Total)`;
+    pill.innerHTML = `👑 Master`;
     pill.title = "Token Master 0412 ativo: Permissão total em todas as salas.";
   } else if (isUnlocked) {
     pill.className = "auth-pill room-unlocked";
-    pill.innerHTML = `🔓 Modo Edição (${getActiveRoom().name})`;
+    pill.innerHTML = `🔓 Edição (${getActiveRoom().name.split(" ")[0]})`;
     pill.title = "Edição liberada para esta sala. Clique para travar.";
   } else {
     pill.className = "auth-pill locked";
-    pill.innerHTML = `🔒 Modo Consulta`;
+    pill.innerHTML = `🔒 Consulta`;
     pill.title = "Clique para desbloquear a edição com PIN.";
   }
 }
@@ -2017,7 +2185,7 @@ function ask(msg, opts, title = "Confirmação") {
   });
 }
 
-/* ===== PEÇAS COMUNS (POR SALA) ===== */
+/* ===== PEÇAS COMPARTILHADAS (POR SALA) ===== */
 const commonOf = it => {
   const r = getActiveRoom();
   return it.cid ? (r.common || []).find(x => x.id === it.cid) : null;
@@ -2032,7 +2200,7 @@ function cmLabel(cm) { return [cm.part, cm.type, cm.color].filter(Boolean).join(
 function chooseCostumes(cm, after) {
   const r = getActiveRoom();
   const ck = document.getElementById("ck"), list = document.getElementById("cklist");
-  document.getElementById("cktit").textContent = cmLabel(cm) || "Peça comum";
+  document.getElementById("cktit").textContent = cmLabel(cm) || "Peça compartilhada";
   const used = new Set(costumesOf(cm).map(c => c.id));
   
   function renderList(filterTxt = "") {
@@ -2334,33 +2502,33 @@ function viewHome() {
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='calcas'; go('#/pecas');">
       <span class="kpi-card-icon">👖</span>
-      <span class="kpi-num">${stats.calcas} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-num">${stats.calcas} <small style="font-size:11px;font-weight:600;">un</small></span>
       <span class="kpi-label">Calças</span>
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='camisas'; go('#/pecas');">
       <span class="kpi-card-icon">👔</span>
-      <span class="kpi-num">${stats.camisas} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-num">${stats.camisas} <small style="font-size:11px;font-weight:600;">un</small></span>
       <span class="kpi-label">Camisas & Blusas</span>
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='coletes'; go('#/pecas');">
       <span class="kpi-card-icon">🦺</span>
-      <span class="kpi-num">${stats.coletes} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-num">${stats.coletes} <small style="font-size:11px;font-weight:600;">un</small></span>
       <span class="kpi-label">Coletes & Corpetes</span>
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='capotes'; go('#/pecas');">
       <span class="kpi-card-icon">🧥</span>
-      <span class="kpi-num">${stats.capotes} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-num">${stats.capotes} <small style="font-size:11px;font-weight:600;">un</small></span>
       <span class="kpi-label">Capotes / Sukmanas</span>
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='aderecos'; go('#/pecas');">
       <span class="kpi-card-icon">🎗️</span>
-      <span class="kpi-num">${stats.aderecos} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-num">${stats.aderecos} <small style="font-size:11px;font-weight:600;">un</small></span>
       <span class="kpi-label">Adereços & Faixas</span>
     </div>
   </div>
 
   <div class="toolbar-bar noprint">
-    <input type="search" id="q" placeholder="Filtrar traje em ordem alfabética nesta sala...">
+    <input type="search" id="q" placeholder="Filtrar traje em ordem alfabética...">
     <div class="view-switcher">
       <button class="view-btn ${currentHomeView === 'cards' ? 'active' : ''}" id="vCards">📇 Cartões</button>
       <button class="view-btn ${currentHomeView === 'matrix' ? 'active' : ''}" id="vMatrix">📊 Matriz de Estoque</button>
@@ -2369,10 +2537,10 @@ function viewHome() {
   </div>`;
 
   if (!r.costumes.length) {
-    h += `<div style="padding: 60px 20px; text-align: center; background: var(--surface-card); border-radius: 16px; border: 1px dashed var(--bd);">
-      <div style="font-size: 48px; margin-bottom: 12px;">${r.icon || '📁'}</div>
-      <h3 style="font-size: 18px; margin-bottom: 6px; color:#fff;">Nenhum traje cadastrado em "${esc(r.name)}"</h3>
-      <p style="color: var(--text-muted); margin-bottom: 18px;">Adicione o primeiro traje desta sala ou importe dados de backup.</p>
+    h += `<div style="padding: 40px 16px; text-align: center; background: var(--surface-card); border-radius: 16px; border: 1px dashed var(--bd);">
+      <div style="font-size: 40px; margin-bottom: 10px;">${r.icon || '📁'}</div>
+      <h3 style="font-size: 16px; margin-bottom: 6px; color:#fff;">Nenhum traje cadastrado em "${esc(r.name)}"</h3>
+      <p style="color: var(--text-muted); margin-bottom: 16px; font-size:13px;">Adicione o primeiro traje desta sala ou importe dados de backup.</p>
       <button class="btn primary" onclick="document.getElementById('addC').click()">+ Criar Primeiro Traje</button>
     </div>`;
   } else if (currentHomeView === 'cards') {
@@ -2383,9 +2551,9 @@ function viewHome() {
       
       const pills = comp.groups.map(g => {
         return `<span class="part-pill">${esc(g.name)}: <b>${g.totalQty ? g.totalQty + ' un' : '✓'}</b></span>`;
-      }).slice(0, 5).join("");
+      }).slice(0, 4).join("");
       
-      const extraCount = comp.groups.length > 5 ? `<span class="part-pill">+${comp.groups.length - 5}</span>` : "";
+      const extraCount = comp.groups.length > 4 ? `<span class="part-pill">+${comp.groups.length - 4}</span>` : "";
 
       h += `<div class="card" data-id="${c.id}" data-name="${esc(norm(c.name))}">
         <div class="ph" style="${c.photo ? `background-image:url('${c.photo}')` : ""}">
@@ -2430,14 +2598,14 @@ function viewHome() {
       });
 
       h += `<tr data-id="${c.id}" data-name="${esc(norm(c.name))}" style="cursor:pointer" onclick="go('#/traje/${c.id}')">
-        <td><b style="color:#fff; font-size:15px;">${esc(c.name)}</b></td>
-        <td>${c.photo ? `<img class="thumb" src="${c.photo}" style="width:44px; height:44px;">` : `<span style="color:var(--text-light)">-</span>`}</td>
+        <td><b style="color:#fff; font-size:14px;">${esc(c.name)}</b></td>
+        <td>${c.photo ? `<img class="thumb" src="${c.photo}" style="width:40px; height:40px;">` : `<span style="color:var(--text-light)">-</span>`}</td>
         <td style="text-align:center; font-weight:700;">${counts.coletes ? counts.coletes + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.camisas ? counts.camisas + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.calcas ? counts.calcas + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.capotes ? counts.capotes + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.aderecos ? counts.aderecos + ' un' : '-'}</td>
-        <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:15px;">${comp.totalUnits} un</td>
+        <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:14px;">${comp.totalUnits} un</td>
         <td style="text-align:center; font-weight:700;">${dancerCount ? dancerCount + ' 👥' : '-'}</td>
       </tr>`;
     });
@@ -2480,30 +2648,30 @@ function viewCostume(id) {
   const comp = getCostumeGroupedComposition(c);
 
   let h = `<div class="toolbar-bar noprint">
-    <button class="btn" onclick="go('#/')">← Voltar para ${esc(r.name)}</button>
-    <button class="btn primary" id="addI">+ Adicionar Peça</button>
-    <select id="addCm"><option value="">+ Vincular Peça Comum...</option>${avail.map(cm => `<option value="${cm.id}">${esc(cmLabel(cm))}</option>`).join("")}</select>
-    <button class="btn" onclick="window.print()">🖨 Imprimir Ficha</button>
+    <button class="btn" onclick="go('#/')">← Voltar</button>
+    <button class="btn primary" id="addI">+ Peça</button>
+    <select id="addCm"><option value="">+ Vincular Compartilhada...</option>${avail.map(cm => `<option value="${cm.id}">${esc(cmLabel(cm))}</option>`).join("")}</select>
+    <button class="btn" onclick="window.print()">🖨 Imprimir</button>
     <button class="btn red" id="delC" style="margin-left:auto">Excluir Traje</button>
   </div>
   
   <div class="costume-header">
     <div class="cover" id="cover" style="${c.photo ? `background-image:url('${c.photo}');border:none` : ""}">
-      ${c.photo ? "" : "Clique para<br>adicionar foto<br>do traje"}
+      ${c.photo ? "" : "Toque para<br>foto do traje"}
     </div>
     <div class="costume-info">
       <input id="cname" value="${esc(c.name)}" title="Nome do traje">
       <div class="composition-summary">
         <span class="comp-chip">Total de Peças: <b>${comp.totalUnits || c.items.length} un.</b></span>
         <span class="comp-chip">Categorias: <b>${comp.categoryCount} tipos</b></span>
-        <span class="comp-chip">Peças Comuns: <b>${c.items.filter(i => i.cid).length}</b></span>
+        <span class="comp-chip">Compartilhadas: <b>${c.items.filter(i => i.cid).length}</b></span>
         <span class="comp-chip">Dançarinos: <b>${dancerCount}</b></span>
       </div>
     </div>
   </div>
 
-  <h3 style="margin-bottom:12px; font-size:16px; color:#fff; display:flex; align-items:center; gap:8px;">
-    📊 Resumo de Estoque por Peça (Quantidades & Variações)
+  <h3 style="margin-bottom:10px; font-size:15px; color:#fff; display:flex; align-items:center; gap:6px;">
+    📊 Resumo de Estoque por Peça
   </h3>
   <div class="breakdown-grid">`;
 
@@ -2511,7 +2679,7 @@ function viewCostume(id) {
     const varRows = Object.values(g.variations).map(v => {
       return `<div class="breakdown-item-row">
         <span class="breakdown-item-desc">
-          ${v.isShared ? '<span class="tag">🔗</span>' : '•'}
+          ${v.isShared ? `<span class="tag shared" title="Peça compartilhada">${formatSharedTag(g.name)}</span>` : '•'}
           <span>${esc(v.label)}</span>
           ${v.notes ? `<small style="color:var(--text-light);margin-left:4px;">(${esc(v.notes)})</small>` : ''}
         </span>
@@ -2530,7 +2698,7 @@ function viewCostume(id) {
 
   h += `</div>
 
-  <h3 style="margin-bottom:12px; font-size:16px; color:#fff; display:flex; align-items:center; gap:8px;">
+  <h3 style="margin-bottom:10px; font-size:15px; color:#fff; display:flex; align-items:center; gap:6px;">
     📝 Tabela Detalhada de Itens
   </h3>
   <div class="wrap"><table><thead><tr>
@@ -2547,18 +2715,19 @@ function viewCostume(id) {
   c.items.forEach((it, i) => {
     const cm = commonOf(it);
     if (cm) {
+      const customTag = formatSharedTag(cm.part);
       h += `<tr data-i="${i}" class="link">
-        <td class="part"><span class="ro"><b>${esc(cm.part)}</b><br><span class="tag" data-cm="${cm.id}">🔗 peça comum</span></span></td>
+        <td class="part"><span class="ro"><b>${esc(cm.part)}</b><br><span class="tag shared" data-cm="${cm.id}">${esc(customTag)}</span></span></td>
         <td>${thumb(cm.photo, `data-cmph="${cm.id}"`)}</td>
         <td><span class="ro">${esc(cm.type)}</span></td>
         <td><span class="ro">${esc(cm.color)}</span></td>
-        <td style="width:80px"><span class="ro">${esc(cm.qty)}</span></td>
+        <td style="width:75px"><span class="ro">${esc(cm.qty)}</span></td>
         <td><span class="ro">${esc(cm.notes)}</span></td>
         <td>${sharedIn(it, c.id).map(s => `<span class="chip" data-go="${s.id}">${esc(s.name)}</span>`).join("")}</td>
         <td class="acts noprint">
           <button title="Subir" data-mv="-1">▲</button>
           <button title="Descer" data-mv="1">▼</button>
-          <button title="Tirar deste traje" data-del>🗑</button>
+          <button title="Desvincular deste traje" data-del>🗑</button>
         </td>
       </tr>`;
     } else {
@@ -2567,14 +2736,14 @@ function viewCostume(id) {
         <td>${thumb(it.photo, `data-ph="${i}"`)}</td>
         <td><input data-f="type" value="${esc(it.type)}" placeholder="Ex: BOTÃO SIMPLES, BORDADA"></td>
         <td><input data-f="color" value="${esc(it.color)}" placeholder="Ex: PRETO, AZUL, BRANCA"></td>
-        <td style="width:80px"><input data-f="qty" value="${esc(it.qty)}" placeholder="1"></td>
+        <td style="width:75px"><input data-f="qty" value="${esc(it.qty)}" placeholder="1"></td>
         <td><textarea data-f="notes" rows="1" placeholder="Observações...">${esc(it.notes)}</textarea></td>
         <td></td>
         <td class="acts noprint">
           <button title="Subir" data-mv="-1">▲</button>
           <button title="Descer" data-mv="1">▼</button>
           <button title="Duplicar" data-dup>⧉</button>
-          <button title="Transformar em peça comum" data-mk>🔗</button>
+          <button title="Transformar em peça compartilhada" data-mk>🔗</button>
           <button title="Excluir" data-del>🗑</button>
         </td>
       </tr>`;
@@ -2611,8 +2780,8 @@ function viewCostume(id) {
     const ph = tr.querySelector("[data-ph]");
     if (ph) ph.onclick = () => { const set = p => { it.photo = p; save(); re(); }; it.photo ? openPhoto(it.photo, set, () => { if (confirm("Remover foto?")) set(""); }) : pickImg(set); };
     const cph = tr.querySelector("[data-cmph]");
-    if (cph) cph.onclick = () => go("#/comuns/" + cph.dataset.cmph);
-    tr.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/comuns/" + t.dataset.cm));
+    if (cph) cph.onclick = () => go("#/compartilhadas/" + cph.dataset.cmph);
+    tr.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/compartilhadas/" + t.dataset.cm));
     tr.querySelectorAll("[data-mv]").forEach(b => b.onclick = () => {
       const j = i + +b.dataset.mv; if (j < 0 || j >= c.items.length) return;
       [c.items[i], c.items[j]] = [c.items[j], c.items[i]]; save(); re();
@@ -2686,9 +2855,11 @@ function viewPieces() {
 
   allRows.forEach(row => {
     const { costume: c, raw, it, cat, txt } = row;
-    h += `<tr data-t="${esc(txt)}" data-cat="${cat.key}" ${raw.cid ? 'class="link"' : ""}>
+    const isShared = !!raw.cid;
+    const customTag = isShared ? formatSharedTag(it.part) : "";
+    h += `<tr data-t="${esc(txt)}" data-cat="${cat.key}" ${isShared ? 'class="link"' : ""}>
       <td><span class="chip" data-go="${c.id}">${esc(c.name)}</span></td>
-      <td><b>${esc(it.part)}</b>${raw.cid ? ' <span class="tag" data-cm="' + raw.cid + '">🔗</span>' : ""}</td>
+      <td><b>${esc(it.part)}</b>${isShared ? ' <span class="tag shared" data-cm="' + raw.cid + '">' + esc(customTag) + '</span>' : ""}</td>
       <td>${it.photo ? `<img class="thumb" src="${it.photo}" alt="" data-zoom-src="${it.photo}">` : ""}</td>
       <td>${esc(it.type)}</td>
       <td>${esc(it.color)}</td>
@@ -2723,7 +2894,7 @@ function viewPieces() {
 
   filterRows();
   app.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
-  app.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/comuns/" + t.dataset.cm));
+  app.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/compartilhadas/" + t.dataset.cm));
   app.querySelectorAll("[data-zoom-src]").forEach(img => img.onclick = () => openPhoto(img.dataset.zoomSrc, () => {}, () => {}));
 }
 
@@ -2734,8 +2905,8 @@ function viewDancers() {
 
   let h = `<div class="toolbar-bar noprint">
     <input type="search" id="q" placeholder="Buscar dançarino em ordem alfabética...">
-    <button class="btn primary" id="addD">+ Novo Dançarino</button>
-    <button class="btn" id="addDz">+ Nova Dança</button>
+    <button class="btn primary" id="addD">+ Dançarino</button>
+    <button class="btn" id="addDz">+ Dança</button>
     <button class="btn" onclick="window.print()">🖨 Imprimir Grade</button>
     <span class="note" style="margin-left:auto">${S.dancers.length} dançarinos · ${S.dances.length} danças</span>
   </div>
@@ -2809,35 +2980,36 @@ function viewDancers() {
   });
 }
 
-/* 5. TELA PEÇAS COMUNS (DA SALA ATIVA) */
+/* 5. TELA PEÇAS COMPARTILHADAS (DA SALA ATIVA) */
 function viewCommon(focusId) {
   const r = getActiveRoom();
   r.common = r.common || [];
   r.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
 
-  let h = `<h2>🔗 Peças Comuns · ${esc(r.name)}</h2>
+  let h = `<h2>🔗 Peças Compartilhadas · ${esc(r.name)}</h2>
   <p class="note" style="margin-top:0">Peças reutilizadas em múltiplos trajes desta sala. A alteração de foto e detalhes aqui sincroniza em todos os trajes vinculados.</p>
   <div class="toolbar-bar noprint">
-    <input type="search" id="q" placeholder="Buscar peça comum em ordem alfabética...">
-    <button class="btn primary" id="addCm">+ Nova Peça Comum</button>
+    <input type="search" id="q" placeholder="Buscar peça compartilhada em ordem alfabética...">
+    <button class="btn primary" id="addCm">+ Nova Peça Compartilhada</button>
   </div>`;
 
   if (!r.common.length) {
     h += `<div style="padding: 40px; text-align: center; background: var(--surface-card); border-radius: 16px; border: 1px dashed var(--bd);">
-      <p style="color:var(--text-muted)">Nenhuma peça comum cadastrada nesta sala.<br>Clique em <b>+ Nova Peça Comum</b> para criar.</p>
+      <p style="color:var(--text-muted)">Nenhuma peça compartilhada cadastrada nesta sala.<br>Clique em <b>+ Nova Peça Compartilhada</b> para criar.</p>
     </div>`;
   } else {
     h += `<div class="wrap"><table><thead><tr><th>Foto</th><th>Peça (A-Z)</th><th>Tipo / Detalhe</th><th>Cor</th><th>Quant.</th><th>Observação</th><th>Trajes Vinculados</th><th class="acts noprint"></th></tr></thead><tbody>`;
     r.common.forEach((cm, i) => {
       const cs = costumesOf(cm);
+      const customTag = formatSharedTag(cm.part);
       h += `<tr data-i="${i}" id="cm-${cm.id}" data-n="${esc(norm(cmLabel(cm)))}">
         <td>${thumb(cm.photo, "data-ph")}</td>
-        <td class="part"><input data-f="part" value="${esc(cm.part)}" placeholder="NOME DA PEÇA"></td>
+        <td class="part"><input data-f="part" value="${esc(cm.part)}" placeholder="NOME DA PEÇA"><br><span class="tag shared">${esc(customTag)}</span></td>
         <td><input data-f="type" value="${esc(cm.type)}" placeholder="TIPO"></td>
         <td><input data-f="color" value="${esc(cm.color)}" placeholder="COR"></td>
-        <td style="width:80px"><input data-f="qty" value="${esc(cm.qty)}" placeholder="1"></td>
+        <td style="width:75px"><input data-f="qty" value="${esc(cm.qty)}" placeholder="1"></td>
         <td><textarea data-f="notes" rows="1" placeholder="Observações...">${esc(cm.notes)}</textarea></td>
-        <td style="min-width:220px">
+        <td style="min-width:200px">
           ${cs.map(c => `<span class="chip" data-go="${c.id}">${esc(c.name)}</span>`).join("") || '<span style="color:var(--amber)">Nenhum traje</span>'}<br>
           <button class="btn sm noprint" data-ch style="margin-top:6px">Vincular Trajes (${cs.length})</button>
         </td>
@@ -2875,7 +3047,7 @@ function viewCommon(focusId) {
     tr.querySelector("[data-ch]").onclick = () => chooseCostumes(cm, re);
     tr.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
     tr.querySelector("[data-del]").onclick = () => {
-      if (!confirm("Excluir esta peça comum?")) return;
+      if (!confirm("Excluir esta peça compartilhada?")) return;
       r.common = r.common.filter(x => x !== cm);
       r.costumes.forEach(c => { c.items = c.items.filter(i => i.cid !== cm.id); });
       save(); updateCounters(); re();
@@ -2889,8 +3061,8 @@ function viewBank() {
   let h = `<h2>📷 Banco de Fotos do Acervo Wisła</h2>
     <p class="note" style="margin-top:0">Galeria geral de fotos compartilhadas entre todas as salas e trajes.</p>
     <div id="bkDrop">
-      <div style="font-size:32px; margin-bottom:8px">📥</div>
-      <b>Arraste as fotos para cá</b> ou <button class="btn primary" id="bkUp" style="margin:0 8px">Escolher do Computador</button>
+      <div style="font-size:30px; margin-bottom:6px">📥</div>
+      <b>Arraste as fotos para cá</b> ou <button class="btn primary sm" id="bkUp" style="margin:0 8px">Escolher do PC / Celular</button>
     </div>
     <div class="toolbar-bar">
       <input type="search" id="bkQ" placeholder="Buscar foto pelo nome...">
@@ -2967,7 +3139,7 @@ window.pickImg = function(cb) {
       <h3 style="margin:0">Escolher Foto do Acervo</h3>
       <div style="display:flex; gap:8px;">
         <input type="search" id="pkQ" placeholder="Filtrar foto..." style="padding:6px 10px; background:#0d1322; border:1px solid var(--bd); border-radius:6px; color:#fff;">
-        <button class="btn primary sm" id="pkUp">⬆ Enviar do PC</button>
+        <button class="btn primary sm" id="pkUp">⬆ Enviar do Dispositivo</button>
         <button class="btn red sm" id="pkX">Cancelar</button>
       </div>
     </div>
@@ -2976,7 +3148,7 @@ window.pickImg = function(cb) {
         ${B.length ? B.map((b, i) => `<div class="bk-card" data-i="${i}" data-n="${esc(norm(b.name))}" style="cursor:pointer">
           <img src="${b.img}" alt="" style="pointer-events:none">
           <div class="bd"><span style="font-size:12px; font-weight:700; text-align:center">${esc(b.name)}</span></div>
-        </div>`).join("") : `<p style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted)">Nenhuma foto no banco ainda.<br>Clique em <b>Enviar do PC</b> para adicionar.</p>`}
+        </div>`).join("") : `<p style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted)">Nenhuma foto no banco ainda.<br>Clique em <b>Enviar do Dispositivo</b> para adicionar.</p>`}
       </div>
     </div>`;
   
@@ -3008,17 +3180,17 @@ function viewBackup() {
   app.innerHTML = `<h2>💾 Backup & Sincronização do Wisła</h2>
   <p class="note" style="margin-top:0">Exporte ou restaure o acervo de todas as salas ou da sala ativa.</p>
   
-  <div style="background:var(--surface-card); border:1px solid var(--bd); border-radius:16px; padding:24px; margin:20px 0; box-shadow:var(--shadow)">
-    <h3 style="font-size:16px; margin-bottom:14px; color:#fff;">Estatísticas do Sistema</h3>
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-bottom:20px;">
-      <div style="background:#0d1322; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--room-color)">${Object.keys(S.rooms).length}</b><br><span style="font-size:12px; color:var(--text-muted)">Salas</span></div>
-      <div style="background:#0d1322; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--room-color)">${Object.values(S.rooms).reduce((a, rm) => a + (rm.costumes || []).length, 0)}</b><br><span style="font-size:12px; color:var(--text-muted)">Trajes Totais</span></div>
-      <div style="background:#0d1322; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--room-color)">${S.dancers.length}</b><br><span style="font-size:12px; color:var(--text-muted)">Dançarinos</span></div>
-      <div style="background:#0d1322; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--room-color)">${(S.bank || []).length}</b><br><span style="font-size:12px; color:var(--text-muted)">Fotos</span></div>
-      <div style="background:#0d1322; padding:12px; border-radius:8px; text-align:center;"><b style="font-size:20px; color:var(--room-color)">${kb} KB</b><br><span style="font-size:12px; color:var(--text-muted)">Tamanho Total</span></div>
+  <div style="background:var(--surface-card); border:1px solid var(--bd); border-radius:16px; padding:20px; margin:16px 0; box-shadow:var(--shadow)">
+    <h3 style="font-size:15px; margin-bottom:12px; color:#fff;">Estatísticas do Acervo</h3>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom:18px;">
+      <div style="background:#0d1322; padding:10px; border-radius:8px; text-align:center;"><b style="font-size:18px; color:var(--room-color)">${Object.keys(S.rooms).length}</b><br><span style="font-size:11px; color:var(--text-muted)">Salas</span></div>
+      <div style="background:#0d1322; padding:10px; border-radius:8px; text-align:center;"><b style="font-size:18px; color:var(--room-color)">${Object.values(S.rooms).reduce((a, rm) => a + (rm.costumes || []).length, 0)}</b><br><span style="font-size:11px; color:var(--text-muted)">Trajes Totais</span></div>
+      <div style="background:#0d1322; padding:10px; border-radius:8px; text-align:center;"><b style="font-size:18px; color:var(--room-color)">${S.dancers.length}</b><br><span style="font-size:11px; color:var(--text-muted)">Dançarinos</span></div>
+      <div style="background:#0d1322; padding:10px; border-radius:8px; text-align:center;"><b style="font-size:18px; color:var(--room-color)">${(S.bank || []).length}</b><br><span style="font-size:11px; color:var(--text-muted)">Fotos</span></div>
+      <div style="background:#0d1322; padding:10px; border-radius:8px; text-align:center;"><b style="font-size:18px; color:var(--room-color)">${kb} KB</b><br><span style="font-size:11px; color:var(--text-muted)">Tamanho</span></div>
     </div>
     
-    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
       <button class="btn primary" id="bAll">⬇ Baixar Backup Completo de TODAS as Salas (.json)</button>
       <button class="btn" id="bRoom">⬇ Baixar Backup de "${esc(r.name)}" (.json)</button>
       <button class="btn blue" id="bI">⬆ Restaurar Backup (.json)</button>
@@ -3052,15 +3224,15 @@ function renderRoomsManagement() {
 
   container.innerHTML = Object.values(S.rooms).map(r => {
     const hasPin = !!r.pin;
-    return `<div style="background:var(--surface-card); border:1px solid var(--bd); border-radius:12px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span style="font-size:24px;">${r.icon || '📁'}</span>
+    return `<div style="background:var(--surface-card); border:1px solid var(--bd); border-radius:12px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:22px;">${r.icon || '📁'}</span>
         <div>
-          <b style="color:#fff;">${esc(r.name)}</b>
-          <div style="font-size:12px; color:var(--text-muted);">${(r.costumes || []).length} trajes · Status: ${hasPin ? '🔒 PIN Protegido' : '🔓 Acesso Livre'}</div>
+          <b style="color:#fff; font-size:14px;">${esc(r.name)}</b>
+          <div style="font-size:11px; color:var(--text-muted);">${(r.costumes || []).length} trajes · Status: ${hasPin ? '🔒 PIN Protegido' : '🔓 Acesso Livre'}</div>
         </div>
       </div>
-      <div style="display:flex; gap:8px;">
+      <div style="display:flex; gap:6px;">
         <button class="btn sm" data-setpin="${r.id}">${hasPin ? 'Alterar PIN' : 'Definir PIN'}</button>
         ${hasPin ? `<button class="btn sm red" data-rempin="${r.id}">Remover PIN</button>` : ''}
       </div>
@@ -3124,6 +3296,12 @@ document.getElementById("changeLogoBtn").onclick = () => {
   });
 };
 
+/* Menu Mais no Celular */
+document.getElementById("mobileMoreBtn").onclick = () => {
+  document.getElementById("settingsDlg").classList.add("active");
+  renderRoomsManagement();
+};
+
 /* Busca Global (Google Bar) */
 document.getElementById("globalSearchInput").oninput = e => {
   const q = norm(e.target.value);
@@ -3145,25 +3323,52 @@ window.addEventListener("keydown", e => {
 /* ===== ROTEAMENTO ===== */
 function route() {
   const h = location.hash || "#/";
+  
+  // Atualiza sidebar desktop
   document.querySelectorAll(".sidebar .nav-item").forEach(b => {
     const nav = b.dataset.nav;
-    b.classList.toggle("active", h === nav || (nav === "#/comuns" && h.startsWith("#/comuns")) || (nav === "#/" && h.startsWith("#/traje/")) || (nav === "#/banco" && h.startsWith("#/banco")));
+    b.classList.toggle("active", h === nav || (nav === "#/compartilhadas" && h.startsWith("#/compartilhadas")) || (nav === "#/" && h.startsWith("#/traje/")) || (nav === "#/banco" && h.startsWith("#/banco")));
   });
+
+  // Atualiza bottom bar mobile
+  document.querySelectorAll(".mobile-nav-btn").forEach(b => {
+    const nav = b.dataset.nav;
+    if (nav) {
+      b.classList.toggle("active", h === nav || (nav === "#/compartilhadas" && h.startsWith("#/compartilhadas")) || (nav === "#/" && h.startsWith("#/traje/")));
+    }
+  });
+
   window.scrollTo(0, 0);
   if (h.startsWith("#/traje/")) viewCostume(h.slice(8));
   else if (h === "#/dancarinos") viewDancers();
   else if (h === "#/pecas") viewPieces();
   else if (h === "#/backup") viewBackup();
+  else if (h.startsWith("#/compartilhadas")) viewCommon(h.split("/")[2]);
   else if (h.startsWith("#/comuns")) viewCommon(h.split("/")[2]);
   else if (h.startsWith("#/banco")) viewBank();
   else viewHome();
 }
 document.querySelectorAll(".sidebar .nav-item").forEach(b => b.onclick = () => go(b.dataset.nav));
+document.querySelectorAll(".mobile-nav-btn[data-nav]").forEach(b => b.onclick = () => go(b.dataset.nav));
 window.addEventListener("hashchange", route);
 
-/* ===== INICIALIZAÇÃO ===== */
+/* ===== INICIALIZAÇÃO AUTOMÁTICA OFFLINE ===== */
 (async () => {
-  const raw = await loadState();
+  let raw = await loadState();
+  
+  // Se IndexedDB estiver vazio ou sem trajes, carrega automaticamente os dados padrão embutidos!
+  const hasCostumes = raw && raw.rooms && Object.values(raw.rooms).some(r => r.costumes && r.costumes.length > 0);
+  if (!raw || !hasCostumes) {
+    if (window.WISLA_DEFAULT_DATA) {
+      raw = window.WISLA_DEFAULT_DATA;
+    } else {
+      try {
+        const resp = await fetch('trajes-backup-2026-09-23.json');
+        if (resp.ok) raw = await resp.json();
+      } catch (e) {}
+    }
+  }
+
   S = migrateState(raw);
   save();
 
