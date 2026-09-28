@@ -5216,7 +5216,8 @@ async function testCloudConnection(silent = false) {
   }
   try {
     updateCloudStatus("syncing");
-    const res = await fetch(url);
+    const testUrl = url.replace(/\.json(\?.*)?$/, "/version.json");
+    const res = await fetchWithTimeout(testUrl, {}, 6000);
     if (res.ok) {
       updateCloudStatus("online");
       if (!silent) alert("✓ Conexão com o banco na nuvem estabelecida com sucesso!");
