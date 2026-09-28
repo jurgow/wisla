@@ -2237,8 +2237,11 @@ body.locked .bk-card input {
     
     <div style="display:flex; flex-direction:column; gap:12px;">
       <!-- Canvas de Pré-visualização com container responsivo -->
-      <div style="background:#050811; border:1px solid var(--bd); border-radius:12px; display:flex; justify-content:center; align-items:center; min-height:220px; max-height:42vh; overflow:hidden; position:relative; padding:10px;">
-        <canvas id="cropCanvas" style="max-width:100%; max-height:38vh; object-fit:contain; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.5);"></canvas>
+      <div style="background:#050811; border:1px solid var(--bd); border-radius:12px; display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:220px; max-height:44vh; overflow:hidden; position:relative; padding:10px;">
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:6px; font-weight:600; display:flex; align-items:center; gap:5px;">
+          <span>🖐️</span> <span>Clique e arraste a imagem para enquadrar · Scroll do mouse para zoom</span>
+        </div>
+        <canvas id="cropCanvas" style="max-width:100%; max-height:36vh; object-fit:contain; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.5); cursor:grab; touch-action:none;"></canvas>
       </div>
 
       <!-- Info de Dimensões e Tamanho Estimado -->
@@ -2276,16 +2279,16 @@ body.locked .bk-card input {
       <div style="background:var(--surface-variant); border-radius:10px; padding:10px 14px; display:flex; flex-direction:column; gap:10px;">
         <div style="display:flex; align-items:center; gap:12px;">
           <label style="font-size:12px; min-width:80px; margin:0;">🔍 Zoom:</label>
-          <input type="range" id="cropZoom" min="1" max="2.5" step="0.05" value="1" style="flex:1;">
+          <input type="range" id="cropZoom" min="0.5" max="3.5" step="0.05" value="1" style="flex:1;">
           <span id="cropZoomVal" style="font-size:12px; min-width:35px; text-align:right;">1.0x</span>
         </div>
 
         <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-          <label style="font-size:12px; min-width:80px; margin:0;">🔄 Girar:</label>
+          <label style="font-size:12px; min-width:80px; margin:0;">🔄 Girar / Reposicionar:</label>
           <div style="display:flex; gap:6px;">
             <button class="btn sm" id="cropRotL" title="Girar 90° à esquerda">↺ -90°</button>
             <button class="btn sm" id="cropRotR" title="Girar 90° à direita">↻ +90°</button>
-            <button class="btn sm" id="cropResetBtn" title="Restaurar ajustes">Restaurar</button>
+            <button class="btn sm" id="cropResetBtn" title="Restaurar enquadramento e ajustes">Restaurar Posição</button>
           </div>
         </div>
       </div>
@@ -3032,6 +3035,13 @@ function openImageResizer(source, defaultName, callback) {
 
   let rotation = 0;
   let zoom = 1.0;
+  let panX = 0;
+  let panY = 0;
+  let isDragging = false;
+  let lastClientX = 0;
+  let lastClientY = 0;
+  let initialPinchDist = 0;
+  let initialZoom = 1.0;
 
   const im = new Image();
   im.onload = () => {
@@ -3040,6 +3050,8 @@ function openImageResizer(source, defaultName, callback) {
     zoomVal.textContent = "1.0x";
     rotation = 0;
     zoom = 1.0;
+    panX = 0;
+    panY = 0;
     selAspect.value = "free";
     selMaxSize.value = "800";
 
@@ -3078,7 +3090,8 @@ function openImageResizer(source, defaultName, callback) {
       g.fillRect(0, 0, targetW, targetH);
 
       g.save();
-      g.translate(targetW / 2, targetH / 2);
+      // Enquadramento e Deslocamento Livre (Pan/Drag)
+      g.translate(targetW / 2 + panX, targetH / 2 + panY);
       g.rotate((rot * Math.PI) / 180);
       g.scale(zoom, zoom);
 
@@ -3110,8 +3123,101 @@ function openImageResizer(source, defaultName, callback) {
       } catch (e) {}
     };
 
+    // Eventos de Mouse para Arrastar (Pan/Drag)
+    canvas.onmousedown = (e) => {
+      isDragging = true;
+      lastClientX = e.clientX;
+      lastClientY = e.clientY;
+      canvas.style.cursor = "grabbing";
+    };
+
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      const rect = canvas.getBoundingClientRect();
+      const scale = canvas.width / (rect.width || 1);
+      const dx = (e.clientX - lastClientX) * scale;
+      const dy = (e.clientY - lastClientY) * scale;
+      lastClientX = e.clientX;
+      lastClientY = e.clientY;
+      panX += dx;
+      panY += dy;
+      redraw();
+    };
+
+    const onMouseUp = () => {
+      if (isDragging) {
+        isDragging = false;
+        canvas.style.cursor = "grab";
+      }
+    };
+
+    window.removeEventListener("mousemove", window._cropMouseMove);
+    window.removeEventListener("mouseup", window._cropMouseUp);
+    window._cropMouseMove = onMouseMove;
+    window._cropMouseUp = onMouseUp;
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+
+    // Zoom com Scroll do Mouse
+    canvas.onwheel = (e) => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.08 : -0.08;
+      zoom = Math.max(0.5, Math.min(3.5, zoom + delta));
+      zoomInp.value = zoom.toFixed(2);
+      zoomVal.textContent = zoom.toFixed(2) + "x";
+      redraw();
+    };
+
+    // Eventos de Touch para Celular (Arrastar e Pinch Zoom)
+    canvas.ontouchstart = (e) => {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        lastClientX = e.touches[0].clientX;
+        lastClientY = e.touches[0].clientY;
+      } else if (e.touches.length === 2) {
+        isDragging = false;
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        initialPinchDist = Math.hypot(dx, dy);
+        initialZoom = zoom;
+      }
+    };
+
+    canvas.ontouchmove = (e) => {
+      if (e.cancelable) e.preventDefault();
+      if (isDragging && e.touches.length === 1) {
+        const rect = canvas.getBoundingClientRect();
+        const scale = canvas.width / (rect.width || 1);
+        const dx = (e.touches[0].clientX - lastClientX) * scale;
+        const dy = (e.touches[0].clientY - lastClientY) * scale;
+        lastClientX = e.touches[0].clientX;
+        lastClientY = e.touches[0].clientY;
+        panX += dx;
+        panY += dy;
+        redraw();
+      } else if (e.touches.length === 2 && initialPinchDist > 0) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const dist = Math.hypot(dx, dy);
+        const factor = dist / initialPinchDist;
+        zoom = Math.max(0.5, Math.min(3.5, initialZoom * factor));
+        zoomInp.value = zoom.toFixed(2);
+        zoomVal.textContent = zoom.toFixed(2) + "x";
+        redraw();
+      }
+    };
+
+    canvas.ontouchend = () => {
+      isDragging = false;
+      initialPinchDist = 0;
+    };
+
     selMaxSize.onchange = redraw;
-    selAspect.onchange = redraw;
+    selAspect.onchange = () => {
+      panX = 0;
+      panY = 0;
+      redraw();
+    };
     zoomInp.oninput = () => {
       zoom = parseFloat(zoomInp.value) || 1.0;
       zoomVal.textContent = zoom.toFixed(2) + "x";
@@ -3122,6 +3228,8 @@ function openImageResizer(source, defaultName, callback) {
     btnReset.onclick = () => {
       rotation = 0;
       zoom = 1.0;
+      panX = 0;
+      panY = 0;
       zoomInp.value = "1";
       zoomVal.textContent = "1.0x";
       selAspect.value = "free";
@@ -3129,7 +3237,11 @@ function openImageResizer(source, defaultName, callback) {
       redraw();
     };
 
-    const close = () => modal.classList.remove("active");
+    const close = () => {
+      modal.classList.remove("active");
+      window.removeEventListener("mousemove", window._cropMouseMove);
+      window.removeEventListener("mouseup", window._cropMouseUp);
+    };
     btnCancel.onclick = close;
     btnCancelX.onclick = close;
 
@@ -3163,10 +3275,16 @@ function openPhoto(src, onChange, onDelete) {
   document.getElementById("lbimg").src = src;
   lb.classList.add("active");
   const isAuth = isCurrentRoomUnlocked();
-  document.getElementById("lbchg").style.display = isAuth ? "" : "none";
-  document.getElementById("lbdel").style.display = isAuth ? "" : "none";
-  document.getElementById("lbchg").onclick = () => { lb.classList.remove("active"); pickImg(onChange); };
-  document.getElementById("lbdel").onclick = () => { lb.classList.remove("active"); onDelete(); };
+  document.getElementById("lbchg").style.display = (isAuth && typeof onChange === "function") ? "" : "none";
+  document.getElementById("lbdel").style.display = (isAuth && typeof onDelete === "function") ? "" : "none";
+  document.getElementById("lbchg").onclick = () => {
+    lb.classList.remove("active");
+    if (typeof onChange === "function") pickImg(onChange);
+  };
+  document.getElementById("lbdel").onclick = () => {
+    lb.classList.remove("active");
+    if (typeof onDelete === "function") onDelete();
+  };
   document.getElementById("lbclose").onclick = () => lb.classList.remove("active");
 }
 document.getElementById("lb").onclick = e => { if (e.target.id === "lb") e.currentTarget.classList.remove("active"); };
@@ -4218,14 +4336,14 @@ function viewPieces() {
     <th>Observação</th>
   </tr></thead><tbody>`;
 
-  allRows.forEach(row => {
+  allRows.forEach((row, rIdx) => {
     const { costume: c, raw, it, cat, txt } = row;
     const isShared = !!raw.cid;
     const customTag = isShared ? formatSharedTag(it.part) : "";
     h += `<tr data-t="${esc(txt)}" data-cat="${cat.key}" data-is-shared="${isShared ? 'true' : 'false'}" ${isShared ? 'class="link"' : ""}>
       <td>${c.id ? `<span class="chip" data-go="${c.id}">${esc(c.name)}</span>` : `<span style="color:var(--amber); font-size:12px;">${esc(c.name)}</span>`}</td>
       <td><b>${esc(it.part)}</b>${isShared ? ' <span class="tag shared" data-cm="' + raw.cid + '">' + esc(customTag) + '</span>' : ""}</td>
-      <td>${it.photo ? `<img class="thumb" src="${it.photo}" alt="" data-zoom-src="${it.photo}">` : ""}</td>
+      <td>${thumb(it.photo, `data-row-ph="${rIdx}"`)}</td>
       <td>${esc(it.type)}</td>
       <td>${esc(it.color)}</td>
       <td style="text-align:center; font-weight:700;">${esc(it.qty)}</td>
@@ -4278,7 +4396,15 @@ function viewPieces() {
   filterRows();
   app.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
   app.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/compartilhadas/" + t.dataset.cm));
-  app.querySelectorAll("[data-zoom-src]").forEach(img => img.onclick = () => openPhoto(img.dataset.zoomSrc, () => {}, () => {}));
+  app.querySelectorAll("[data-row-ph]").forEach(el => {
+    const rIdx = +el.dataset.rowPh;
+    const row = allRows[rIdx];
+    if (!row) return;
+    el.onclick = () => {
+      const set = p => { row.it.photo = p; save(); viewPieces(); };
+      row.it.photo ? openPhoto(row.it.photo, set, () => { if (confirm("Remover a foto desta peça?")) set(""); }) : (isUnlocked ? pickImg(set) : null);
+    };
+  });
 }
 
 /* 4. TELA DANÇARINOS (GLOBAL WISŁA) */
