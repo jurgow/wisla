@@ -32,9 +32,17 @@
   --blue-border: rgba(56, 189, 248, 0.3);
 
   --emerald: #10b981;
+  --emerald-bg: rgba(16, 185, 129, 0.12);
+  --emerald-border: rgba(16, 185, 129, 0.3);
+
   --amber: #f59e0b;
-  --rose: #f43f5e;
-  
+  --amber-bg: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.3);
+
+  --purple: #a855f7;
+  --purple-bg: rgba(168, 85, 247, 0.12);
+  --purple-border: rgba(168, 85, 247, 0.3);
+
   --text: #f8fafc;
   --text-muted: #94a3b8;
   --text-light: #64748b;
@@ -79,7 +87,7 @@ body {
 
 /* ===== CABEÇALHO ===== */
 header {
-  background: rgba(11, 15, 26, 0.85);
+  background: rgba(11, 15, 26, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(225, 29, 72, 0.2);
@@ -273,21 +281,27 @@ main {
 /* ===== PAINEL DE MÉTRICAS (KPIs DO TOPO) ===== */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
   margin-bottom: 24px;
 }
 .kpi-card {
   background: linear-gradient(145deg, #0f172a, #131d33);
   border: 1px solid var(--bd);
   border-radius: var(--radius);
-  padding: 16px 20px;
+  padding: 14px 16px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--pri);
 }
 .kpi-card::before {
   content: '';
@@ -301,18 +315,96 @@ main {
 .kpi-card.blue::before { background: var(--blue-accent); }
 .kpi-card.emerald::before { background: var(--emerald); }
 .kpi-card.amber::before { background: var(--amber); }
+.kpi-card.purple::before { background: var(--purple); }
 .kpi-num {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 800;
   color: #fff;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
   line-height: 1.1;
 }
 .kpi-label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
 }
+
+/* ===== SUBMENUS / ABAS DE CATEGORIAS EM "TODAS AS PEÇAS" ===== */
+.category-subnav {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--bd);
+}
+.cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+.cat-pill:hover {
+  background: var(--surface-hover);
+  color: #fff;
+  border-color: var(--bd-hover);
+}
+.cat-pill.active {
+  background: linear-gradient(135deg, var(--pri), var(--pri-dark));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.4);
+}
+.cat-pill-count {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 800;
+}
+.cat-pill.active .cat-pill-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+/* Banner de resumo da categoria */
+.category-summary-banner {
+  background: linear-gradient(135deg, #0f172a, #162444);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.category-summary-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.category-summary-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.category-summary-stats b { color: var(--pri-light); }
 
 /* ===== BARRA DE FERRAMENTAS / FILTROS ===== */
 .bar {
@@ -342,6 +434,30 @@ main {
 .bar input[type=search]:focus, .bar select:focus, .bar input[type=text]:focus {
   border-color: var(--pri);
   box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
+}
+
+/* Alternador de Visualização (Grade vs Tabela de Inventário) */
+.view-switcher {
+  display: inline-flex;
+  background: #090d16;
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+}
+.view-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+.view-btn.active {
+  background: var(--surface-hover);
+  color: #fff;
 }
 
 /* ===== GRADE DE TRAJES (CARDS COM ESTOQUE AGRUPADO) ===== */
@@ -1098,7 +1214,7 @@ body.locked .bk-card input {
 
 /* Modo Impressão */
 @media print {
-  header, .noprint, .acts, .bar, .kpi-grid { display: none !important; }
+  header, .noprint, .acts, .bar, .kpi-grid, .category-subnav, .view-switcher { display: none !important; }
   th { position: static; }
   body { background: #fff !important; color: #000 !important; font-size: 10pt; }
   .wrap, .title, .card, .breakdown-card { box-shadow: none !important; border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
@@ -1116,8 +1232,8 @@ body.locked .bk-card input {
   </div>
   <nav class="nav-links">
     <button class="btn" data-nav="#/">Trajes</button>
-    <button class="btn" data-nav="#/dancarinos">Dançarinos</button>
     <button class="btn" data-nav="#/pecas">Todas as peças</button>
+    <button class="btn" data-nav="#/dancarinos">Dançarinos</button>
     <button class="btn" data-nav="#/comuns">Peças comuns</button>
     <button class="btn" data-nav="#/banco">📷 Fotos</button>
     <button class="btn" data-nav="#/backup">Backup</button>
@@ -1310,7 +1426,8 @@ const ALIAS = {
   "LEMKO": "ŁEMKO",
   "BILGORAJ": "BIŁGORAJ",
   "GORAL ZWIECKI": "GÓRAL ŻYWIECKI",
-  "SILESIA": "ŚLĄSK"
+  "SILESIA": "ŚLĄSK",
+  "KARVOEIRO - SILESIA": "CARVOEIRO - ŚLĄSK"
 };
 
 function fixPolishName(n) {
@@ -1328,13 +1445,23 @@ function parseQty(q) {
 function normalizePartName(part, costumeName = "") {
   let p = String(part || "OUTROS").trim().toUpperCase();
   const cNorm = norm(costumeName);
-  // No Krakowiak, o casaco tradicional é a Sukmana Krakowska
   if (cNorm.includes("KRAKOW") && (p === "CASACO" || p === "CASACOS")) return "SUKMANA";
   if (p === "COLETES") return "COLETE";
   if (p === "CASACOS") return "CASACO";
   if (p === "PALETO") return "PALETÓ";
   if (p === "EMCHARPE") return "ECHARPE";
   return p;
+}
+
+/* Categorização para Inventário & Submenus */
+function classifyPiece(part) {
+  const p = norm(part);
+  if (p.includes("CALCA") || p.includes("CALÇA")) return { key: "calcas", label: "Calças", icon: "👖" };
+  if (p.includes("CAMISA")) return { key: "camisas", label: "Camisas", icon: "👔" };
+  if (p.includes("COLETE")) return { key: "coletes", label: "Coletes", icon: "🦺" };
+  if (p.includes("CAPOTE") || p.includes("SUKMANA") || p.includes("CASACO") || p.includes("PALETO") || p.includes("TUNICA")) return { key: "capotes", label: "Capotes & Sukmanas", icon: "🧥" };
+  if (p.includes("FAIXA") || p.includes("FITA") || p.includes("CINTO") || p.includes("GRAVATA") || p.includes("PUNHO") || p.includes("DRAGONA") || p.includes("LUVA") || p.includes("MEIA") || p.includes("ECHARPE") || p.includes("BORDADO")) return { key: "aderecos", label: "Adereços & Acessórios", icon: "🎗️" };
+  return { key: "outros", label: "Outras Peças", icon: "📦" };
 }
 
 function autoCorrectPolish(d) {
@@ -1346,11 +1473,14 @@ function autoCorrectPolish(d) {
         if (it.part) it.part = normalizePartName(it.part, c.name);
       });
     });
+    // Ordena trajes por ordem alfabética ao carregar
+    d.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
   }
   if (Array.isArray(d.common)) {
     d.common.forEach(cm => {
       if (cm.part) cm.part = normalizePartName(cm.part);
     });
+    d.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
   }
   if (Array.isArray(d.dances)) {
     d.dances = d.dances.map(fixPolishName);
@@ -1363,12 +1493,15 @@ function autoCorrectPolish(d) {
       });
       p.nums = newNums;
     });
+    d.dancers.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
   }
   return d;
 }
 
 /* ===== ARMAZENAMENTO & ESTADO ===== */
 let S = null;
+let currentHomeView = localStorage.getItem("homeViewPref") || "cards"; // 'cards' ou 'matrix'
+let currentPieceCategory = "all";
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -1516,7 +1649,8 @@ function chooseCostumes(cm, after) {
   
   function renderList(filterTxt = "") {
     const f = norm(filterTxt);
-    list.innerHTML = S.costumes
+    const sorted = [...S.costumes].sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+    list.innerHTML = sorted
       .filter(c => !f || norm(c.name).includes(f))
       .map(c => `<label><input type="checkbox" value="${c.id}" ${used.has(c.id) ? "checked" : ""}> ${esc(c.name)}</label>`)
       .join("");
@@ -1548,7 +1682,9 @@ function chooseCostumes(cm, after) {
 
 function newCommon(src = {}) {
   const cm = { id: uid(), part: normalizePartName(src.part || ""), type: src.type || "", color: src.color || "", qty: src.qty || "", notes: src.notes || "", photo: src.photo || "" };
-  S.common.push(cm); return cm;
+  S.common.push(cm);
+  S.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
+  return cm;
 }
 function itemKey(it) {
   const t = norm(it.type).replace(/^QUE /, "");
@@ -1585,7 +1721,6 @@ function sharedIn(it, selfId) {
 }
 function thumb(src, attr) { return src ? `<img class="thumb" ${attr} src="${src}" alt="">` : `<div class="nothumb" ${attr}>+ foto</div>`; }
 
-/* Conta quantos dançarinos usam este traje na grade */
 function dancersCountFor(costumeName) {
   const normC = norm(costumeName);
   return S.dancers.filter(p => {
@@ -1620,7 +1755,6 @@ function getCostumeGroupedComposition(costume) {
       groups[part].photos.push(it.photo);
     }
     
-    // Sub-agrupamento por Tipo e Cor (ex: Botão simples / Preto, Azul escuro, etc.)
     const subKey = [it.type, it.color].filter(Boolean).join(" · ") || "(detalhe padrão)";
     if (!groups[part].variations[subKey]) {
       groups[part].variations[subKey] = {
@@ -1644,41 +1778,81 @@ function getCostumeGroupedComposition(costume) {
   };
 }
 
+/* Estatísticas Globais do Acervo */
+function getGlobalInventoryStats() {
+  const stats = {
+    totalTrajes: S.costumes.length,
+    totalUnits: 0,
+    calcas: 0,
+    camisas: 0,
+    coletes: 0,
+    capotes: 0,
+    aderecos: 0,
+    outros: 0,
+    comuns: S.common.length,
+    dancers: S.dancers.filter(p => Object.keys(p.nums || {}).length > 0).length
+  };
+
+  S.costumes.forEach(c => {
+    c.items.forEach(raw => {
+      const it = eff(raw);
+      if (!it) return;
+      const cat = classifyPiece(it.part).key;
+      const q = parseQty(it.qty);
+      stats.totalUnits += q;
+      if (stats[cat] !== undefined) stats[cat] += q;
+      else stats.outros += q;
+    });
+  });
+
+  return stats;
+}
+
 /* ===== TELAS ===== */
 const app = document.getElementById("app");
 
-/* 1. TELA TRAJES (CATÁLOGO & ESTOQUE AGRUPADO) */
+/* 1. TELA TRAJES (CATÁLOGO & INVENTÁRIO CONSOLIDADO) */
 function viewHome() {
-  let totalAcervoUnits = 0;
-  S.costumes.forEach(c => {
-    const comp = getCostumeGroupedComposition(c);
-    totalAcervoUnits += comp.totalUnits;
-  });
-  const totalDancersWithCostumes = S.dancers.filter(p => Object.keys(p.nums || {}).length > 0).length;
+  const stats = getGlobalInventoryStats();
+  
+  // Garante ordenação alfabética dos trajes
+  S.costumes.sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
 
   let h = `
-  <!-- KPIs de Inventário -->
+  <!-- KPIs Globais de Inventário -->
   <div class="kpi-grid noprint">
-    <div class="kpi-card">
-      <span class="kpi-num">${S.costumes.length}</span>
-      <span class="kpi-label">Trajes no Acervo</span>
+    <div class="kpi-card" onclick="go('#/pecas')">
+      <span class="kpi-num">${stats.totalTrajes}</span>
+      <span class="kpi-label">👔 Trajes no Acervo</span>
     </div>
-    <div class="kpi-card blue">
-      <span class="kpi-num">${totalAcervoUnits}</span>
-      <span class="kpi-label">Total de Peças em Estoque (Unidades)</span>
+    <div class="kpi-card blue" onclick="currentPieceCategory='calcas'; go('#/pecas');">
+      <span class="kpi-num">${stats.calcas} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-label">👖 Calças Cadastradas</span>
     </div>
-    <div class="kpi-card emerald">
-      <span class="kpi-num">${S.common.length}</span>
-      <span class="kpi-label">Peças Comuns Compartilhadas</span>
+    <div class="kpi-card emerald" onclick="currentPieceCategory='camisas'; go('#/pecas');">
+      <span class="kpi-num">${stats.camisas} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-label">👔 Camisas Cadastradas</span>
     </div>
-    <div class="kpi-card amber">
-      <span class="kpi-num">${totalDancersWithCostumes}</span>
-      <span class="kpi-label">Dançarinos com Traje Atribuído</span>
+    <div class="kpi-card amber" onclick="currentPieceCategory='coletes'; go('#/pecas');">
+      <span class="kpi-num">${stats.coletes} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-label">🦺 Coletes Cadastrados</span>
+    </div>
+    <div class="kpi-card purple" onclick="currentPieceCategory='capotes'; go('#/pecas');">
+      <span class="kpi-num">${stats.capotes} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-label">🧥 Capotes / Sukmanas</span>
+    </div>
+    <div class="kpi-card" onclick="currentPieceCategory='aderecos'; go('#/pecas');">
+      <span class="kpi-num">${stats.aderecos} <small style="font-size:12px;font-weight:600;">un</small></span>
+      <span class="kpi-label">🎗️ Adereços & Faixas</span>
     </div>
   </div>
 
   <div class="bar noprint">
-    <input type="search" id="q" placeholder="Buscar traje (ex: Łowicz, Krakowiak, Śląsk)...">
+    <input type="search" id="q" placeholder="Buscar traje em ordem alfabética (ex: Biłgoraj, Krakowiak, Łowicz, Śląsk)...">
+    <div class="view-switcher">
+      <button class="view-btn ${currentHomeView === 'cards' ? 'active' : ''}" id="vCards">📇 Cartões</button>
+      <button class="view-btn ${currentHomeView === 'matrix' ? 'active' : ''}" id="vMatrix">📊 Matriz de Inventário</button>
+    </div>
     <button class="btn primary" id="addC">+ Novo traje</button>
   </div>`;
 
@@ -1692,13 +1866,13 @@ function viewHome() {
         <button class="btn" onclick="go('#/backup')">Restaurar Backup</button>
       </div>
     </div>`;
-  } else {
+  } else if (currentHomeView === 'cards') {
+    /* Visualização em Cartões */
     h += `<div class="grid">`;
     S.costumes.forEach(c => {
       const comp = getCostumeGroupedComposition(c);
       const dancerCount = dancersCountFor(c.name);
       
-      // Monta as pílulas de estoque resumido por categoria de peça
       const pills = comp.groups.map(g => {
         return `<span class="part-pill">${esc(g.name)}: <b>${g.totalQty ? g.totalQty + ' un' : '✓'}</b></span>`;
       }).slice(0, 5).join("");
@@ -1724,18 +1898,82 @@ function viewHome() {
       </div>`;
     });
     h += `</div>`;
+  } else {
+    /* Visualização em Matriz de Inventário Completa */
+    h += `<div class="wrap"><table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Traje (Ordem Alfabética)</th>
+          <th>Foto</th>
+          <th style="text-align:center">🦺 Coletes</th>
+          <th style="text-align:center">👔 Camisas</th>
+          <th style="text-align:center">👖 Calças</th>
+          <th style="text-align:center">🧥 Capotes / Sukmanas</th>
+          <th style="text-align:center">🎗️ Adereços</th>
+          <th style="text-align:center; color:var(--pri-light);">Total Peças</th>
+          <th style="text-align:center">👥 Dançarinos</th>
+        </tr>
+      </thead>
+      <tbody>`;
+    
+    S.costumes.forEach(c => {
+      const comp = getCostumeGroupedComposition(c);
+      const dancerCount = dancersCountFor(c.name);
+      
+      const counts = { coletes: 0, camisas: 0, calcas: 0, capotes: 0, aderecos: 0 };
+      c.items.forEach(raw => {
+        const it = eff(raw);
+        if (!it) return;
+        const cat = classifyPiece(it.part).key;
+        const q = parseQty(it.qty);
+        if (counts[cat] !== undefined) counts[cat] += q;
+      });
+
+      h += `<tr data-id="${c.id}" data-name="${esc(norm(c.name))}" style="cursor:pointer" onclick="go('#/traje/${c.id}')">
+        <td><b style="color:#fff; font-size:15px;">${esc(c.name)}</b></td>
+        <td>${c.photo ? `<img class="thumb" src="${c.photo}" style="width:44px; height:44px;">` : `<span style="color:var(--text-light)">-</span>`}</td>
+        <td style="text-align:center; font-weight:700;">${counts.coletes ? counts.coletes + ' un' : '<span style="color:var(--text-light)">-</span>'}</td>
+        <td style="text-align:center; font-weight:700;">${counts.camisas ? counts.camisas + ' un' : '<span style="color:var(--text-light)">-</span>'}</td>
+        <td style="text-align:center; font-weight:700;">${counts.calcas ? counts.calcas + ' un' : '<span style="color:var(--text-light)">-</span>'}</td>
+        <td style="text-align:center; font-weight:700;">${counts.capotes ? counts.capotes + ' un' : '<span style="color:var(--text-light)">-</span>'}</td>
+        <td style="text-align:center; font-weight:700;">${counts.aderecos ? counts.aderecos + ' un' : '<span style="color:var(--text-light)">-</span>'}</td>
+        <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:15px;">${comp.totalUnits} un</td>
+        <td style="text-align:center; font-weight:700;">${dancerCount ? dancerCount + ' 👥' : '-'}</td>
+      </tr>`;
+    });
+    h += `</tbody></table></div>`;
   }
+  
   app.innerHTML = h;
-  app.querySelectorAll(".card").forEach(el => el.onclick = () => go("#/traje/" + el.dataset.id));
+
+  if (currentHomeView === 'cards') {
+    app.querySelectorAll(".card").forEach(el => el.onclick = () => go("#/traje/" + el.dataset.id));
+  }
+
   const qEl = document.getElementById("q");
   if(qEl) qEl.oninput = e => {
     const q = norm(e.target.value);
-    app.querySelectorAll(".card").forEach(el => el.style.display = el.dataset.name.includes(q) ? "" : "none");
+    const selector = currentHomeView === 'cards' ? ".card" : "tbody tr";
+    app.querySelectorAll(selector).forEach(el => el.style.display = el.dataset.name.includes(q) ? "" : "none");
   };
+
+  document.getElementById("vCards").onclick = () => {
+    currentHomeView = "cards";
+    localStorage.setItem("homeViewPref", "cards");
+    viewHome();
+  };
+  document.getElementById("vMatrix").onclick = () => {
+    currentHomeView = "matrix";
+    localStorage.setItem("homeViewPref", "matrix");
+    viewHome();
+  };
+
   document.getElementById("addC").onclick = () => {
     const name = prompt("Nome do novo traje (ex: ŁOWICZ, KRAKOWIAK, SĄCZ, ŚLĄSK):"); if (!name) return;
     const c = { id: uid(), name: fixPolishName(name), photo: "", items: [] };
-    S.costumes.push(c); save(); go("#/traje/" + c.id);
+    S.costumes.push(c);
+    S.costumes.sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+    save(); go("#/traje/" + c.id);
   };
 }
 
@@ -1873,7 +2111,12 @@ function viewCostume(id) {
   app.innerHTML = h;
   const re = () => viewCostume(id);
 
-  document.getElementById("cname").onchange = e => { c.name = fixPolishName(e.target.value) || c.name; e.target.value = c.name; save(); };
+  document.getElementById("cname").onchange = e => {
+    c.name = fixPolishName(e.target.value) || c.name;
+    e.target.value = c.name;
+    S.costumes.sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+    save();
+  };
   document.getElementById("cover").onclick = () => {
     const set = p => { c.photo = p; save(); re(); };
     c.photo ? openPhoto(c.photo, set, () => { if (confirm("Remover a foto do traje?")) set(""); }) : pickImg(set);
@@ -1917,53 +2160,128 @@ function viewCostume(id) {
   });
 }
 
-/* 3. TELA TODAS AS PEÇAS */
+/* 3. TELA TODAS AS PEÇAS COM SUBMENUS DE CATEGORIAS */
 function viewPieces() {
-  const parts = [...new Set(S.costumes.flatMap(c => c.items.map(i => norm(eff(i).part))).filter(Boolean))].sort();
-  let h = `<div class="bar noprint">
-    <input type="search" id="q" placeholder="Buscar (peça, tipo, cor, observação)...">
-    <select id="fp"><option value="">Todas as peças</option>${parts.map(p => `<option>${esc(p)}</option>`).join("")}</select>
-    <span id="cnt" class="note" style="margin-left:auto; font-weight:700; color:#fff;"></span>
-  </div>
-  <div class="wrap"><table><thead><tr><th>Traje</th><th>Peça</th><th>Foto</th><th>Tipo / Detalhe</th><th>Cor</th><th>Quant.</th><th>Observação</th></tr></thead><tbody>`;
+  const stats = getGlobalInventoryStats();
   
+  // Lista todas as peças agrupadas com traje
+  const allRows = [];
   S.costumes.forEach(c => c.items.forEach(raw => {
     const it = eff(raw); if (!it) return;
-    const txt = norm([c.name, it.part, it.type, it.color, it.qty, it.notes].join(" "));
-    h += `<tr data-t="${esc(txt)}" data-p="${esc(norm(it.part))}" ${raw.cid ? 'class="link"' : ""}>
+    const cat = classifyPiece(it.part);
+    const q = parseQty(it.qty);
+    allRows.push({
+      costume: c,
+      raw,
+      it,
+      cat,
+      q,
+      txt: norm([c.name, it.part, it.type, it.color, it.qty, it.notes].join(" "))
+    });
+  }));
+
+  // Ordena por Traje (A-Z) e depois por Peça (A-Z)
+  allRows.sort((a, b) => {
+    const cDiff = a.costume.name.localeCompare(b.costume.name, "pt-BR", { sensitivity: "base" });
+    if (cDiff !== 0) return cDiff;
+    return (a.it.part || "").localeCompare(b.it.part || "", "pt-BR", { sensitivity: "base" });
+  });
+
+  const submenus = [
+    { key: "all", label: "Todas as Peças", icon: "📦", count: stats.totalUnits },
+    { key: "calcas", label: "Calças", icon: "👖", count: stats.calcas },
+    { key: "capotes", label: "Capotes & Sukmanas", icon: "🧥", count: stats.capotes },
+    { key: "camisas", label: "Camisas", icon: "👔", count: stats.camisas },
+    { key: "coletes", label: "Coletes", icon: "🦺", count: stats.coletes },
+    { key: "aderecos", label: "Adereços & Faixas", icon: "🎗️", count: stats.aderecos }
+  ];
+
+  let h = `
+  <!-- Submenus / Abas de Categorias -->
+  <div class="category-subnav noprint">
+    ${submenus.map(sm => `
+      <div class="cat-pill ${currentPieceCategory === sm.key ? 'active' : ''}" data-cat="${sm.key}">
+        <span>${sm.icon} ${sm.label}</span>
+        <span class="cat-pill-count">${sm.count} un</span>
+      </div>
+    `).join("")}
+  </div>
+
+  <div class="bar noprint">
+    <input type="search" id="q" placeholder="Buscar por modelo, cor, observação ou traje...">
+    <span id="cnt" class="note" style="margin-left:auto; font-weight:700; color:#fff;"></span>
+  </div>
+
+  <div class="wrap"><table><thead><tr>
+    <th>Traje (A-Z)</th>
+    <th>Peça</th>
+    <th>Foto</th>
+    <th>Tipo / Detalhe</th>
+    <th>Cor</th>
+    <th style="text-align:center">Quant.</th>
+    <th>Observação</th>
+  </tr></thead><tbody>`;
+  
+  allRows.forEach(row => {
+    const { costume: c, raw, it, cat, txt } = row;
+    h += `<tr data-t="${esc(txt)}" data-cat="${cat.key}" ${raw.cid ? 'class="link"' : ""}>
       <td><span class="chip" data-go="${c.id}">${esc(c.name)}</span></td>
       <td><b>${esc(it.part)}</b>${raw.cid ? ' <span class="tag" data-cm="' + raw.cid + '">🔗</span>' : ""}</td>
       <td>${it.photo ? `<img class="thumb" src="${it.photo}" alt="" data-zoom-src="${it.photo}">` : ""}</td>
       <td>${esc(it.type)}</td>
       <td>${esc(it.color)}</td>
-      <td>${esc(it.qty)}</td>
+      <td style="text-align:center; font-weight:700;">${esc(it.qty)}</td>
       <td>${esc(it.notes)}</td>
     </tr>`;
-  }));
-  app.innerHTML = h + `</tbody></table></div>`;
+  });
   
-  const f = () => {
-    const q = norm(document.getElementById("q").value), p = document.getElementById("fp").value; let n = 0;
-    app.querySelectorAll("tbody tr").forEach(tr => { const ok = tr.dataset.t.includes(q) && (!p || tr.dataset.p === p); tr.style.display = ok ? "" : "none"; if (ok) n++; });
-    document.getElementById("cnt").textContent = n + " peça(s) encontrada(s)";
+  app.innerHTML = h + `</tbody></table></div>`;
+
+  const filterRows = () => {
+    const q = norm(document.getElementById("q").value);
+    let n = 0, units = 0;
+    app.querySelectorAll("tbody tr").forEach(tr => {
+      const matchCat = currentPieceCategory === "all" || tr.dataset.cat === currentPieceCategory;
+      const matchTxt = !q || tr.dataset.t.includes(q);
+      const ok = matchCat && matchTxt;
+      tr.style.display = ok ? "" : "none";
+      if (ok) {
+        n++;
+      }
+    });
+    document.getElementById("cnt").textContent = n + " item(ns) filtrado(s)";
   };
-  document.getElementById("q").oninput = f; document.getElementById("fp").onchange = f; f();
+
+  document.getElementById("q").oninput = filterRows;
+
+  app.querySelectorAll(".cat-pill").forEach(pill => {
+    pill.onclick = () => {
+      currentPieceCategory = pill.dataset.cat;
+      app.querySelectorAll(".cat-pill").forEach(p => p.classList.toggle("active", p === pill));
+      filterRows();
+    };
+  });
+
+  filterRows();
   app.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
   app.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/comuns/" + t.dataset.cm));
   app.querySelectorAll("[data-zoom-src]").forEach(img => img.onclick = () => openPhoto(img.dataset.zoomSrc, () => {}, () => {}));
 }
 
-/* 4. TELA DANÇARINOS */
+/* 4. TELA DANÇARINOS (ORDEM ALFABÉTICA) */
 function viewDancers() {
+  // Ordena dançarinos por ordem alfabética
+  S.dancers.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
+
   let h = `<div class="bar noprint">
-    <input type="search" id="q" placeholder="Buscar dançarino pelo nome...">
+    <input type="search" id="q" placeholder="Buscar dançarino em ordem alfabética...">
     <button class="btn primary" id="addD">+ Dançarino</button>
     <button class="btn" id="addDz">+ Dança</button>
     <button class="btn" onclick="window.print()">🖨 Imprimir Grade</button>
     <span class="note" style="margin-left:auto">${S.dancers.length} dançarinos · ${S.dances.length} danças</span>
   </div>
   <p class="note" style="margin-top:-14px; margin-bottom:14px">Número da camisa/peça de cada dançarino. Clique no nome da dança para abrir o traje correspondente.</p>
-  <div class="wrap"><table class="dz"><thead><tr><th>Dançarino</th>`;
+  <div class="wrap"><table class="dz"><thead><tr><th>Dançarino (A-Z)</th>`;
   
   S.dances.forEach((d, j) => {
     const c = findCostume(d);
@@ -1990,7 +2308,12 @@ function viewDancers() {
   app.innerHTML = h + `</tbody></table></div>`;
 
   document.getElementById("q").oninput = e => { const q = norm(e.target.value); app.querySelectorAll("tbody tr").forEach(tr => tr.style.display = tr.dataset.n.includes(q) ? "" : "none"); };
-  document.getElementById("addD").onclick = () => { const n = prompt("Nome do dançarino:"); if (!n) return; S.dancers.push({ id: uid(), name: n.toUpperCase().trim(), nums: {} }); save(); viewDancers(); };
+  document.getElementById("addD").onclick = () => {
+    const n = prompt("Nome do dançarino:"); if (!n) return;
+    S.dancers.push({ id: uid(), name: n.toUpperCase().trim(), nums: {} });
+    S.dancers.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
+    save(); viewDancers();
+  };
   document.getElementById("addDz").onclick = () => {
     const n = prompt("Nome da dança (ex: ŁOWICZ, KRAKOWIAK, SĄCZ, ŚLĄSK):", ""); if (!n) return;
     const d = fixPolishName(n); if (S.dances.includes(d)) return alert("Essa dança já existe.");
@@ -2006,18 +2329,25 @@ function viewDancers() {
   app.querySelectorAll("[data-dr]").forEach(b => b.onclick = () => mv(+b.dataset.dr, +b.dataset.dr + 1));
   app.querySelectorAll("tbody tr").forEach(tr => {
     const p = S.dancers[+tr.dataset.i];
-    tr.querySelector("[data-name]").onchange = e => { p.name = e.target.value.toUpperCase().trim() || p.name; e.target.value = p.name; save(); };
+    tr.querySelector("[data-name]").onchange = e => {
+      p.name = e.target.value.toUpperCase().trim() || p.name;
+      e.target.value = p.name;
+      S.dancers.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
+      save();
+    };
     tr.querySelectorAll("[data-d]").forEach(inp => inp.oninput = () => { if (inp.value.trim()) p.nums[inp.dataset.d] = inp.value.trim(); else delete p.nums[inp.dataset.d]; save(); });
     tr.querySelector("[data-del]").onclick = () => { if (confirm(`Excluir o dançarino "${p.name}"?`)) { S.dancers.splice(+tr.dataset.i, 1); save(); viewDancers(); } };
   });
 }
 
-/* 5. TELA PEÇAS COMUNS */
+/* 5. TELA PEÇAS COMUNS (ORDEM ALFABÉTICA) */
 function viewCommon(focusId) {
+  S.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
+
   let h = `<h2>🔗 Peças comuns</h2>
   <p class="note" style="margin-top:0">Peças reutilizadas em múltiplos trajes (ex.: CAMISA QUE AMASSA, FAIXA, COLETE). A alteração de foto e dados aqui reflete em todos os trajes vinculados.</p>
   <div class="bar noprint">
-    <input type="search" id="q" placeholder="Buscar peça comum...">
+    <input type="search" id="q" placeholder="Buscar peça comum em ordem alfabética...">
     <button class="btn primary" id="addCm">+ Nova peça comum</button>
     <button class="btn" id="imp">Importar peças repetidas</button>
   </div>`;
@@ -2027,7 +2357,7 @@ function viewCommon(focusId) {
       <p style="color:var(--text-muted)">Nenhuma peça comum cadastrada ainda.<br>Clique em <b>+ Nova peça comum</b> ou importe as repetidas automaticamente.</p>
     </div>`;
   } else {
-    h += `<div class="wrap"><table><thead><tr><th>Foto</th><th>Peça</th><th>Tipo / Detalhe</th><th>Cor</th><th>Quant.</th><th>Observação</th><th>Trajes em que aparece</th><th class="acts noprint"></th></tr></thead><tbody>`;
+    h += `<div class="wrap"><table><thead><tr><th>Foto</th><th>Peça (A-Z)</th><th>Tipo / Detalhe</th><th>Cor</th><th>Quant.</th><th>Observação</th><th>Trajes em que aparece</th><th class="acts noprint"></th></tr></thead><tbody>`;
     S.common.forEach((cm, i) => {
       const cs = costumesOf(cm);
       h += `<tr data-i="${i}" id="cm-${cm.id}" data-n="${esc(norm(cmLabel(cm)))}">
@@ -2062,6 +2392,7 @@ function viewCommon(focusId) {
         else if (inp.dataset.f !== "notes" && inp.dataset.f !== "qty") inp.value = inp.value.toUpperCase();
         cm[inp.dataset.f] = inp.value;
         tr.dataset.n = norm(cmLabel(cm));
+        S.common.sort((a, b) => (a.part || "").localeCompare(b.part || "", "pt-BR", { sensitivity: "base" }));
         save();
       };
     });
