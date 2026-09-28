@@ -2420,7 +2420,7 @@ function requireMasterAuth(actionCallback) {
 }
 
 /* ===== CÁLCULO DE TRAJES COMPLETOS (KITS PRONTOS) ===== */
-function calcCompleteKits(costume, commonList) {
+function calcCompleteKitsInfo(costume, commonList) {
   const counts = { calcas: 0, camisas: 0, coletes: 0, capotes: 0 };
   (costume.items || []).forEach(raw => {
     let it = raw;
@@ -2433,21 +2433,92 @@ function calcCompleteKits(costume, commonList) {
     if (counts[cat] !== undefined) counts[cat] += q;
   });
 
-  // Um kit completo precisa de Calça + Camisa + Vestimenta Superior (Colete ou Capote/Sukmana)
+  const cName = norm(costume.name || "");
+  let fullKits = 0;
+  let incomplete = 0;
+  let incompleteNote = "";
+
+  // 1. Caso especial: SĄCZ / NOWY SĄCZ (Lachów Sądeckich)
+  // Regra expressa: precisa de Colete + Calça + Capote para traje completo
+  if (cName.includes("SACZ") || cName.includes("SĄCZ")) {
+    const baseCalcas = counts.calcas || 0;
+    const baseColetes = counts.coletes || 0;
+    const baseCapotes = counts.capotes || 0;
+    const baseCamisas = counts.camisas || 0;
+
+    // Traje completo exige Colete + Calça + Capote (e Camisa se houver)
+    const reqFull = [baseCalcas, baseColetes, baseCapotes];
+    if (baseCamisas > 0) reqFull.push(baseCamisas);
+    fullKits = Math.min(...reqFull);
+
+    // Trajes parciais (que possuem Colete + Calça, mas não têm Capote)
+    const reqPartial = [baseCalcas, baseColetes];
+    if (baseCamisas > 0) reqPartial.push(baseCamisas);
+    const totalPartial = Math.min(...reqPartial);
+
+    if (totalPartial > fullKits) {
+      incomplete = totalPartial - fullKits;
+      incompleteNote = `${incomplete} sem capote`;
+    }
+
+    return {
+      kits: fullKits,
+      incomplete: incomplete,
+      incompleteNote: incompleteNote,
+      label: incomplete > 0 ? `${fullKits} completos (+${incomplete} s/ capote)` : `${fullKits} kits`
+    };
+  }
+
+  // 2. Outros trajes com Colete e Capote (ex: Rzeszów, Beskid, Szot Madziar)
+  if (counts.coletes > 0 && counts.capotes > 0) {
+    const baseCalcas = counts.calcas || 0;
+    const baseCamisas = counts.camisas || 0;
+    const reqBase = [];
+    if (baseCalcas > 0) reqBase.push(baseCalcas);
+    if (baseCamisas > 0) reqBase.push(baseCamisas);
+    
+    // Se for Rzeszów ou Beskid
+    if (cName.includes("RZESZOW") || cName.includes("RZESZÓW") || cName.includes("BESKID")) {
+      const full = Math.min(...reqBase, counts.coletes, counts.capotes);
+      const partial = Math.min(...reqBase, counts.coletes);
+      fullKits = full;
+      if (partial > full) {
+        incomplete = partial - full;
+        incompleteNote = `${incomplete} sem capote`;
+      }
+    } else {
+      fullKits = Math.min(reqBase.length ? Math.min(...reqBase) : (counts.coletes + counts.capotes), Math.max(counts.coletes, counts.capotes));
+    }
+
+    return {
+      kits: fullKits,
+      incomplete: incomplete,
+      incompleteNote: incompleteNote,
+      label: incomplete > 0 ? `${fullKits} completos (+${incomplete} s/ capote)` : `${fullKits} kits`
+    };
+  }
+
+  // 3. Regra Geral Padrão (Krakowiak, Łowicz, Silesia, Cieszyn, etc.)
   const req = [];
   if (counts.calcas > 0) req.push(counts.calcas);
   if (counts.camisas > 0) req.push(counts.camisas);
   
   const topTotal = counts.coletes + counts.capotes;
   if (topTotal > 0) {
-    if (counts.coletes > 0 && counts.capotes > 0) {
-      req.push(Math.max(counts.coletes, counts.capotes));
-    } else {
-      req.push(topTotal);
-    }
+    req.push(topTotal);
   }
 
-  return req.length ? Math.min(...req) : 0;
+  fullKits = req.length ? Math.min(...req) : 0;
+  return {
+    kits: fullKits,
+    incomplete: 0,
+    incompleteNote: "",
+    label: `${fullKits} kits`
+  };
+}
+
+function calcCompleteKits(costume, commonList) {
+  return calcCompleteKitsInfo(costume, commonList).kits;
 }
 
 /* ===== PEÇAS COMPARTILHADAS (POR SALA) ===== */
@@ -2556,6 +2627,7 @@ function getRoomInventoryStats(r) {
   const stats = {
     totalTrajes: (r.costumes || []).length,
     totalKits: 0,
+    totalIncompleteKits: 0,
     totalUnits: 0,
     calcas: 0,
     camisas: 0,
@@ -2568,8 +2640,9 @@ function getRoomInventoryStats(r) {
   };
 
   (r.costumes || []).forEach(c => {
-    const kits = calcCompleteKits(c, r.common || []);
-    stats.totalKits += kits;
+    const kInfo = calcCompleteKitsInfo(c, r.common || []);
+    stats.totalKits += kInfo.kits;
+    stats.totalIncompleteKits += kInfo.incomplete;
 
     (c.items || []).forEach(raw => {
       const it = eff(raw);
@@ -2805,7 +2878,7 @@ function viewHome() {
     h += `<div class="grid">`;
     r.costumes.forEach(c => {
       const comp = getCostumeGroupedComposition(c);
-      const kits = calcCompleteKits(c, r.common || []);
+      const kitInfo = calcCompleteKitsInfo(c, r.common || []);
       const dancerCount = dancersCountFor(c.name);
       
       const pills = comp.groups.map(g => {
@@ -2818,7 +2891,10 @@ function viewHome() {
         <div class="ph" style="${c.photo ? `background-image:url('${c.photo}')` : ""}">
           ${c.photo ? "" : r.icon || "👔"}
           <div class="card-badges">
-            <span class="badge-count room">${kits ? kits + ' trajes completos' : (comp.totalUnits ? comp.totalUnits + ' peças' : 'Novo')}</span>
+            <span class="badge-count room" style="display:inline-flex; align-items:center; gap:4px;">
+              <span>${kitInfo.kits ? kitInfo.kits + ' trajes completos' : (comp.totalUnits ? comp.totalUnits + ' peças' : 'Novo')}</span>
+              ${kitInfo.incomplete > 0 ? `<span style="background:rgba(245, 158, 11, 0.35); border:1px solid rgba(245, 158, 11, 0.6); padding:1px 5px; border-radius:8px; font-size:10px; color:#fde68a; font-weight:700;">+${kitInfo.incomplete} s/ capote</span>` : ''}
+            </span>
           </div>
         </div>
         <div class="nm-row">
@@ -2849,7 +2925,7 @@ function viewHome() {
     </tr></thead><tbody>`;
 
     r.costumes.forEach(c => {
-      const kits = calcCompleteKits(c, r.common || []);
+      const kitInfo = calcCompleteKitsInfo(c, r.common || []);
       const dancerCount = dancersCountFor(c.name);
       const counts = { coletes: 0, camisas: 0, calcas: 0, capotes: 0, aderecos: 0 };
       (c.items || []).forEach(raw => {
@@ -2867,7 +2943,10 @@ function viewHome() {
           </div>
         </td>
         <td>${c.photo ? `<img class="thumb" src="${c.photo}" style="width:40px; height:40px;">` : `<span style="color:var(--text-light)">-</span>`}</td>
-        <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:15px;">${kits} trajes</td>
+        <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:15px;">
+          ${kitInfo.kits} trajes
+          ${kitInfo.incomplete > 0 ? `<div style="font-size:11px; font-weight:700; color:#fbbf24; margin-top:2px;">+${kitInfo.incomplete} não completos<br><span style="font-weight:400; font-size:10px; color:#cbd5e1;">(${kitInfo.incompleteNote})</span></div>` : ''}
+        </td>
         <td style="text-align:center; font-weight:700;">${counts.coletes ? counts.coletes + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.camisas ? counts.camisas + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.calcas ? counts.calcas + ' un' : '-'}</td>
@@ -2931,7 +3010,7 @@ function viewCostume(id) {
   const avail = (r.common || []).filter(cm => !c.items.some(i => i.cid === cm.id));
   const dancerCount = dancersCountFor(c.name);
   const comp = getCostumeGroupedComposition(c);
-  const kits = calcCompleteKits(c, r.common || []);
+  const kitInfo = calcCompleteKitsInfo(c, r.common || []);
   const isUnlocked = isCurrentRoomUnlocked();
 
   let h = `<div class="toolbar-bar noprint">
@@ -2951,13 +3030,25 @@ function viewCostume(id) {
         <input id="cname" value="${esc(c.name)}" title="Nome do traje" style="font-size:20px; font-weight:800; color:#fff;">
       </div>
       <div class="composition-summary">
-        <span class="comp-chip highlight">Trajes Completos: <b>${kits} kits</b></span>
+        <span class="comp-chip highlight" style="display:inline-flex; align-items:center; gap:6px;">
+          <span>Trajes Completos: <b>${kitInfo.kits} kits</b></span>
+          ${kitInfo.incomplete > 0 ? `<span style="background:rgba(245, 158, 11, 0.25); border:1px solid rgba(245, 158, 11, 0.5); padding:1px 6px; border-radius:6px; font-size:11px; color:#fbbf24; font-weight:700;" title="Trajes parciais (colete + calça, sem capote)">⚠️ +${kitInfo.incomplete} não completos (${kitInfo.incompleteNote})</span>` : ''}
+        </span>
         <span class="comp-chip">Total Peças: <b>${comp.totalUnits || c.items.length} un.</b></span>
         <span class="comp-chip">Compartilhadas: <b>${c.items.filter(i => i.cid).length}</b></span>
         <span class="comp-chip">Dançarinos: <b>${dancerCount}</b></span>
       </div>
     </div>
   </div>
+
+  ${kitInfo.incomplete > 0 ? `
+  <div style="margin: 12px 0 16px; padding: 12px 16px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; font-size: 13px; color: #fde68a; display: flex; align-items: flex-start; gap: 10px;">
+    <span style="font-size: 20px; line-height: 1;">ℹ️</span>
+    <div>
+      <div style="font-weight: 700; color: #fbbf24; margin-bottom: 2px;">Regra de Composição deste Traje:</div>
+      Para ser considerado <b>traje completo</b>, é necessário o conjunto de <b>Colete + Calça + Capote</b> (total: <b>${kitInfo.kits} trajes completos</b>). O acervo possui ainda <b>${kitInfo.incomplete} trajes não completos</b> (${kitInfo.incompleteNote}).
+    </div>
+  </div>` : ''}
 
   <h3 style="margin-bottom:10px; font-size:15px; color:#fff; display:flex; align-items:center; gap:6px;">
     📊 Resumo de Estoque por Peça
