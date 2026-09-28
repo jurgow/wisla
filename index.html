@@ -90,6 +90,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Oculta itens restritos caso não seja Master */
+body:not(.is-master) .master-only {
+  display: none !important;
+}
+
 /* ===== GOOGLE APP BAR (CABEÇALHO SUPERIOR) ===== */
 .app-bar {
   background: rgba(11, 15, 25, 0.94);
@@ -272,12 +277,6 @@ body {
   color: var(--pri-light);
   border: 1px solid var(--room-border);
   box-shadow: 0 0 12px var(--room-bg);
-}
-.auth-pill.master-unlocked {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05));
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  box-shadow: 0 0 16px rgba(245, 158, 11, 0.2);
 }
 
 /* Botões do Sistema */
@@ -779,14 +778,42 @@ body {
   border-color: transparent;
   box-shadow: 0 0 10px var(--room-bg);
 }
+
+/* Linha de Nome do Card com Botão de Renomear Rápido */
+.nm-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 10px 4px;
+}
 .nm {
-  padding: 12px 12px 6px;
   font-weight: 800;
   text-align: center;
   color: #fff;
   font-size: var(--fsc);
   letter-spacing: -0.3px;
+  line-height: 1.2;
 }
+.btn-rename-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 6px;
+  font-size: 11px;
+  line-height: 1;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.btn-rename-card:hover {
+  background: var(--room-bg);
+  color: #fff;
+  border-color: var(--room-border);
+  transform: scale(1.1);
+}
+
 .comp-preview {
   padding: 0 10px 12px;
   display: flex;
@@ -1463,6 +1490,7 @@ body.locked #addD,
 body.locked #addDz,
 body.locked #imp,
 body.locked #bkDrop,
+body.locked .btn-rename-card,
 body.locked [data-ch],
 body.locked [data-use],
 body.locked [data-del],
@@ -1535,7 +1563,8 @@ body.locked .bk-card input {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
-  .nm { font-size: 13px; padding: 8px 6px 4px; }
+  .nm { font-size: 13px; }
+  .nm-row { padding: 8px 6px 4px; }
   .comp-preview { min-height: 28px; padding: 0 6px 8px; }
   .part-pill { font-size: 10px; padding: 2px 5px; }
 
@@ -1583,7 +1612,7 @@ body.locked .bk-card input {
 <!-- Google App Bar -->
 <header class="app-bar">
   <div class="brand-section" onclick="go('#/')">
-    <div class="brand-logo-box" id="logoBox" title="Logo do Grupo Folclórico Polonês Wisła">
+    <div class="brand-logo-box" id="logoBox" title="Wisła">
       <img src="wisla-logo.png" id="logoImg" alt="Wisła">
     </div>
     <div class="brand-titles">
@@ -1609,10 +1638,10 @@ body.locked .bk-card input {
 
   <!-- Ações e Status -->
   <div class="app-bar-actions">
-    <div id="authPill" class="auth-pill locked" title="Clique para autenticar com o PIN da sala ou Token Master (0412)">
+    <div id="authPill" class="auth-pill locked" title="Clique para autenticar com o PIN">
       🔒 Consulta
     </div>
-    <button class="btn icon-only" id="openSettingsBtn" title="Configurações, Sincronização e Salas">⚙️</button>
+    <button class="btn icon-only master-only" id="openSettingsBtn" title="Configurações e Sincronização">⚙️</button>
   </div>
 </header>
 
@@ -1636,18 +1665,18 @@ body.locked .bk-card input {
       <span class="badge" id="sideCommonCount">0</span>
     </a>
 
-    <div class="nav-category-title" style="margin-top:12px;">Geral & Apoio</div>
+    <div class="nav-category-title" style="margin-top:12px;">Geral</div>
     <a class="nav-item" data-nav="#/dancarinos">
       <span class="icon">👥</span>
       <span>Dançarinos</span>
       <span class="badge" id="sideDancersCount">0</span>
     </a>
-    <a class="nav-item" data-nav="#/banco">
+    <a class="nav-item master-only" data-nav="#/banco">
       <span class="icon">📷</span>
       <span>Fotos do Acervo</span>
       <span class="badge" id="sidePhotosCount">0</span>
     </a>
-    <a class="nav-item" data-nav="#/backup">
+    <a class="nav-item master-only" data-nav="#/backup">
       <span class="icon">💾</span>
       <span>Salvar & Sincronizar</span>
     </a>
@@ -1656,8 +1685,8 @@ body.locked .bk-card input {
       <button class="btn sm" id="sideQuickSwitchBtn" style="width:100%; justify-content:flex-start;">
         <span>🔄</span> <span>Trocar Sala...</span>
       </button>
-      <button class="btn sm" id="sideManageRoomsBtn" style="width:100%; justify-content:flex-start;">
-        <span>🛡️</span> <span>Permissões & Salas</span>
+      <button class="btn sm master-only" id="sideManageRoomsBtn" style="width:100%; justify-content:flex-start;">
+        <span>🛡️</span> <span>Gerenciar Salas</span>
       </button>
     </div>
   </aside>
@@ -1685,26 +1714,26 @@ body.locked .bk-card input {
     <span>Dançarinos</span>
   </a>
   <a class="mobile-nav-btn" id="mobileMoreBtn">
-    <span class="icon">☰</span>
-    <span>Mais</span>
+    <span class="icon">🔄</span>
+    <span>Salas</span>
   </a>
 </nav>
 
 <div id="toast"></div>
 
-<!-- Modal Switcher de Salas (Google Workspace Project Style) -->
+<!-- Modal Switcher de Salas -->
 <div id="roomModal" class="modal-overlay">
   <div class="modal-card lg">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <h3>🏢 Selecionar Sala de Trajes</h3>
       <button class="btn sm" id="closeRoomModalBtn" style="border:none; box-shadow:none; font-size:16px;">✕</button>
     </div>
-    <p class="note" style="margin-top:-2px; margin-bottom:12px;">Escolha qual setor de trajes você deseja visualizar ou gerenciar:</p>
+    <p class="note" style="margin-top:-2px; margin-bottom:12px;">Escolha qual setor de trajes você deseja visualizar:</p>
     
     <div class="rooms-grid" id="roomsListGrid"></div>
 
     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px solid var(--bd); padding-top:14px; flex-wrap:wrap; gap:8px;">
-      <button class="btn" id="addNewRoomBtn">+ Nova Sala (Master)</button>
+      <button class="btn" id="addNewRoomBtn">+ Nova Sala</button>
       <button class="btn primary" id="confirmRoomBtn">Acessar Sala</button>
     </div>
   </div>
@@ -1714,9 +1743,9 @@ body.locked .bk-card input {
 <div id="authModal" class="modal-overlay">
   <div class="modal-card">
     <h3 id="authModalTitle">🔒 Autenticação de Edição</h3>
-    <p class="note" id="authModalDesc">Digite o PIN da sala ou o <b>Token Master (0412)</b> para liberar as alterações:</p>
+    <p class="note" id="authModalDesc">Digite o PIN para liberar a edição de trajes e peças:</p>
     <div class="form-group" style="margin: 16px 0;">
-      <input type="password" id="authPinInput" placeholder="Digite o PIN (ex: 0412)..." style="font-size:18px; text-align:center; letter-spacing:4px; padding:12px;" autofocus inputmode="numeric">
+      <input type="password" id="authPinInput" placeholder="Digite o PIN..." style="font-size:18px; text-align:center; letter-spacing:4px; padding:12px;" autofocus inputmode="numeric">
     </div>
     <div style="display:flex; justify-content:flex-end; gap:8px;">
       <button class="btn red" id="authCancelBtn">Cancelar</button>
@@ -1777,14 +1806,14 @@ body.locked .bk-card input {
       <button class="btn sm" id="closeSettingsModalBtn" style="border:none; box-shadow:none; font-size:16px;">✕</button>
     </div>
     <div class="settings-tabs">
-      <button class="settings-tab-btn active" data-tab="tab-rooms">🏢 Gestão de Salas & PINs</button>
+      <button class="settings-tab-btn active" data-tab="tab-rooms">🏢 Gestão de Salas</button>
       <button class="settings-tab-btn" data-tab="tab-sync">☁️ Sincronização Compartilhada</button>
-      <button class="settings-tab-btn" data-tab="tab-security">🛡️ Senha Master (0412)</button>
+      <button class="settings-tab-btn" data-tab="tab-security">🛡️ Segurança</button>
     </div>
 
     <!-- Aba 1: Gestão de Salas & Senhas Individuais -->
     <div class="settings-section active" id="tab-rooms">
-      <p class="note" style="margin-bottom:14px;">Cada sala possui seu próprio PIN de edição para isolar as alterações. Apenas o <b>Token Master (0412)</b> pode alterar nomes ou senhas.</p>
+      <p class="note" style="margin-bottom:14px;">Gerencie os setores de trajes e os PINs de edição de cada equipe:</p>
       <div id="roomsManagementList" style="display:flex; flex-direction:column; gap:10px; max-height:45vh; overflow-y:auto; padding-right:4px;"></div>
     </div>
 
@@ -1810,11 +1839,11 @@ body.locked .bk-card input {
     <!-- Aba 3: Token Master & Logo -->
     <div class="settings-section" id="tab-security">
       <div style="background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.3); border-radius:12px; padding:16px; margin-bottom:16px;">
-        <h4 style="color:#fbbf24; margin-bottom:6px; font-size:15px;">👑 Token Master Geral: 0412</h4>
-        <p style="font-size:13px; color:var(--text-muted); margin:0;">O Token Master é necessário para alterar a logo, nomes de salas e configurações estruturais.</p>
+        <h4 style="color:#fbbf24; margin-bottom:6px; font-size:15px;">🛡️ Configurações Globais do Sistema</h4>
+        <p style="font-size:13px; color:var(--text-muted); margin:0;">Permite atualizar a logo oficial e controlar os parâmetros gerais do acervo.</p>
       </div>
       <div class="form-group">
-        <label>Logo Oficial do Wisła (Exige Master)</label>
+        <label>Logo Oficial do Wisła</label>
         <button class="btn" id="changeLogoBtn">🖼 Alterar Imagem da Logo</button>
       </div>
     </div>
@@ -1915,7 +1944,7 @@ const hash = s => {
   for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
   return h.toString(36);
 };
-const MASTER_PIN_DEFAULT = "0412"; // Token Master
+const MASTER_PIN_DEFAULT = "0412"; // Código Master confidencial
 
 /* ===== SALAS PADRÃO DO WISŁA ===== */
 const DEFAULT_ROOMS = {
@@ -2118,19 +2147,16 @@ function updateAuthUI() {
   const pill = document.getElementById("authPill");
   const isUnlocked = isCurrentRoomUnlocked();
   document.body.classList.toggle("locked", !isUnlocked);
+  document.body.classList.toggle("is-master", isMasterUnlocked);
 
-  if (isMasterUnlocked) {
-    pill.className = "auth-pill master-unlocked";
-    pill.innerHTML = `👑 Master`;
-    pill.title = "Token Master 0412 ativo: Permissão total em todas as salas.";
-  } else if (isUnlocked) {
+  if (isUnlocked) {
     pill.className = "auth-pill room-unlocked";
-    pill.innerHTML = `🔓 Edição (${getActiveRoom().name.split(" ")[0]})`;
-    pill.title = "Edição liberada para esta sala. Clique para travar.";
+    pill.innerHTML = `🔓 Modo Edição`;
+    pill.title = "Modo de edição liberado. Clique para travar.";
   } else {
     pill.className = "auth-pill locked";
     pill.innerHTML = `🔒 Consulta`;
-    pill.title = "Clique para desbloquear a edição com PIN.";
+    pill.title = "Clique para desbloquear o modo de edição com o PIN.";
   }
 }
 
@@ -2208,7 +2234,7 @@ function ask(msg, opts, title = "Confirmação") {
   });
 }
 
-/* ===== EXIGÊNCIA DE SENHA MASTER ===== */
+/* ===== EXIGÊNCIA DE SENHA MASTER (SEM EXPOR NOMES) ===== */
 function requireMasterAuth(actionCallback) {
   if (isMasterUnlocked) {
     actionCallback();
@@ -2217,8 +2243,8 @@ function requireMasterAuth(actionCallback) {
   const modal = document.getElementById("authModal");
   const pinInput = document.getElementById("authPinInput");
   pinInput.value = "";
-  document.getElementById("authModalTitle").textContent = "👑 Ação Restrita: Token Master";
-  document.getElementById("authModalDesc").innerHTML = "Esta ação altera a estrutura do sistema ou a logo oficial. Digite o <b>Token Master (0412)</b>:";
+  document.getElementById("authModalTitle").textContent = "🔒 Autenticação de Edição";
+  document.getElementById("authModalDesc").innerHTML = "Digite o PIN para liberar esta operação:";
   modal.classList.add("active");
   setTimeout(() => pinInput.focus(), 100);
 
@@ -2227,11 +2253,11 @@ function requireMasterAuth(actionCallback) {
     if (hash(val) === S.masterPin || val === MASTER_PIN_DEFAULT) {
       isMasterUnlocked = true;
       modal.classList.remove("active");
-      toast("👑 Token Master validado com sucesso!");
+      toast("🔓 Acesso liberado!");
       updateAuthUI();
       actionCallback();
     } else {
-      alert("Token Master incorreto (0412). Acesso negado.");
+      alert("PIN incorreto. Acesso negado.");
       pinInput.value = "";
       pinInput.focus();
     }
@@ -2407,15 +2433,15 @@ function getRoomInventoryStats(r) {
   return stats;
 }
 
-/* ===== DIALOG DE AUTENTICAÇÃO (SALA OU MASTER) ===== */
+/* ===== DIALOG DE AUTENTICAÇÃO (SALA OU MASTER TRANSPARENTE) ===== */
 function openAuthModal() {
   const r = getActiveRoom();
   const modal = document.getElementById("authModal");
   const pinInput = document.getElementById("authPinInput");
   pinInput.value = "";
   
-  document.getElementById("authModalTitle").textContent = `🔒 Desbloquear ${r.name}`;
-  document.getElementById("authModalDesc").innerHTML = `Digite o PIN da sala ou o <b>Token Master (0412)</b>:`;
+  document.getElementById("authModalTitle").textContent = `🔒 Autenticação de Edição`;
+  document.getElementById("authModalDesc").innerHTML = `Digite o PIN para liberar a edição:`;
   
   modal.classList.add("active");
   setTimeout(() => pinInput.focus(), 100);
@@ -2424,11 +2450,11 @@ function openAuthModal() {
     const val = pinInput.value.trim();
     if (!val) return;
     
-    // Testa Master Token (0412)
+    // Testa Master Token confidencialmente
     if (hash(val) === S.masterPin || val === MASTER_PIN_DEFAULT) {
       isMasterUnlocked = true;
       modal.classList.remove("active");
-      toast("👑 Modo Master Ativado (Acesso Total)!");
+      toast("🔓 Modo Edição Ativado!");
       updateAuthUI();
       route();
       return;
@@ -2444,7 +2470,7 @@ function openAuthModal() {
       return;
     }
 
-    alert("PIN incorreto. Digite a senha da sala ou o Token Master (0412).");
+    alert("PIN incorreto. Digite a senha de edição.");
     pinInput.value = "";
     pinInput.focus();
   };
@@ -2457,9 +2483,7 @@ function openAuthModal() {
 document.getElementById("authPill").onclick = async () => {
   if (isCurrentRoomUnlocked()) {
     const v = await ask("Controle de Acesso da Sala", [
-      ["🔒 Travar esta sala (Modo Consulta)", "lock"],
-      ["👑 Sair do Modo Master", "lock_master"],
-      ["Alterar PIN desta sala (Master)", "chg_pin"]
+      ["🔒 Travar edição (Modo Consulta)", "lock"]
     ], "Opções de Edição");
 
     if (v === "lock") {
@@ -2468,20 +2492,6 @@ document.getElementById("authPill").onclick = async () => {
       toast("Sala travada em Modo Consulta 🔒");
       updateAuthUI();
       route();
-    } else if (v === "lock_master") {
-      isMasterUnlocked = false;
-      toast("Modo Master encerrado 🔒");
-      updateAuthUI();
-      route();
-    } else if (v === "chg_pin") {
-      requireMasterAuth(() => {
-        const np = prompt("Digite o novo PIN numérico para esta sala:");
-        if (np) {
-          getActiveRoom().pin = hash(np);
-          save();
-          toast("PIN da sala atualizado!");
-        }
-      });
     }
     return;
   }
@@ -2563,6 +2573,7 @@ const app = document.getElementById("app");
 function viewHome() {
   const r = getActiveRoom();
   const stats = getRoomInventoryStats(r);
+  const isUnlocked = isCurrentRoomUnlocked();
   r.costumes = r.costumes || [];
   r.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
 
@@ -2658,7 +2669,10 @@ function viewHome() {
             <span class="badge-count room">${kits ? kits + ' trajes completos' : (comp.totalUnits ? comp.totalUnits + ' peças' : 'Novo')}</span>
           </div>
         </div>
-        <div class="nm">${esc(c.name)}</div>
+        <div class="nm-row">
+          <div class="nm">${esc(c.name)}</div>
+          ${isUnlocked ? `<button class="btn-rename-card" data-rename="${c.id}" title="Renomear traje (A-Z)">✏️</button>` : ''}
+        </div>
         <div class="comp-preview">
           ${pills ? pills + extraCount : '<span style="color:var(--text-light)">(sem peças)</span>'}
         </div>
@@ -2694,7 +2708,12 @@ function viewHome() {
       });
 
       h += `<tr data-id="${c.id}" data-name="${esc(norm(c.name))}" style="cursor:pointer" onclick="go('#/traje/${c.id}')">
-        <td><b style="color:#fff; font-size:14px;">${esc(c.name)}</b></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <b style="color:#fff; font-size:14px;">${esc(c.name)}</b>
+            ${isUnlocked ? `<button class="btn-rename-card" data-rename="${c.id}" onclick="event.stopPropagation()" title="Renomear traje">✏️</button>` : ''}
+          </div>
+        </td>
         <td>${c.photo ? `<img class="thumb" src="${c.photo}" style="width:40px; height:40px;">` : `<span style="color:var(--text-light)">-</span>`}</td>
         <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:15px;">${kits} trajes</td>
         <td style="text-align:center; font-weight:700;">${counts.coletes ? counts.coletes + ' un' : '-'}</td>
@@ -2713,6 +2732,24 @@ function viewHome() {
   if (currentHomeView === 'cards') {
     app.querySelectorAll(".card").forEach(el => el.onclick = () => go("#/traje/" + el.dataset.id));
   }
+
+  // Renomear Fácil na Tela Inicial
+  app.querySelectorAll("[data-rename]").forEach(btn => {
+    btn.onclick = e => {
+      e.stopPropagation();
+      const cid = btn.dataset.rename;
+      const targetCostume = r.costumes.find(x => x.id === cid);
+      if (!targetCostume) return;
+      const newName = prompt(`Renomear traje "${targetCostume.name}" para:`, targetCostume.name);
+      if (newName && newName.trim()) {
+        targetCostume.name = fixPolishName(newName.trim());
+        r.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
+        save();
+        toast(`Traje renomeado para "${targetCostume.name}"!`);
+        viewHome();
+      }
+    };
+  });
 
   const qEl = document.getElementById("q");
   if (qEl) qEl.oninput = e => {
@@ -3152,8 +3189,9 @@ function viewCommon(focusId) {
   });
 }
 
-/* 6. TELA BANCO DE FOTOS */
+/* 6. TELA BANCO DE FOTOS (APENAS MASTER) */
 function viewBank() {
+  if (!isMasterUnlocked) { go("#/"); return; }
   const B = bank();
   let h = `<h2>📷 Banco de Fotos do Acervo Wisła</h2>
     <p class="note" style="margin-top:0">Galeria geral de fotos compartilhadas entre todas as salas e trajes.</p>
@@ -3269,11 +3307,11 @@ window.pickImg = function(cb) {
 };
 document.getElementById("bkDlg").onclick = e => { if (e.target.id === "bkDlg") document.getElementById("bkDlg").classList.remove("active"); };
 
-/* 7. TELA BACKUP E SINCRONIZAÇÃO COMPARTILHADA */
+/* 7. TELA BACKUP E SINCRONIZAÇÃO COMPARTILHADA (APENAS MASTER) */
 function viewBackup() {
+  if (!isMasterUnlocked) { go("#/"); return; }
   const r = getActiveRoom();
   const kb = Math.round(JSON.stringify(S).length / 1024);
-  const savedToken = localStorage.getItem("wisla_gh_pat") || "";
 
   app.innerHTML = `<h2>💾 Salvar & Sincronizar Trajes</h2>
   <p class="note" style="margin-top:0">Publique as alterações no repositório compartilhado para que todos tenham acesso aos dados atualizados.</p>
@@ -3334,7 +3372,6 @@ function viewBackup() {
       const path = "trajes-data.js";
       const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
       
-      // Obtém SHA do arquivo atual
       let sha = "";
       const getRes = await fetch(apiUrl, {
         headers: { "Authorization": `token ${token.trim()}`, "Accept": "application/vnd.github.v3+json" }
@@ -3345,7 +3382,6 @@ function viewBackup() {
       }
 
       const jsContent = 'window.WISLA_DEFAULT_DATA = ' + JSON.stringify(S) + ';';
-      // UTF-8 base64 encoding
       const utf8Bytes = new TextEncoder().encode(jsContent);
       let binaryStr = "";
       for (let i = 0; i < utf8Bytes.length; i++) binaryStr += String.fromCharCode(utf8Bytes[i]);
@@ -3458,14 +3494,25 @@ function renderRoomsManagement() {
 }
 
 document.getElementById("openSettingsBtn").onclick = () => {
+  if (!isMasterUnlocked) {
+    requireMasterAuth(() => {
+      document.getElementById("settingsDlg").classList.add("active");
+      const ghInp = document.getElementById("ghTokenInput");
+      if (ghInp) ghInp.value = localStorage.getItem("wisla_gh_pat") || "";
+      renderRoomsManagement();
+    });
+    return;
+  }
   document.getElementById("settingsDlg").classList.add("active");
   const ghInp = document.getElementById("ghTokenInput");
   if (ghInp) ghInp.value = localStorage.getItem("wisla_gh_pat") || "";
   renderRoomsManagement();
 };
 document.getElementById("sideManageRoomsBtn").onclick = () => {
-  document.getElementById("settingsDlg").classList.add("active");
-  renderRoomsManagement();
+  requireMasterAuth(() => {
+    document.getElementById("settingsDlg").classList.add("active");
+    renderRoomsManagement();
+  });
 };
 document.getElementById("closeSettingsModalBtn").onclick = () => document.getElementById("settingsDlg").classList.remove("active");
 document.getElementById("settingsDlg").onclick = e => { if (e.target.id === "settingsDlg") document.getElementById("settingsDlg").classList.remove("active"); };
@@ -3495,11 +3542,8 @@ document.getElementById("changeLogoBtn").onclick = () => {
   });
 };
 
-/* Menu Mais no Celular */
-document.getElementById("mobileMoreBtn").onclick = () => {
-  document.getElementById("settingsDlg").classList.add("active");
-  renderRoomsManagement();
-};
+/* Menu Salas no Celular */
+document.getElementById("mobileMoreBtn").onclick = openRoomSwitcher;
 
 /* Busca Global (Google Bar) */
 document.getElementById("globalSearchInput").oninput = e => {
@@ -3523,6 +3567,12 @@ window.addEventListener("keydown", e => {
 function route() {
   const h = location.hash || "#/";
   
+  // Protege rotas restritas para quem não é Master
+  if ((h === "#/banco" || h === "#/backup") && !isMasterUnlocked) {
+    go("#/");
+    return;
+  }
+
   // Atualiza sidebar desktop
   document.querySelectorAll(".sidebar .nav-item").forEach(b => {
     const nav = b.dataset.nav;
