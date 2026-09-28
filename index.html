@@ -2128,13 +2128,12 @@ body.locked .bk-card input {
         <span>Todas as Peças</span>
         <span class="badge" id="sidePiecesCount">0</span>
       </a>
-      <a class="nav-item" data-nav="#/banco">
+      <div class="nav-category-title master-only" style="margin-top:14px;">Administração (Master)</div>
+      <a class="nav-item master-only" data-nav="#/banco">
         <span class="icon">📷</span>
-        <span>Fotos do Acervo</span>
+        <span>Banco Geral de Fotos</span>
         <span class="badge" id="sidePhotosCount">0</span>
       </a>
-
-      <div class="nav-category-title master-only" style="margin-top:14px;">Administração</div>
       <a class="nav-item master-only" data-nav="#/backup">
         <span class="icon">💾</span>
         <span>Salvar & Sincronizar</span>
@@ -2680,7 +2679,10 @@ async function cloudSyncPush() {
   cloudPushT = setTimeout(async () => {
     try {
       updateCloudStatus("syncing");
-      if (S) S.lastModified = Date.now();
+      const now = Date.now();
+      if (S) S.lastModified = now;
+      localStorage.setItem("wisla_last_modified", String(now));
+      
       const res = await fetchWithTimeout(url, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -2708,9 +2710,7 @@ async function cloudSyncPull(isManual = false) {
   if (isSyncingCloud) return;
   try {
     isSyncingCloud = true;
-    updateCloudStatus("syncing");
-
-    const localTime = (S && S.lastModified) || 0;
+    const localTime = (S && S.lastModified) || Number(localStorage.getItem("wisla_last_modified")) || 0;
     const timeUrl = url.replace(/\.json(\?.*)?$/, "/lastModified.json");
 
     // 1. Verificação ultra-leve (15 bytes) na nuvem se não for pull manual
@@ -2719,27 +2719,51 @@ async function cloudSyncPull(isManual = false) {
         const timeRes = await fetchWithTimeout(timeUrl, {}, 4000);
         if (timeRes.ok) {
           const remoteTime = await timeRes.json();
-          // Se a nuvem não tiver alteração (timestamp igual ou menor), não baixa nada!
-          if (remoteTime !== null && typeof remoteTime === "number" && remoteTime <= localTime) {
+          
+          // Caso A: A nuvem tem timestamp válido e é igual ou menor que o local -> ZERO DOWNLOAD!
+          if (typeof remoteTime === "number" && remoteTime <= localTime) {
             updateCloudStatus("online");
             return;
           }
+
+          // Caso B: A nuvem não tem o campo lastModified ainda (null) -> grava timestamp local na nuvem para evitar downloads
+          if (remoteTime === null) {
+            try {
+              await fetchWithTimeout(timeUrl, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(localTime)
+              }, 4000);
+            } catch (e) {}
+            updateCloudStatus("online");
+            return;
+          }
+        } else {
+          // Se falhou ao buscar timestamp, encerra para não baixar o banco pesado
+          updateCloudStatus("online");
+          return;
         }
       } catch (timeErr) {
-        // Se a verificação de timestamp falhar ou der timeout, continua para o fluxo normal
+        updateCloudStatus("offline");
+        return;
       }
     }
 
-    // 2. Se for pull manual ou se houver alteração real de outro usuário, baixa o JSON
-    const res = await fetchWithTimeout(url, {}, 12000);
+    // 2. Só baixa o JSON completo se for pull manual ou se o banco na nuvem for mais recente
+    updateCloudStatus("syncing");
+    const res = await fetchWithTimeout(url, {}, 15000);
     if (res.ok) {
       const remoteData = await res.json();
       if (remoteData && typeof remoteData === "object" && (remoteData.rooms || remoteData.costumes)) {
-        const remoteTime = remoteData.lastModified || 0;
+        const remoteTime = Number(remoteData.lastModified) || Date.now();
+        remoteData.lastModified = remoteTime;
         
-        // Se a versão da nuvem for mais recente (ou se for pull manual)
+        // Se a versão da nuvem for mais recente (ou se for pull manual / primeira carga)
         if (isManual || remoteTime > localTime || !S || !S.rooms) {
           S = migrateState(remoteData);
+          S.lastModified = remoteTime;
+          localStorage.setItem("wisla_last_modified", String(remoteTime));
+          
           const db = await openDB();
           const tx = db.transaction("kv", "readwrite");
           tx.objectStore("kv").put(S, "state");
@@ -2752,7 +2776,7 @@ async function cloudSyncPull(isManual = false) {
           updateCloudStatus("online");
         }
       } else if (remoteData === null && S && S.rooms) {
-        // Banco na nuvem recém-criado/vazio: faz push automático da base inicial!
+        // Banco na nuvem recém-criado/vazio: faz push automático da base inicial
         updateCloudStatus("online");
         cloudSyncPush();
       } else {
@@ -2773,6 +2797,10 @@ function save() {
   clearTimeout(saveT);
   saveT = setTimeout(async () => {
     try {
+      const now = Date.now();
+      if (S) S.lastModified = now;
+      localStorage.setItem("wisla_last_modified", String(now));
+      
       const db = await openDB();
       const tx = db.transaction("kv", "readwrite");
       tx.objectStore("kv").put(S, "state");
@@ -2791,6 +2819,8 @@ function migrateState(d) {
   
   const state = {
     version: 4,
+    lastModified: Number(d.lastModified) || Number(localStorage.getItem("wisla_last_modified")) || Date.now(),
+    cloudDbUrl: d.cloudDbUrl || DEFAULT_CLOUD_DB_URL,
     activeRoom: d.activeRoom || "masculino",
     masterPin: d.masterPin || hash(MASTER_PIN_DEFAULT),
     rooms: d.rooms || JSON.parse(JSON.stringify(DEFAULT_ROOMS)),
@@ -3866,6 +3896,11 @@ function viewHome() {
               ${kitInfo.incomplete > 0 ? `<span style="background:rgba(245, 158, 11, 0.35); border:1px solid rgba(245, 158, 11, 0.6); padding:1px 5px; border-radius:8px; font-size:10px; color:#fde68a; font-weight:700;">+${kitInfo.incomplete} s/ capote</span>` : ''}
             </span>
           </div>
+          ${isUnlocked ? `
+            <button class="btn-card-photo-edit" data-photo-edit="${c.id}" title="Alterar foto do traje (${esc(c.name)})">
+              📷 Foto
+            </button>
+          ` : ''}
         </div>
         <div class="nm-row">
           <div class="nm">${esc(c.name)}</div>
@@ -3912,7 +3947,12 @@ function viewHome() {
             ${isUnlocked ? `<button class="btn-rename-card" data-rename="${c.id}" onclick="event.stopPropagation()" title="Renomear traje">✏️</button>` : ''}
           </div>
         </td>
-        <td>${c.photo ? `<img class="thumb" src="${c.photo}" style="width:40px; height:40px;">` : `<span style="color:var(--text-light)">-</span>`}</td>
+        <td>
+          <div style="display:flex; align-items:center; gap:6px;">
+            ${c.photo ? `<img class="thumb" src="${c.photo}" style="width:40px; height:40px;">` : `<span style="color:var(--text-light)">-</span>`}
+            ${isUnlocked ? `<button class="btn-rename-card" data-photo-edit="${c.id}" onclick="event.stopPropagation()" title="Alterar foto">📷</button>` : ''}
+          </div>
+        </td>
         <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:15px;">
           ${kitInfo.kits} trajes
           ${kitInfo.incomplete > 0 ? `<div style="font-size:11px; font-weight:700; color:#fbbf24; margin-top:2px;">+${kitInfo.incomplete} não completos<br><span style="font-weight:400; font-size:10px; color:#cbd5e1;">(${kitInfo.incompleteNote})</span></div>` : ''}
@@ -3933,6 +3973,28 @@ function viewHome() {
   if (currentHomeView === 'cards') {
     app.querySelectorAll(".card").forEach(el => el.onclick = () => go("#/traje/" + el.dataset.id));
   }
+
+  // Alterar Foto Diretamente pela Home (Cartões ou Matriz)
+  app.querySelectorAll("[data-photo-edit]").forEach(btn => {
+    btn.onclick = e => {
+      e.stopPropagation();
+      const cid = btn.dataset.photoEdit;
+      const targetCostume = r.costumes.find(x => x.id === cid);
+      if (!targetCostume) return;
+      const set = p => {
+        targetCostume.photo = p;
+        save();
+        viewHome();
+      };
+      if (targetCostume.photo) {
+        openPhoto(targetCostume.photo, set, () => {
+          if (confirm(`Remover a foto do traje "${targetCostume.name}"?`)) set("");
+        });
+      } else {
+        pickImg(set);
+      }
+    };
+  });
 
   // Renomear Fácil na Tela Inicial
   app.querySelectorAll("[data-rename]").forEach(btn => {
@@ -4665,9 +4727,9 @@ function viewCommon(focusId) {
   });
 }
 
-/* 6. TELA BANCO DE FOTOS (APENAS MASTER) */
-/* 6. TELA BANCO DE FOTOS DO ACERVO */
+/* 6. TELA BANCO DE FOTOS DO ACERVO (APENAS MASTER) */
 function viewBank() {
+  if (!isMasterUnlocked) { go("#/"); return; }
   const r = getActiveRoom();
   const isUnlocked = isCurrentRoomUnlocked();
   const B = bank();
@@ -5308,30 +5370,27 @@ window.addEventListener("keydown", e => {
   }
 });
 
-/* Sincronização em segundo plano ultra-econômica (apenas com aba visível) */
-setInterval(() => {
+/* Sincronização inteligente sem polling: apenas ao focar ou reabrir a aba (com debounce) */
+let lastFocusCheck = 0;
+function checkCloudOnActive() {
+  const now = Date.now();
+  if (now - lastFocusCheck < 15000) return; // Mínimo de 15 segundos entre checagens
+  lastFocusCheck = now;
   if (document.visibilityState === "visible" && getCloudDbUrl()) {
     cloudSyncPull(false);
   }
-}, 60000);
+}
 
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible" && getCloudDbUrl()) {
-    cloudSyncPull(false);
-  }
-});
-
-window.addEventListener("focus", () => {
-  if (getCloudDbUrl()) cloudSyncPull(false);
-});
+document.addEventListener("visibilitychange", checkCloudOnActive);
+window.addEventListener("focus", checkCloudOnActive);
 
 /* ===== ROTEAMENTO ===== */
 function route() {
   closeSidebar();
   const h = location.hash || "#/";
   
-  // Protege rota de backup/configuração exclusiva para Master
-  if (h === "#/backup" && !isMasterUnlocked) {
+  // Protege rotas exclusivas para Master (Backup e Banco Geral de Fotos)
+  if ((h === "#/backup" || h.startsWith("#/banco")) && !isMasterUnlocked) {
     go("#/");
     return;
   }
