@@ -1109,88 +1109,257 @@ body:not(.is-master) .master-only {
   color: var(--text-light);
 }
 
-/* ===== FICHA DE DETALHES DO TRAJE ===== */
-.costume-header {
+/* ===== TOPBAR DO TRAJE ===== */
+.costume-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+/* ===== HERO CARD DO TRAJE (FOCO MÁXIMO EM QUANTIDADES) ===== */
+.costume-hero-card {
   display: flex;
   gap: 20px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-  background: linear-gradient(135deg, #151f32, #1b2740);
-  padding: 20px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
+  align-items: stretch;
+  background: linear-gradient(135deg, #151f32 0%, #1a253c 100%);
   border: 1px solid var(--bd);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
 }
-.cover {
-  width: calc(var(--cardw) * 0.85);
-  aspect-ratio: var(--ar);
+.costume-hero-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--room-color);
+}
+.costume-hero-photo {
+  width: 140px;
+  min-width: 140px;
+  height: 180px;
   border-radius: var(--radius);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #0b101c;
+  background: #0b101c;
+  border: 2px dashed rgba(255, 255, 255, 0.15);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  overflow: hidden;
+  position: relative;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  text-align: center;
-  border: 2px dashed rgba(255, 255, 255, 0.15);
   transition: all 0.2s;
-  padding: 8px;
+  flex-shrink: 0;
 }
-.cover:hover {
+.costume-hero-photo:hover {
   border-color: var(--room-color);
-  color: #fff;
-  background-color: var(--room-bg);
+  box-shadow: 0 0 12px var(--room-bg);
 }
-.costume-info {
-  flex: 1;
-  min-width: 260px;
-}
-.costume-info input {
-  font-family: inherit;
-  font-size: var(--fst);
-  font-weight: 800;
-  border: 1.5px solid transparent;
-  background: transparent;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
+.costume-hero-photo img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.costume-hero-no-photo {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 28px;
+  line-height: 1.3;
+}
+.costume-hero-no-photo small {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-light);
+}
+.photo-edit-hint {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  padding: 4px 2px;
+  opacity: 0.85;
+}
+.costume-hero-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+.costume-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.costume-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 900;
   color: #fff;
   letter-spacing: -0.5px;
+}
+.btn-edit-title {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
   transition: all 0.2s;
 }
-.costume-info input:hover, .costume-info input:focus {
+.btn-edit-title:hover {
+  background: var(--room-bg);
   border-color: var(--room-color);
-  background: #0b101c;
-  box-shadow: 0 0 0 3px var(--room-bg);
-  outline: none;
+  color: #fff;
 }
-.composition-summary {
+
+/* KPIs de Quantidade de Início */
+.costume-main-kpis {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.costume-kpi-badge {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+}
+.costume-kpi-badge.main {
+  background: var(--room-bg);
+  border-color: var(--room-border);
+  box-shadow: 0 0 12px var(--room-bg);
+}
+.costume-kpi-badge.main .costume-kpi-val {
+  color: var(--pri-light);
+  font-size: 22px;
+  font-weight: 900;
+}
+.costume-kpi-badge.warning {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+.costume-kpi-badge.warning .costume-kpi-val {
+  color: #fbbf24;
+}
+.costume-kpi-val {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+}
+.costume-kpi-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Resumo de Quantidades por Peça (Pills) */
+.costume-qty-pills-bar {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 8px;
 }
-.comp-chip {
-  background: rgba(255, 255, 255, 0.06);
+.qty-pill {
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 4px 12px;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
   font-size: 12px;
-  font-weight: 600;
   color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
-.comp-chip.highlight {
+.qty-pill b {
+  color: #38bdf8;
+  font-size: 12px;
+}
+
+/* ===== PAINEL DE ADIÇÃO RÁPIDA DE PEÇAS ===== */
+.costume-quick-add-section {
+  background: var(--surface-card);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+.quick-add-title {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.quick-add-buttons-flow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.btn-preset-add {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-preset-add:hover {
   background: var(--room-bg);
-  border-color: var(--room-border);
-  color: var(--pri-light);
+  border-color: var(--room-color);
+  transform: translateY(-1px);
 }
-.comp-chip b { color: #fff; }
+.btn-preset-add.custom {
+  background: var(--pri);
+  border-color: var(--pri);
+  color: #fff;
+}
+.select-quick-common {
+  background: #0f172a;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+.badge-qty {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  display: inline-block;
+}
 
 /* Quadro de Composição por Peça */
 .breakdown-grid {
@@ -2488,12 +2657,12 @@ function formatSharedTag(part) {
 
 function classifyPiece(part) {
   const p = norm(part);
-  if (p.includes("CALCA") || p.includes("CALÇA")) return { key: "calcas", label: "Calças", icon: "👖" };
-  if (p.includes("CAMISA") || p.includes("BLUSA")) return { key: "camisas", label: "Camisas", icon: "👔" };
-  if (p.includes("COLETE") || p.includes("CORPETE")) return { key: "coletes", label: "Coletes", icon: "🦺" };
-  if (p.includes("CAPOTE") || p.includes("SUKMANA") || p.includes("CASACO") || p.includes("PALETO") || p.includes("TUNICA") || p.includes("SAIA") || p.includes("VESTIDO")) return { key: "capotes", label: "Capotes & Sukmanas", icon: "🧥" };
-  if (p.includes("BOTA") || p.includes("SAPATO") || p.includes("CALCADO") || p.includes("CALÇADO")) return { key: "calcados", label: "Botas & Calçados", icon: "👢" };
-  if (p.includes("FAIXA") || p.includes("FITA") || p.includes("CINTO") || p.includes("GRAVATA") || p.includes("PUNHO") || p.includes("DRAGONA") || p.includes("LUVA") || p.includes("MEIA") || p.includes("ECHARPE") || p.includes("BORDADO") || p.includes("COROA") || p.includes("LENCO") || p.includes("LENÇO") || p.includes("CHOCALHO")) return { key: "aderecos", label: "Adereços & Acessórios", icon: "🎗️" };
+  if (p.includes("CALCA") || p.includes("CALÇA") || p.includes("SPODNIE") || p.includes("CALCAO") || p.includes("CALÇÃO") || p.includes("CULOTE")) return { key: "calcas", label: "Calças", icon: "👖" };
+  if (p.includes("CAMISA") || p.includes("BLUSA") || p.includes("KOSZULA")) return { key: "camisas", label: "Camisas & Blusas", icon: "👔" };
+  if (p.includes("COLETE") || p.includes("CORPETE") || p.includes("KAMIZELKA") || p.includes("GORSET")) return { key: "coletes", label: "Coletes & Corpetes", icon: "🦺" };
+  if (p.includes("SAIA") || p.includes("SPODNICA") || p.includes("SPÓDNICA") || p.includes("SUKNIA") || p.includes("VESTIDO") || p.includes("AVENTAL") || p.includes("ZAPASKA") || p.includes("CAPOTE") || p.includes("SUKMANA") || p.includes("CASACO") || p.includes("PALETO") || p.includes("PALETÓ") || p.includes("TUNICA") || p.includes("TÚNICA") || p.includes("PLASZCZ") || p.includes("PŁASZCZ")) return { key: "capotes", label: "Saias, Capotes & Aventais", icon: "👗" };
+  if (p.includes("BOTA") || p.includes("BUTY") || p.includes("TRZEWIKI") || p.includes("SAPATO") || p.includes("CALCADO") || p.includes("CALÇADO") || p.includes("PANTUFA") || p.includes("SANDALIA") || p.includes("SANDÁLIA")) return { key: "calcados", label: "Botas & Calçados", icon: "👢" };
+  if (p.includes("FAIXA") || p.includes("FITA") || p.includes("CINTO") || p.includes("PAS ") || p.endsWith("PAS") || p.includes("GRAVATA") || p.includes("PUNHO") || p.includes("DRAGONA") || p.includes("LUVA") || p.includes("MEIA") || p.includes("ECHARPE") || p.includes("BORDADO") || p.includes("COROA") || p.includes("WIANEK") || p.includes("CHAPEU") || p.includes("CHAPÉU") || p.includes("CAP") || p.includes("ROGATYWKA") || p.includes("LENCO") || p.includes("LENÇO") || p.includes("CHUSTA") || p.includes("CHOCALHO") || p.includes("COLAR") || p.includes("KORAL") || p.includes("CORDAO") || p.includes("CORDÃO") || p.includes("ADERECO") || p.includes("ADEREÇO") || p.includes("BIJUTERIA") || p.includes("TIARA")) return { key: "aderecos", label: "Adereços & Acessórios", icon: "🎗️" };
   return { key: "outros", label: "Outras Peças", icon: "📦" };
 }
 
@@ -2898,7 +3067,6 @@ function getActiveRoom() {
 function isCurrentRoomUnlocked() {
   if (isMasterUnlocked) return true;
   const r = getActiveRoom();
-  if (!r.pin) return true; // sem senha = aberto
   return unlockedRooms.has(r.id);
 }
 
@@ -2928,11 +3096,11 @@ function updateThemeForActiveRoom() {
 
 function updateCounters() {
   const r = getActiveRoom();
+  const stats = getRoomInventoryStats(r);
   const cCount = r.costumes ? r.costumes.length : 0;
-  const pCount = (r.costumes || []).reduce((acc, c) => acc + (c.items || []).length, 0);
   
   const elC = document.getElementById("sideCostumesCount"); if (elC) elC.textContent = cCount;
-  const elP = document.getElementById("sidePiecesCount"); if (elP) elP.textContent = pCount;
+  const elP = document.getElementById("sidePiecesCount"); if (elP) elP.textContent = stats.totalUnits;
   const elPh = document.getElementById("sidePhotosCount"); if (elPh) elPh.textContent = (S.bank || []).length;
 }
 
@@ -3070,7 +3238,13 @@ function toast(msg) {
   clearTimeout(t._h);
   t._h = setTimeout(() => t.classList.remove("show"), 2000);
 }
-function go(h) { location.hash = h; }
+function go(h) {
+  if (location.hash === h) {
+    route();
+  } else {
+    location.hash = h;
+  }
+}
 function download(name, text, type) {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([text], { type }));
@@ -3439,7 +3613,9 @@ function requireMasterAuth(actionCallback) {
 
 /* ===== CÁLCULO DE TRAJES COMPLETOS (KITS PRONTOS) ===== */
 function calcCompleteKitsInfo(costume, commonList) {
-  const counts = { calcas: 0, camisas: 0, coletes: 0, capotes: 0 };
+  const counts = { calcas: 0, camisas: 0, coletes: 0, capotes: 0, calcados: 0, aderecos: 0, outros: 0 };
+  const pieceCounts = {};
+
   (costume.items || []).forEach(raw => {
     let it = raw;
     if (raw.cid && commonList) {
@@ -3449,6 +3625,8 @@ function calcCompleteKitsInfo(costume, commonList) {
     const cat = classifyPiece(it.part).key;
     const q = parseQty(it.qty);
     if (counts[cat] !== undefined) counts[cat] += q;
+    const pName = (it.part || "Peça").trim();
+    pieceCounts[pName] = (pieceCounts[pName] || 0) + q;
   });
 
   const cName = norm(costume.name || "");
@@ -3457,19 +3635,16 @@ function calcCompleteKitsInfo(costume, commonList) {
   let incompleteNote = "";
 
   // 1. Caso especial: SĄCZ / NOWY SĄCZ (Lachów Sądeckich)
-  // Regra expressa: precisa de Colete + Calça + Capote para traje completo
   if (cName.includes("SACZ") || cName.includes("SĄCZ")) {
     const baseCalcas = counts.calcas || 0;
     const baseColetes = counts.coletes || 0;
     const baseCapotes = counts.capotes || 0;
     const baseCamisas = counts.camisas || 0;
 
-    // Traje completo exige Colete + Calça + Capote (e Camisa se houver)
     const reqFull = [baseCalcas, baseColetes, baseCapotes];
     if (baseCamisas > 0) reqFull.push(baseCamisas);
     fullKits = Math.min(...reqFull);
 
-    // Trajes parciais (que possuem Colete + Calça, mas não têm Capote)
     const reqPartial = [baseCalcas, baseColetes];
     if (baseCamisas > 0) reqPartial.push(baseCamisas);
     const totalPartial = Math.min(...reqPartial);
@@ -3489,9 +3664,8 @@ function calcCompleteKitsInfo(costume, commonList) {
   }
 
   // 2. Caso especial: RZESZÓW
-  // Regra expressa: pode usar Calça com Casaco OU Colete, formando mais trajes completos
   if (cName.includes("RZESZOW") || cName.includes("RZESZÓW")) {
-    const totalTops = counts.coletes + counts.capotes; // Coletes (8) + Casacos (6) = 14
+    const totalTops = counts.coletes + counts.capotes;
     const baseCalcas = counts.calcas || 0;
     const baseCamisas = counts.camisas || 0;
     
@@ -3514,14 +3688,25 @@ function calcCompleteKitsInfo(costume, commonList) {
     };
   }
 
-  // 3. Regra Geral Padrão (Krakowiak, Łowicz, Silesia, Cieszyn, etc.)
+  // 3. Regra Geral Multi-Salas (Masculino, Feminino e Botas)
   const req = [];
   if (counts.calcas > 0) req.push(counts.calcas);
   if (counts.camisas > 0) req.push(counts.camisas);
   
-  const topTotal = counts.coletes + counts.capotes;
-  if (topTotal > 0) {
-    req.push(topTotal);
+  if (counts.calcas > 0) {
+    // Traje com calças (Masculino)
+    const topTotal = counts.coletes + counts.capotes;
+    if (topTotal > 0) req.push(topTotal);
+  } else {
+    // Traje feminino ou sem calça (Saias, Corpetes, Vestidos, Aventais)
+    if (counts.coletes > 0) req.push(counts.coletes);
+    if (counts.capotes > 0) req.push(counts.capotes);
+  }
+
+  // Se não foi capturado pelas categorias base, mas possui peças cadastradas
+  if (req.length === 0 && Object.keys(pieceCounts).length > 0) {
+    const vals = Object.values(pieceCounts).filter(v => v > 0);
+    if (vals.length > 0) req.push(Math.min(...vals));
   }
 
   fullKits = req.length ? Math.min(...req) : 0;
@@ -3656,20 +3841,33 @@ function getRoomInventoryStats(r) {
     comuns: (r.common || []).length
   };
 
+  // 1. Calcula trajes completos por traje e soma peças exclusivas
   (r.costumes || []).forEach(c => {
     const kInfo = calcCompleteKitsInfo(c, r.common || []);
     stats.totalKits += kInfo.kits;
     stats.totalIncompleteKits += kInfo.incomplete;
 
     (c.items || []).forEach(raw => {
-      const it = eff(raw);
-      if (!it) return;
-      const cat = classifyPiece(it.part).key;
-      const q = parseQty(it.qty);
-      stats.totalUnits += q;
-      if (stats[cat] !== undefined) stats[cat] += q;
-      else stats.outros += q;
+      // Peças exclusivas deste traje (não compartilhadas)
+      if (!raw.cid) {
+        const it = eff(raw);
+        if (!it) return;
+        const cat = classifyPiece(it.part).key;
+        const q = parseQty(it.qty);
+        stats.totalUnits += q;
+        if (stats[cat] !== undefined) stats[cat] += q;
+        else stats.outros += q;
+      }
     });
+  });
+
+  // 2. Peças compartilhadas da sala (contadas estritamente UMA ÚNICA VEZ pelo acervo físico total)
+  (r.common || []).forEach(cm => {
+    const cat = classifyPiece(cm.part).key;
+    const q = parseQty(cm.qty);
+    stats.totalUnits += q;
+    if (stats[cat] !== undefined) stats[cat] += q;
+    else stats.outros += q;
   });
 
   return stats;
@@ -3683,7 +3881,7 @@ function openAuthModal() {
   pinInput.value = "";
   
   document.getElementById("authModalTitle").textContent = `🔒 Autenticação de Edição`;
-  document.getElementById("authModalDesc").innerHTML = `Digite o PIN para liberar a edição:`;
+  document.getElementById("authModalDesc").innerHTML = `Digite o PIN para liberar a edição em <b>${esc(r.name)}</b>:`;
   
   modal.classList.add("active");
   setTimeout(() => pinInput.focus(), 100);
@@ -3718,21 +3916,16 @@ function openAuthModal() {
   document.getElementById("authSubmitBtn").onclick = submit;
   pinInput.onkeydown = e => { if (e.key === "Enter") submit(); };
   document.getElementById("authCancelBtn").onclick = () => modal.classList.remove("active");
+  modal.onclick = e => { if (e.target.id === "authModal") modal.classList.remove("active"); };
 }
 
-document.getElementById("authPill").onclick = async () => {
+document.getElementById("authPill").onclick = () => {
   const r = getActiveRoom();
   if (isCurrentRoomUnlocked()) {
-    const v = await ask(`Status: ${isMasterUnlocked ? '👑 Modo Master' : `✏️ Edição (${r.name})`}`, [
-      ["🔒 Travar edição (Voltar ao Modo Consulta)", "lock"]
-    ], "Controle de Acesso");
-
-    if (v === "lock") {
-      if (isMasterUnlocked) setMasterUnlocked(false);
-      setRoomUnlocked(r.id, false);
-      toast("Sala bloqueada em Modo Consulta 🔒");
-      route();
-    }
+    if (isMasterUnlocked) setMasterUnlocked(false);
+    setRoomUnlocked(r.id, false);
+    toast("Sala bloqueada em Modo Consulta 🔒");
+    route();
     return;
   }
   openAuthModal();
@@ -3743,21 +3936,21 @@ function openRoomSwitcher() {
   const modal = document.getElementById("roomModal");
   const grid = document.getElementById("roomsListGrid");
   
-  grid.innerHTML = Object.values(S.rooms).map(r => {
-    const isAct = r.id === S.activeRoom;
-    const stats = getRoomInventoryStats(r);
-    const hasPin = !!r.pin;
+  grid.innerHTML = Object.values(S.rooms).map(roomItem => {
+    const isAct = roomItem.id === S.activeRoom;
+    const stats = getRoomInventoryStats(roomItem);
+    const hasPin = !!roomItem.pin;
     
-    return `<div class="room-card-option ${isAct ? 'active' : ''}" data-room-id="${r.id}">
+    return `<div class="room-card-option ${isAct ? 'active' : ''}" data-room-id="${roomItem.id}">
       <span class="room-card-lock-badge">${hasPin ? '🔒' : '🔓'}</span>
       <div class="room-card-header">
-        <span class="room-card-icon">${r.icon || '📁'}</span>
+        <span class="room-card-icon">${roomItem.icon || '📁'}</span>
         <div>
-          <div class="room-card-name">${esc(r.name)}</div>
+          <div class="room-card-name">${esc(roomItem.name)}</div>
           <div class="room-card-count"><b>${stats.totalKits} trajes completos</b> · ${stats.totalTrajes} modelos</div>
         </div>
       </div>
-      <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">${esc(r.desc || '')}</p>
+      <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">${esc(roomItem.desc || '')}</p>
     </div>`;
   }).join("");
 
@@ -3772,11 +3965,14 @@ function openRoomSwitcher() {
       modal.classList.remove("active");
       toast(`Sala alterada para: ${getActiveRoom().name}`);
       go("#/");
+      route();
     };
   });
 
   document.getElementById("closeRoomModalBtn").onclick = () => modal.classList.remove("active");
   document.getElementById("confirmRoomBtn").onclick = () => modal.classList.remove("active");
+  modal.onclick = e => { if (e.target.id === "roomModal") modal.classList.remove("active"); };
+  
   document.getElementById("addNewRoomBtn").onclick = () => {
     requireMasterAuth(() => {
       const name = prompt("Nome da nova sala / departamento de trajes:");
@@ -3823,11 +4019,14 @@ function viewHome() {
   ${renderModeBanner(r)}
 
   <!-- Banner Hero da Sala com Foco em Trajes Completos -->
-  <div class="room-hero-card noprint">
+  <div class="room-hero-card noprint" onclick="openRoomSwitcher()" style="cursor:pointer;" title="Clique para trocar de sala">
     <div class="room-hero-info">
       <div class="room-hero-icon">${r.icon || '📁'}</div>
       <div>
-        <div class="room-hero-title">${esc(r.name)}</div>
+        <div class="room-hero-title" style="display:flex; align-items:center; gap:8px;">
+          <span>${esc(r.name)}</span>
+          <span style="font-size:11px; background:rgba(255,255,255,0.12); border-radius:6px; padding:2px 8px; font-weight:600;">Trocar sala ▾</span>
+        </div>
         <div class="room-hero-desc">${esc(r.desc || 'Gestão de Trajes Folclóricos · Wisła')}</div>
       </div>
     </div>
@@ -3845,30 +4044,36 @@ function viewHome() {
 
   <!-- KPIs de Categorias Clicáveis -->
   <div class="kpi-grid noprint">
-    <div class="kpi-card" onclick="go('#/pecas')">
-      <span class="kpi-card-icon">👔</span>
+    <div class="kpi-card" onclick="currentPieceCategory='all'; go('#/pecas');">
+      <span class="kpi-card-icon">${r.icon || '📁'}</span>
       <span class="kpi-num">${stats.totalKits} <small style="font-size:11px;font-weight:600;">kits</small></span>
-      <span class="kpi-label">Trajes Completos</span>
+      <span class="kpi-label">${r.id.includes('botas') ? 'Itens Prontos' : 'Trajes Completos'}</span>
     </div>
+    ${(stats.calcas > 0 || r.id === 'masculino') ? `
     <div class="kpi-card" onclick="currentPieceCategory='calcas'; go('#/pecas');">
       <span class="kpi-card-icon">👖</span>
       <span class="kpi-num">${stats.calcas} <small style="font-size:11px;font-weight:600;">un</small></span>
       <span class="kpi-label">Calças</span>
-    </div>
+    </div>` : ''}
     <div class="kpi-card" onclick="currentPieceCategory='camisas'; go('#/pecas');">
       <span class="kpi-card-icon">👔</span>
       <span class="kpi-num">${stats.camisas} <small style="font-size:11px;font-weight:600;">un</small></span>
-      <span class="kpi-label">Camisas</span>
+      <span class="kpi-label">${r.id === 'feminino' ? 'Blusas & Camisas' : 'Camisas'}</span>
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='coletes'; go('#/pecas');">
       <span class="kpi-card-icon">🦺</span>
       <span class="kpi-num">${stats.coletes} <small style="font-size:11px;font-weight:600;">un</small></span>
-      <span class="kpi-label">Coletes</span>
+      <span class="kpi-label">${r.id === 'feminino' ? 'Corpetes & Coletes' : 'Coletes'}</span>
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='capotes'; go('#/pecas');">
-      <span class="kpi-card-icon">🧥</span>
+      <span class="kpi-card-icon">${r.id === 'feminino' ? '👗' : '🧥'}</span>
       <span class="kpi-num">${stats.capotes} <small style="font-size:11px;font-weight:600;">un</small></span>
-      <span class="kpi-label">Capotes / Sukmanas</span>
+      <span class="kpi-label">${r.id === 'feminino' ? 'Saias & Aventais' : 'Capotes / Sukmanas'}</span>
+    </div>
+    <div class="kpi-card" onclick="currentPieceCategory='calcados'; go('#/pecas');">
+      <span class="kpi-card-icon">${r.id === 'botas_fem' ? '👠' : '👢'}</span>
+      <span class="kpi-num">${stats.calcados} <small style="font-size:11px;font-weight:600;">un</small></span>
+      <span class="kpi-label">Botas & Calçados</span>
     </div>
     <div class="kpi-card" onclick="currentPieceCategory='aderecos'; go('#/pecas');">
       <span class="kpi-card-icon">🎗️</span>
@@ -3911,7 +4116,7 @@ function viewHome() {
           ${c.photo ? `<img src="${c.photo}" alt="${esc(c.name)}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block;">` : `<div style="display:flex; justify-content:center; align-items:center; height:100%; font-size:36px; opacity:0.6;">${r.icon || "👔"}</div>`}
           <div class="card-badges">
             <span class="badge-count room" style="display:inline-flex; align-items:center; gap:4px;">
-              <span>${kitInfo.kits ? kitInfo.kits + ' trajes completos' : (comp.totalUnits ? comp.totalUnits + ' peças' : 'Novo')}</span>
+              <span>${kitInfo.kits ? kitInfo.kits + (r.id.includes('botas') ? ' prontos' : ' trajes completos') : (comp.totalUnits ? comp.totalUnits + ' peças' : 'Novo')}</span>
               ${kitInfo.incomplete > 0 ? `<span style="background:rgba(245, 158, 11, 0.35); border:1px solid rgba(245, 158, 11, 0.6); padding:1px 5px; border-radius:8px; font-size:10px; color:#fde68a; font-weight:700;">+${kitInfo.incomplete} s/ capote</span>` : ''}
             </span>
           </div>
@@ -3937,13 +4142,14 @@ function viewHome() {
     h += `</div>`;
   } else {
     h += `<div class="wrap"><table><thead><tr>
-      <th>Traje (A-Z)</th>
+      <th>Traje / Item (A-Z)</th>
       <th>Foto</th>
-      <th style="text-align:center; color:var(--pri-light);">Trajes Completos (Kits)</th>
-      <th style="text-align:center">🦺 Coletes</th>
-      <th style="text-align:center">👔 Camisas</th>
-      <th style="text-align:center">👖 Calças</th>
-      <th style="text-align:center">🧥 Capotes / Sukmanas</th>
+      <th style="text-align:center; color:var(--pri-light);">${r.id.includes('botas') ? 'Itens Prontos' : 'Trajes Completos'}</th>
+      <th style="text-align:center">${r.id === 'feminino' ? '🦺 Corpetes' : '🦺 Coletes'}</th>
+      <th style="text-align:center">${r.id === 'feminino' ? '👔 Blusas' : '👔 Camisas'}</th>
+      ${r.id === 'feminino' ? '<th style="text-align:center">👗 Saias</th>' : '<th style="text-align:center">👖 Calças</th>'}
+      <th style="text-align:center">${r.id === 'feminino' ? '🧥 Aventais / Capotes' : '🧥 Capotes / Sukmanas'}</th>
+      <th style="text-align:center">${r.id === 'botas_fem' ? '👠 Calçados' : '👢 Botas'}</th>
       <th style="text-align:center">🎗️ Adereços</th>
       <th style="text-align:center">👥 Dançarinos</th>
     </tr></thead><tbody>`;
@@ -3951,12 +4157,13 @@ function viewHome() {
     r.costumes.forEach(c => {
       const kitInfo = calcCompleteKitsInfo(c, r.common || []);
       const dancerCount = dancersCountFor(c.name);
-      const counts = { coletes: 0, camisas: 0, calcas: 0, capotes: 0, aderecos: 0 };
+      const counts = { coletes: 0, camisas: 0, calcas: 0, capotes: 0, calcados: 0, aderecos: 0, outros: 0 };
       (c.items || []).forEach(raw => {
         const it = eff(raw); if (!it) return;
         const cat = classifyPiece(it.part).key;
         const q = parseQty(it.qty);
         if (counts[cat] !== undefined) counts[cat] += q;
+        else counts.outros += q;
       });
 
       h += `<tr data-id="${c.id}" data-name="${esc(norm(c.name))}" style="cursor:pointer" onclick="go('#/traje/${c.id}')">
@@ -3973,13 +4180,14 @@ function viewHome() {
           </div>
         </td>
         <td style="text-align:center; font-weight:800; color:var(--pri-light); font-size:15px;">
-          ${kitInfo.kits} trajes
+          ${kitInfo.kits} ${r.id.includes('botas') ? 'itens' : 'trajes'}
           ${kitInfo.incomplete > 0 ? `<div style="font-size:11px; font-weight:700; color:#fbbf24; margin-top:2px;">+${kitInfo.incomplete} não completos<br><span style="font-weight:400; font-size:10px; color:#cbd5e1;">(${kitInfo.incompleteNote})</span></div>` : ''}
         </td>
         <td style="text-align:center; font-weight:700;">${counts.coletes ? counts.coletes + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.camisas ? counts.camisas + ' un' : '-'}</td>
-        <td style="text-align:center; font-weight:700;">${counts.calcas ? counts.calcas + ' un' : '-'}</td>
-        <td style="text-align:center; font-weight:700;">${counts.capotes ? counts.capotes + ' un' : '-'}</td>
+        <td style="text-align:center; font-weight:700;">${(r.id === 'feminino' ? counts.capotes : counts.calcas) ? (r.id === 'feminino' ? counts.capotes : counts.calcas) + ' un' : '-'}</td>
+        <td style="text-align:center; font-weight:700;">${(r.id === 'feminino' ? counts.outros : counts.capotes) ? (r.id === 'feminino' ? counts.outros : counts.capotes) + ' un' : '-'}</td>
+        <td style="text-align:center; font-weight:700;">${counts.calcados ? counts.calcados + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${counts.aderecos ? counts.aderecos + ' un' : '-'}</td>
         <td style="text-align:center; font-weight:700;">${dancerCount ? dancerCount + ' 👥' : '-'}</td>
       </tr>`;
@@ -4054,8 +4262,18 @@ function viewHome() {
 
 /* 2. TELA DETALHES DO TRAJE */
 function viewCostume(id) {
-  const r = getActiveRoom();
-  const c = (r.costumes || []).find(x => x.id === id);
+  let r = getActiveRoom();
+  let c = (r.costumes || []).find(x => x.id === id);
+  if (!c) {
+    const foundRoom = Object.values(S.rooms).find(room => (room.costumes || []).some(x => x.id === id));
+    if (foundRoom) {
+      S.activeRoom = foundRoom.id;
+      r = foundRoom;
+      c = (r.costumes || []).find(x => x.id === id);
+      updateThemeForActiveRoom();
+      updateCounters();
+    }
+  }
   if (!c) { app.innerHTML = `<p style="padding:40px; text-align:center">Traje não encontrado nesta sala. <a href="#/">Voltar</a></p>`; return; }
   c.items = (c.items || []).filter(it => !it.cid || commonOf(it));
   const avail = (r.common || []).filter(cm => !c.items.some(i => i.cid === cm.id));
@@ -4064,112 +4282,131 @@ function viewCostume(id) {
   const kitInfo = calcCompleteKitsInfo(c, r.common || []);
   const isUnlocked = isCurrentRoomUnlocked();
 
+  // Contagem direta por categoria para os badges rápidos de quantidade
+  const counts = { coletes: 0, camisas: 0, calcas: 0, capotes: 0, calcados: 0, aderecos: 0, outros: 0 };
+  (c.items || []).forEach(raw => {
+    const it = eff(raw); if (!it) return;
+    const cat = classifyPiece(it.part).key;
+    const q = parseQty(it.qty);
+    if (counts[cat] !== undefined) counts[cat] += q;
+    else counts.outros += q;
+  });
+
   let h = `
   ${renderModeBanner(r)}
-  <div class="toolbar-bar noprint">
-    <button class="btn" onclick="go('#/')">← Voltar</button>
-    <button class="btn primary" id="addI">+ Peça Personalizada</button>
-    <select id="addCm"><option value="">+ Vincular Compartilhada...</option>${avail.map(cm => `<option value="${cm.id}">${esc(cmLabel(cm))}</option>`).join("")}</select>
-    <button class="btn" onclick="window.print()">🖨 Imprimir</button>
-    <button class="btn red" id="delC" style="margin-left:auto">Excluir Traje</button>
+  
+  <div class="costume-topbar noprint">
+    <button class="btn" onclick="go('#/')">← Voltar (${esc(r.name)})</button>
+    <div style="margin-left:auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+      ${isUnlocked ? `
+        <button class="btn primary" id="addCustomPieceTopBtn">➕ Adicionar Peça</button>
+        <button class="btn" id="renameCostumeBtn" title="Renomear traje (A-Z)">✏️ Renomear Traje</button>
+      ` : ''}
+      <button class="btn" onclick="window.print()" title="Imprimir ficha">🖨️ Imprimir</button>
+      ${isUnlocked ? `
+        <button class="btn red" id="delC" title="Excluir traje">🗑️ Excluir</button>
+      ` : ''}
+    </div>
   </div>
   
-  <div class="costume-header">
-    <div class="cover" id="cover" title="Clique para ver ou alterar a foto do traje" style="${c.photo ? 'border:none; padding:0; overflow:hidden;' : ''}">
-      ${c.photo ? `<img src="${c.photo}" alt="${esc(c.name)}" style="width:100%; height:100%; object-fit:contain; border-radius:inherit; display:block;">` : `<div style="padding:10px; text-align:center;">📷 Adicionar Foto<br><small style="font-size:11px; opacity:0.7">do Traje</small></div>`}
+  <!-- HERO CARD DO TRAJE (FOCO MÁXIMO EM QUANTIDADES DE INÍCIO) -->
+  <div class="costume-hero-card">
+    <div class="costume-hero-photo" id="cover" title="${isUnlocked ? 'Clique para ver ou alterar a foto do traje' : 'Ver foto'}">
+      ${c.photo ? `<img src="${c.photo}" alt="${esc(c.name)}">` : `<div class="costume-hero-no-photo">${r.icon || '👔'}<br><small>${isUnlocked ? '📷 + Foto' : 'Sem foto'}</small></div>`}
+      ${isUnlocked ? `<span class="photo-edit-hint">📷 Alterar Foto</span>` : ''}
     </div>
-    <div class="costume-info">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <input id="cname" value="${esc(c.name)}" title="Nome do traje" style="font-size:20px; font-weight:800; color:#fff;">
+    
+    <div class="costume-hero-details">
+      <div class="costume-title-row">
+        <h1 class="costume-title">${esc(c.name)}</h1>
+        ${isUnlocked ? `<button class="btn-edit-title" id="btnEditTitleDirect" title="Renomear traje">✏️ Renomear</button>` : ''}
       </div>
-      <div class="composition-summary">
-        <span class="comp-chip highlight" style="display:inline-flex; align-items:center; gap:6px;">
-          <span>Trajes Completos: <b>${kitInfo.kits} kits</b></span>
-          ${kitInfo.incomplete > 0 ? `<span style="background:rgba(245, 158, 11, 0.25); border:1px solid rgba(245, 158, 11, 0.5); padding:1px 6px; border-radius:6px; font-size:11px; color:#fbbf24; font-weight:700;" title="Trajes parciais (colete + calça, sem capote)">⚠️ +${kitInfo.incomplete} não completos (${kitInfo.incompleteNote})</span>` : ''}
-        </span>
-        <span class="comp-chip">Total Peças: <b>${comp.totalUnits || c.items.length} un.</b></span>
-        <span class="comp-chip">Compartilhadas: <b>${c.items.filter(i => i.cid).length}</b></span>
-        <span class="comp-chip">Dançarinos: <b>${dancerCount}</b></span>
+
+      <!-- DESTAQUE PRINCIPAL DE QUANTIDADE -->
+      <div class="costume-main-kpis">
+        <div class="costume-kpi-badge main">
+          <span class="costume-kpi-val">${kitInfo.kits}</span>
+          <span class="costume-kpi-lbl">${r.id.includes('botas') ? 'Itens Prontos' : 'Trajes Completos'}</span>
+        </div>
+        ${kitInfo.incomplete > 0 ? `
+        <div class="costume-kpi-badge warning" title="${kitInfo.incompleteNote}">
+          <span class="costume-kpi-val">+${kitInfo.incomplete}</span>
+          <span class="costume-kpi-lbl">s/ capote</span>
+        </div>` : ''}
+        <div class="costume-kpi-badge">
+          <span class="costume-kpi-val">${comp.totalUnits || c.items.length} un</span>
+          <span class="costume-kpi-lbl">Peças no Traje</span>
+        </div>
+        <div class="costume-kpi-badge">
+          <span class="costume-kpi-val">${dancerCount}</span>
+          <span class="costume-kpi-lbl">👥 Dançarinos</span>
+        </div>
+      </div>
+
+      <!-- RESUMO RÁPIDO DE QUANTIDADES POR PEÇA -->
+      <div class="costume-qty-pills-bar">
+        ${counts.coletes > 0 ? `<span class="qty-pill">🦺 ${r.id === 'feminino' ? 'Corpetes' : 'Coletes'}: <b>${counts.coletes} un</b></span>` : ''}
+        ${counts.camisas > 0 ? `<span class="qty-pill">👔 ${r.id === 'feminino' ? 'Blusas' : 'Camisas'}: <b>${counts.camisas} un</b></span>` : ''}
+        ${counts.calcas > 0 ? `<span class="qty-pill">👖 Calças: <b>${counts.calcas} un</b></span>` : ''}
+        ${counts.capotes > 0 ? `<span class="qty-pill">${r.id === 'feminino' ? '👗 Saias' : '🧥 Capotes'}: <b>${counts.capotes} un</b></span>` : ''}
+        ${counts.calcados > 0 ? `<span class="qty-pill">${r.id === 'botas_fem' ? '👠 Calçados' : '👢 Botas'}: <b>${counts.calcados} un</b></span>` : ''}
+        ${counts.aderecos > 0 ? `<span class="qty-pill">🎗️ Adereços: <b>${counts.aderecos} un</b></span>` : ''}
+        ${counts.outros > 0 ? `<span class="qty-pill">📦 Outras Peças: <b>${counts.outros} un</b></span>` : ''}
       </div>
     </div>
   </div>
 
   ${kitInfo.incomplete > 0 ? `
-  <div style="margin: 12px 0 16px; padding: 12px 16px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; font-size: 13px; color: #fde68a; display: flex; align-items: flex-start; gap: 10px;">
-    <span style="font-size: 20px; line-height: 1;">ℹ️</span>
-    <div>
-      <div style="font-weight: 700; color: #fbbf24; margin-bottom: 2px;">Regra de Composição de Sącz:</div>
-      Para ser considerado <b>traje completo</b>, é necessário o conjunto de <b>Colete + Calça + Capote</b> (total: <b>${kitInfo.kits} trajes completos</b>). O acervo possui ainda <b>${kitInfo.incomplete} trajes não completos</b> (${kitInfo.incompleteNote}).
-    </div>
+  <div style="margin: 0 0 16px; padding: 10px 14px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 10px; font-size: 13px; color: #fde68a; display: flex; align-items: center; gap: 8px;">
+    <span>ℹ️</span>
+    <span><b>Regra Sącz:</b> ${kitInfo.kits} trajes completos (Colete + Calça + Capote) e ${kitInfo.incomplete} parciais (${kitInfo.incompleteNote}).</span>
   </div>` : ''}
 
-  ${(norm(c.name).includes("RZESZOW") || norm(c.name).includes("RZESZÓW")) ? `
-  <div style="margin: 12px 0 16px; padding: 12px 16px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 12px; font-size: 13px; color: #bae6fd; display: flex; align-items: flex-start; gap: 10px;">
-    <span style="font-size: 20px; line-height: 1;">ℹ️</span>
-    <div>
-      <div style="font-weight: 700; color: #38bdf8; margin-bottom: 2px;">Regra de Composição de Rzeszów:</div>
-      Os dançarinos podem usar a <b>Calça com Colete</b> ou <b>Calça com Casaco</b>, totalizando <b>${kitInfo.kits} trajes completos</b> ${kitInfo.detail ? `(${kitInfo.detail.replace(/^\d+\s+trajes\s+completos\s*/, '')})` : ''}.
-    </div>
-  </div>` : ''}
-
-  <h3 style="margin-bottom:10px; font-size:15px; color:#fff; display:flex; align-items:center; gap:6px;">
-    📊 Resumo de Estoque por Peça
-  </h3>
-  <div class="breakdown-grid">`;
-
-  comp.groups.forEach(g => {
-    const varRows = Object.values(g.variations).map(v => {
-      return `<div class="breakdown-item-row">
-        <span class="breakdown-item-desc">
-          ${v.isShared ? `<span class="tag shared" title="Peça compartilhada">${formatSharedTag(g.name)}</span>` : '•'}
-          <span>${esc(v.label)}</span>
-          ${v.notes ? `<small style="color:var(--text-light);margin-left:4px;">(${esc(v.notes)})</small>` : ''}
-        </span>
-        <span class="breakdown-item-qty">${v.qty ? v.qty + ' un' : (v.rawQtyStr || '✓')}</span>
-      </div>`;
-    }).join("");
-
-    h += `<div class="breakdown-card">
-      <div class="breakdown-header">
-        <span class="breakdown-title"><span>🧥</span> <span>${esc(g.name)}</span></span>
-        <span class="breakdown-total">${g.totalQty ? g.totalQty + ' un. total' : Object.keys(g.variations).length + ' variação'}</span>
-      </div>
-      <div class="breakdown-items">${varRows}</div>
-    </div>`;
-  });
-
-  h += `</div>
-
-  <div style="display:flex; align-items:center; justify-content:space-between; margin:16px 0 8px;">
-    <h3 style="margin:0; font-size:15px; color:#fff; display:flex; align-items:center; gap:6px;">
-      📝 Tabela Detalhada de Itens
-    </h3>
-    ${isUnlocked ? `<span style="font-size:12px; color:var(--text-muted);">Edição em tempo real ativada ✓</span>` : ''}
-  </div>
-
+  <!-- PAINEL DE ADIÇÃO RÁPIDA DE PEÇAS NO MODO EDIÇÃO -->
   ${isUnlocked ? `
-  <div class="quick-add-bar noprint">
-    <span style="font-size:12px; font-weight:800; color:#fff; display:inline-flex; align-items:center; gap:5px;">⚡ Inserção Rápida:</span>
-    <button class="quick-add-btn" data-qa-part="COLETE">🦺 + Colete</button>
-    <button class="quick-add-btn" data-qa-part="CAMISA">👔 + Camisa</button>
-    <button class="quick-add-btn" data-qa-part="CALÇA">👖 + Calça</button>
-    <button class="quick-add-btn" data-qa-part="SUKMANA">🧥 + Sukmana</button>
-    <button class="quick-add-btn" data-qa-part="CAPOTE">🧥 + Capote</button>
-    <button class="quick-add-btn" data-qa-part="BOTAS">👢 + Botas</button>
-    <button class="quick-add-btn" data-qa-part="FAIXA">🎗️ + Faixa / Fita</button>
-    <button class="quick-add-btn" data-qa-part="CHAPÉU">🎩 + Chapéu</button>
-    <button class="quick-add-btn" data-qa-part="">➕ + Nova Peça</button>
+  <div class="costume-quick-add-section noprint">
+    <div class="quick-add-title">
+      <span>⚡ <b>Inserção Rápida de Peça:</b></span>
+    </div>
+    <div class="quick-add-buttons-flow">
+      ${r.id === 'feminino' ? `
+        <button class="btn-preset-add" data-qa-part="CORPETE">🦺 + Corpete</button>
+        <button class="btn-preset-add" data-qa-part="BLUSA">👔 + Blusa</button>
+        <button class="btn-preset-add" data-qa-part="SAIA">👗 + Saia</button>
+        <button class="btn-preset-add" data-qa-part="AVENTAL">👗 + Avental (Zapaska)</button>
+        <button class="btn-preset-add" data-qa-part="BOTAS">👠 + Botas / Sapatos</button>
+        <button class="btn-preset-add" data-qa-part="COROA">👑 + Coroa / Wianek</button>
+        <button class="btn-preset-add" data-qa-part="FAIXA">🎗️ + Faixa / Fitas</button>
+      ` : `
+        <button class="btn-preset-add" data-qa-part="COLETE">🦺 + Colete</button>
+        <button class="btn-preset-add" data-qa-part="CAMISA">👔 + Camisa</button>
+        <button class="btn-preset-add" data-qa-part="CALÇA">👖 + Calça</button>
+        <button class="btn-preset-add" data-qa-part="SUKMANA">🧥 + Sukmana</button>
+        <button class="btn-preset-add" data-qa-part="CAPOTE">🧥 + Capote</button>
+        <button class="btn-preset-add" data-qa-part="BOTAS">👢 + Botas</button>
+        <button class="btn-preset-add" data-qa-part="FAIXA">🎗️ + Faixa</button>
+        <button class="btn-preset-add" data-qa-part="CHAPÉU">🎩 + Chapéu</button>
+      `}
+      <button class="btn-preset-add custom" data-qa-part="">➕ + Personalizada</button>
+      ${avail.length > 0 ? `
+        <select id="quickAddCmSelect" class="select-quick-common">
+          <option value="">🔗 + Vincular Compartilhada (${avail.length} disp.)...</option>
+          ${avail.map(cm => `<option value="${cm.id}">🔗 ${esc(cmLabel(cm))} (${cm.qty ? cm.qty + ' un' : 'disp.'})</option>`).join("")}
+        </select>
+      ` : ''}
+    </div>
   </div>` : ''}
 
+  <!-- TABELA DE ITENS COM FOCO EM QUANTIDADE -->
   <div class="wrap"><table><thead><tr>
-    <th>Peça</th>
-    <th>Foto</th>
+    <th style="min-width:160px;">Peça</th>
+    <th style="width:50px; text-align:center;">Foto</th>
     <th>Tipo / Detalhe</th>
     <th>Cor</th>
-    <th style="text-align:center; min-width:90px;">Quant.</th>
+    <th style="text-align:center; min-width:110px; color:var(--pri-light);">Quantidade</th>
     <th>Observação</th>
     <th>Também Usada Em</th>
-    <th class="acts noprint"></th>
+    ${isUnlocked ? `<th class="acts noprint" style="width:130px; text-align:center;">Ações</th>` : ''}
   </tr></thead><tbody>`;
 
   c.items.forEach((it, i) => {
@@ -4180,18 +4417,18 @@ function viewCostume(id) {
         h += `<tr data-i="${i}" class="link">
           <td class="part">
             <input data-cm-f="part" list="listPieces" value="${esc(cm.part)}" placeholder="Ex: COLETE, CAMISA">
-            <div style="margin-top:4px; display:flex; align-items:center; gap:6px;">
-              <span class="tag shared" data-cm="${cm.id}" title="Gerenciar em quais outros trajes esta peça é usada">${esc(customTag)}</span>
+            <div style="margin-top:3px; display:flex; align-items:center; gap:5px;">
+              <span class="tag shared" data-cm="${cm.id}" title="Ver detalhes da peça compartilhada">${esc(customTag)}</span>
               <small style="font-size:10px; color:#38bdf8;">(compartilhada)</small>
             </div>
           </td>
-          <td>${thumb(cm.photo, `data-cmph="${cm.id}"`)}</td>
+          <td style="text-align:center">${thumb(cm.photo, `data-cmph="${cm.id}"`)}</td>
           <td><input data-cm-f="type" list="listTypes" value="${esc(cm.type)}" placeholder="Ex: BOTÃO SIMPLES"></td>
           <td><input data-cm-f="color" list="listColors" value="${esc(cm.color)}" placeholder="Ex: PRETO, AZUL"></td>
           <td style="text-align:center">
             <div class="qty-stepper">
               <button type="button" class="qty-btn" data-cm-step="-1" title="Diminuir">-</button>
-              <input data-cm-f="qty" type="text" inputmode="numeric" value="${esc(cm.qty)}" placeholder="1">
+              <input data-cm-f="qty" type="text" inputmode="numeric" value="${esc(cm.qty)}" placeholder="1" style="font-weight:800; color:#38bdf8; text-align:center;">
               <button type="button" class="qty-btn" data-cm-step="1" title="Aumentar">+</button>
             </div>
           </td>
@@ -4206,26 +4443,25 @@ function viewCostume(id) {
       } else {
         h += `<tr data-i="${i}" class="link">
           <td class="part"><span class="ro"><b>${esc(cm.part)}</b><br><span class="tag shared" data-cm="${cm.id}">${esc(customTag)}</span></span></td>
-          <td>${thumb(cm.photo, `data-cmph="${cm.id}"`)}</td>
-          <td><span class="ro">${esc(cm.type)}</span></td>
-          <td><span class="ro">${esc(cm.color)}</span></td>
-          <td style="text-align:center"><span class="ro" style="font-weight:700;">${esc(cm.qty)}</span></td>
-          <td><span class="ro">${esc(cm.notes)}</span></td>
+          <td style="text-align:center">${thumb(cm.photo, `data-cmph="${cm.id}"`)}</td>
+          <td><span class="ro">${esc(cm.type) || '-'}</span></td>
+          <td><span class="ro">${esc(cm.color) || '-'}</span></td>
+          <td style="text-align:center"><span class="badge-qty">${esc(cm.qty || '1')} un</span></td>
+          <td><span class="ro">${esc(cm.notes) || '-'}</span></td>
           <td>${sharedIn(it, c.id).map(s => `<span class="chip" data-go="${s.id}">${esc(s.name)}</span>`).join("")}</td>
-          <td class="acts noprint"></td>
         </tr>`;
       }
     } else {
       if (isUnlocked) {
         h += `<tr data-i="${i}">
           <td class="part"><input data-f="part" list="listPieces" value="${esc(it.part)}" placeholder="Ex: COLETE, CAMISA, SUKMANA"></td>
-          <td>${thumb(it.photo, `data-ph="${i}"`)}</td>
+          <td style="text-align:center">${thumb(it.photo, `data-ph="${i}"`)}</td>
           <td><input data-f="type" list="listTypes" value="${esc(it.type)}" placeholder="Ex: BOTÃO SIMPLES, BORDADA"></td>
           <td><input data-f="color" list="listColors" value="${esc(it.color)}" placeholder="Ex: PRETO, AZUL, BRANCA"></td>
           <td style="text-align:center">
             <div class="qty-stepper">
               <button type="button" class="qty-btn" data-step="-1" title="Diminuir">-</button>
-              <input data-f="qty" type="text" inputmode="numeric" value="${esc(it.qty)}" placeholder="1">
+              <input data-f="qty" type="text" inputmode="numeric" value="${esc(it.qty)}" placeholder="1" style="font-weight:800; color:#38bdf8; text-align:center;">
               <button type="button" class="qty-btn" data-step="1" title="Aumentar">+</button>
             </div>
           </td>
@@ -4242,13 +4478,12 @@ function viewCostume(id) {
       } else {
         h += `<tr data-i="${i}">
           <td class="part"><span class="ro"><b>${esc(it.part)}</b></span></td>
-          <td>${thumb(it.photo, `data-ph="${i}"`)}</td>
-          <td><span class="ro">${esc(it.type)}</span></td>
-          <td><span class="ro">${esc(it.color)}</span></td>
-          <td style="text-align:center"><span class="ro" style="font-weight:700;">${esc(it.qty)}</span></td>
-          <td><span class="ro">${esc(it.notes)}</span></td>
+          <td style="text-align:center">${thumb(it.photo, `data-ph="${i}"`)}</td>
+          <td><span class="ro">${esc(it.type) || '-'}</span></td>
+          <td><span class="ro">${esc(it.color) || '-'}</span></td>
+          <td style="text-align:center"><span class="badge-qty">${esc(it.qty || '1')} un</span></td>
+          <td><span class="ro">${esc(it.notes) || '-'}</span></td>
           <td></td>
-          <td class="acts noprint"></td>
         </tr>`;
       }
     }
@@ -4257,7 +4492,7 @@ function viewCostume(id) {
   app.innerHTML = h + `</tbody></table></div>`;
   const re = () => viewCostume(id);
 
-  // Inserção Rápida de Peças
+  // Inserção Rápida de Peças por Preset
   app.querySelectorAll("[data-qa-part]").forEach(btn => {
     btn.onclick = () => {
       const part = btn.dataset.qaPart;
@@ -4274,45 +4509,86 @@ function viewCostume(id) {
           const inp = last.querySelector(part ? '[data-f="type"]' : '[data-f="part"]');
           if (inp) inp.focus();
         }
-      }, 50);
+      }, 60);
     };
   });
 
-  const cnameEl = document.getElementById("cname");
-  if (cnameEl) {
-    cnameEl.onchange = e => {
-      c.name = fixPolishName(e.target.value) || c.name;
-      e.target.value = c.name;
-      r.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
+  // Botão Adicionar Peça do Topo
+  const addTopBtn = document.getElementById("addCustomPieceTopBtn");
+  if (addTopBtn) {
+    addTopBtn.onclick = () => {
+      c.items.push({ id: uid(), part: "", type: "", color: "", qty: "1", notes: "", photo: "" });
       save();
+      re();
+      updateCounters();
+      setTimeout(() => {
+        const rows = app.querySelectorAll("tbody tr");
+        if (rows.length) {
+          const last = rows[rows.length - 1];
+          const inp = last.querySelector('[data-f="part"]');
+          if (inp) inp.focus();
+        }
+      }, 60);
     };
   }
 
+  // Vincular Compartilhada Rápido
+  const quickCmSel = document.getElementById("quickAddCmSelect");
+  if (quickCmSel) {
+    quickCmSel.onchange = e => {
+      if (!e.target.value) return;
+      c.items.push({ id: uid(), cid: e.target.value });
+      save();
+      re();
+      updateCounters();
+      toast("Peça compartilhada vinculada ao traje ✓");
+    };
+  }
+
+  // Renomear Traje (Fácil e Direto)
+  const handleRenameCostume = () => {
+    const newName = prompt(`Novo nome para o traje:`, c.name);
+    if (!newName || !newName.trim()) return;
+    c.name = fixPolishName(newName.trim());
+    r.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
+    save();
+    re();
+    toast(`Traje renomeado para "${c.name}" ✓`);
+  };
+
+  const renameBtn = document.getElementById("renameCostumeBtn");
+  if (renameBtn) renameBtn.onclick = handleRenameCostume;
+
+  const btnEditTitle = document.getElementById("btnEditTitleDirect");
+  if (btnEditTitle) btnEditTitle.onclick = handleRenameCostume;
+
+  // Foto do Traje
   const covEl = document.getElementById("cover");
   if (covEl) {
     covEl.onclick = () => {
       const set = p => { c.photo = p; save(); re(); };
-      c.photo ? openPhoto(c.photo, set, () => { if (confirm("Remover a foto do traje?")) set(""); }) : pickImg(set);
+      c.photo ? openPhoto(c.photo, isUnlocked ? set : null, isUnlocked ? () => { if (confirm("Remover a foto do traje?")) set(""); } : null) : (isUnlocked ? pickImg(set) : null);
     };
   }
 
-  const addIEl = document.getElementById("addI");
-  if (addIEl) {
-    addIEl.onclick = () => { c.items.push({ id: uid(), part: "", type: "", color: "", qty: "", notes: "", photo: "" }); save(); re(); updateCounters(); };
-  }
-
-  const addCmEl = document.getElementById("addCm");
-  if (addCmEl) {
-    addCmEl.onchange = e => { if (!e.target.value) return; c.items.push({ id: uid(), cid: e.target.value }); save(); re(); updateCounters(); };
-  }
-
+  // Excluir Traje
   const delCEl = document.getElementById("delC");
   if (delCEl) {
-    delCEl.onclick = () => { if (confirm(`Excluir o traje "${c.name}"?`)) { r.costumes = r.costumes.filter(x => x !== c); save(); updateCounters(); go("#/"); } };
+    delCEl.onclick = () => {
+      if (confirm(`Excluir permanentemente o traje "${c.name}"?`)) {
+        r.costumes = r.costumes.filter(x => x !== c);
+        save();
+        updateCounters();
+        toast(`Traje "${c.name}" excluído.`);
+        go("#/");
+      }
+    };
   }
 
+  // Bindings das Linhas da Tabela
   app.querySelectorAll("tbody tr").forEach(tr => {
     const i = +tr.dataset.i, it = c.items[i];
+    if (!it) return;
     const cm = commonOf(it);
 
     // Inputs normais
@@ -4348,12 +4624,12 @@ function viewCostume(id) {
           save();
           re();
           updateCounters();
-          toast("Quantidade compartilhada atualizada ✓");
+          toast("Quantidade atualizada ✓");
         };
       });
     }
 
-    // Steppers normais
+    // Steppers normais (+ e -)
     tr.querySelectorAll("[data-step]").forEach(btn => {
       btn.onclick = () => {
         const val = parseInt(it.qty || "0", 10) || 0;
@@ -4366,37 +4642,46 @@ function viewCostume(id) {
       };
     });
 
+    // Foto da peça personalizada
     const ph = tr.querySelector("[data-ph]");
     if (ph) ph.onclick = () => {
       const set = p => { it.photo = p; save(); re(); };
       it.photo ? openPhoto(it.photo, isUnlocked ? set : null, isUnlocked ? () => { if (confirm("Remover foto?")) set(""); } : null) : (isUnlocked ? pickImg(set) : null);
     };
+
+    // Foto da peça compartilhada
     const cph = tr.querySelector("[data-cmph]");
-    if (cph) {
-      const cm = commonOf(raw);
-      if (cm) {
-        cph.onclick = () => {
-          const set = p => { cm.photo = p; save(); re(); };
-          cm.photo ? openPhoto(cm.photo, isUnlocked ? set : null, isUnlocked ? () => { if (confirm("Remover foto da peça compartilhada?")) set(""); } : null) : (isUnlocked ? pickImg(set) : null);
-        };
-      }
+    if (cph && cm) {
+      cph.onclick = () => {
+        const set = p => { cm.photo = p; save(); re(); };
+        cm.photo ? openPhoto(cm.photo, isUnlocked ? set : null, isUnlocked ? () => { if (confirm("Remover foto da peça compartilhada?")) set(""); } : null) : (isUnlocked ? pickImg(set) : null);
+      };
     }
+
+    // Links de navegação e compartilhadas
     tr.querySelectorAll("[data-cm]").forEach(t => t.onclick = () => go("#/compartilhadas/" + t.dataset.cm));
+    tr.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
+
+    // Ações de ordenação e manipulação
     tr.querySelectorAll("[data-mv]").forEach(b => b.onclick = () => {
       const j = i + +b.dataset.mv; if (j < 0 || j >= c.items.length) return;
       [c.items[i], c.items[j]] = [c.items[j], c.items[i]]; save(); re();
     });
-    const dup = tr.querySelector("[data-dup]"); if (dup) dup.onclick = () => { c.items.splice(i + 1, 0, { ...it, id: uid() }); save(); re(); };
-    const mk = tr.querySelector("[data-mk]"); if (mk) mk.onclick = () => {
+
+    const dup = tr.querySelector("[data-dup]");
+    if (dup) dup.onclick = () => { c.items.splice(i + 1, 0, { ...it, id: uid() }); save(); re(); updateCounters(); };
+
+    const mk = tr.querySelector("[data-mk]");
+    if (mk) mk.onclick = () => {
       if (!it.part) return alert("Preencha o nome da peça primeiro.");
-      const cm = newCommon(it); c.items[i] = { id: it.id, cid: cm.id }; save(); chooseCostumes(cm, re);
+      const cmObj = newCommon(it); c.items[i] = { id: it.id, cid: cmObj.id }; save(); chooseCostumes(cmObj, re);
     };
+
     const delBtn = tr.querySelector("[data-del]");
     if (delBtn) delBtn.onclick = () => {
-      if (!confirm("Excluir/desvincular esta peça?")) return;
+      if (!confirm("Excluir/desvincular esta peça deste traje?")) return;
       c.items.splice(i, 1); save(); re(); updateCounters();
     };
-    tr.querySelectorAll("[data-go]").forEach(ch => ch.onclick = () => go("#/traje/" + ch.dataset.go));
   });
 }
 
@@ -4439,11 +4724,11 @@ function viewPieces() {
 
   const submenus = [
     { key: "all", label: "Todas as Peças", icon: "📦", count: stats.totalUnits },
-    { key: "calcas", label: "Calças", icon: "👖", count: stats.calcas },
-    { key: "camisas", label: "Camisas & Blusas", icon: "👔", count: stats.camisas },
-    { key: "coletes", label: "Coletes", icon: "🦺", count: stats.coletes },
-    { key: "capotes", label: "Capotes, Sukmanas & Saias", icon: "🧥", count: stats.capotes },
-    { key: "calcados", label: "Botas & Calçados", icon: "👢", count: stats.calcados },
+    ...(stats.calcas > 0 || r.id === 'masculino' ? [{ key: "calcas", label: "Calças", icon: "👖", count: stats.calcas }] : []),
+    { key: "camisas", label: r.id === 'feminino' ? "Blusas & Camisas" : "Camisas & Blusas", icon: "👔", count: stats.camisas },
+    { key: "coletes", label: r.id === 'feminino' ? "Corpetes & Coletes" : "Coletes & Corpetes", icon: "🦺", count: stats.coletes },
+    { key: "capotes", label: r.id === 'feminino' ? "Saias, Capotes & Aventais" : "Capotes, Sukmanas & Saias", icon: r.id === 'feminino' ? "👗" : "🧥", count: stats.capotes },
+    { key: "calcados", label: "Botas & Calçados", icon: r.id === 'botas_fem' ? "👠" : "👢", count: stats.calcados },
     { key: "aderecos", label: "Adereços & Faixas", icon: "🎗️", count: stats.aderecos },
     { key: "compartilhadas", label: "Compartilhadas", icon: "🔗", count: (r.common || []).length }
   ];
@@ -5461,7 +5746,7 @@ function route() {
     viewHome();
   }
 }
-document.querySelectorAll(".sidebar .nav-item").forEach(b => b.onclick = () => { closeSidebar(); go(b.dataset.nav); });
+document.querySelectorAll(".sidebar .nav-item[data-nav]").forEach(b => b.onclick = () => { closeSidebar(); go(b.dataset.nav); });
 document.querySelectorAll(".mobile-nav-btn[data-nav]").forEach(b => b.onclick = () => { closeSidebar(); go(b.dataset.nav); });
 window.addEventListener("hashchange", route);
 
