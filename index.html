@@ -2282,10 +2282,10 @@ body.locked .bk-card input {
         <div class="form-group">
           <label style="font-size:12px;">Tamanho Máximo (Largura/Altura)</label>
           <select id="cropMaxSize" style="padding:8px; font-size:13px;">
-            <option value="1200">Grande (1200 px - Alta Definição)</option>
-            <option value="800" selected>Padrão (800 px - Recomendado)</option>
-            <option value="500">Média (500 px - Leve e Rápida)</option>
-            <option value="320">Miniatura (320 px - Super Leve)</option>
+            <option value="600" selected>Otimizado (600 px - Ultra Rápido ~25KB)</option>
+            <option value="800">Padrão (800 px - ~50KB)</option>
+            <option value="400">Compacto (400 px - ~15KB)</option>
+            <option value="1000">Alta Definição (1000 px - ~90KB)</option>
           </select>
         </div>
 
@@ -2669,6 +2669,34 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
   }
 }
 
+let cloudEventSource = null;
+
+function initCloudRealtimeListener() {
+  const url = getCloudDbUrl();
+  if (!url || typeof EventSource === "undefined") return;
+  
+  if (cloudEventSource) {
+    try { cloudEventSource.close(); } catch(e) {}
+    cloudEventSource = null;
+  }
+  
+  const timeUrl = url.replace(/\.json(\?.*)?$/, "/lastModified.json");
+  try {
+    cloudEventSource = new EventSource(timeUrl);
+    cloudEventSource.addEventListener("put", (e) => {
+      try {
+        const payload = JSON.parse(e.data);
+        const remoteTime = (payload && typeof payload === "object" && ("data" in payload)) ? payload.data : payload;
+        const localTime = (S && S.lastModified) || Number(localStorage.getItem("wisla_last_modified")) || 0;
+        
+        if (typeof remoteTime === "number" && remoteTime > localTime) {
+          cloudSyncPull(false);
+        }
+      } catch (err) {}
+    });
+  } catch(e) {}
+}
+
 async function cloudSyncPush() {
   const url = getCloudDbUrl();
   if (!url) {
@@ -2698,7 +2726,7 @@ async function cloudSyncPush() {
       console.warn("Falha ao salvar na nuvem:", e);
       updateCloudStatus("offline");
     }
-  }, 800);
+  }, 500);
 }
 
 async function cloudSyncPull(isManual = false) {
@@ -2713,35 +2741,18 @@ async function cloudSyncPull(isManual = false) {
     const localTime = (S && S.lastModified) || Number(localStorage.getItem("wisla_last_modified")) || 0;
     const timeUrl = url.replace(/\.json(\?.*)?$/, "/lastModified.json");
 
-    // 1. Verificação ultra-leve (15 bytes) na nuvem se não for pull manual
+    // 1. Verificação ultra-leve (15 bytes) na nuvem se não for pull manual e se o local já tiver dados válidos
     if (!isManual && localTime > 0) {
       try {
         const timeRes = await fetchWithTimeout(timeUrl, {}, 4000);
         if (timeRes.ok) {
           const remoteTime = await timeRes.json();
           
-          // Caso A: A nuvem tem timestamp válido e é igual ou menor que o local -> ZERO DOWNLOAD!
+          // Se a nuvem tem timestamp válido e é menor ou igual ao local -> ZERO DOWNLOAD!
           if (typeof remoteTime === "number" && remoteTime <= localTime) {
             updateCloudStatus("online");
             return;
           }
-
-          // Caso B: A nuvem não tem o campo lastModified ainda (null) -> grava timestamp local na nuvem para evitar downloads
-          if (remoteTime === null) {
-            try {
-              await fetchWithTimeout(timeUrl, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(localTime)
-              }, 4000);
-            } catch (e) {}
-            updateCloudStatus("online");
-            return;
-          }
-        } else {
-          // Se falhou ao buscar timestamp, encerra para não baixar o banco pesado
-          updateCloudStatus("online");
-          return;
         }
       } catch (timeErr) {
         updateCloudStatus("offline");
@@ -2749,7 +2760,7 @@ async function cloudSyncPull(isManual = false) {
       }
     }
 
-    // 2. Só baixa o JSON completo se for pull manual ou se o banco na nuvem for mais recente
+    // 2. Baixa os dados da nuvem quando a nuvem é mais recente ou na carga inicial
     updateCloudStatus("syncing");
     const res = await fetchWithTimeout(url, {}, 15000);
     if (res.ok) {
@@ -2758,8 +2769,8 @@ async function cloudSyncPull(isManual = false) {
         const remoteTime = Number(remoteData.lastModified) || Date.now();
         remoteData.lastModified = remoteTime;
         
-        // Se a versão da nuvem for mais recente (ou se for pull manual / primeira carga)
-        if (isManual || remoteTime > localTime || !S || !S.rooms) {
+        // Nuvem tem prioridade absoluta na carga inicial ou quando mais recente
+        if (isManual || remoteTime > localTime || localTime === 0 || !S || !S.rooms) {
           S = migrateState(remoteData);
           S.lastModified = remoteTime;
           localStorage.setItem("wisla_last_modified", String(remoteTime));
@@ -2768,15 +2779,15 @@ async function cloudSyncPull(isManual = false) {
           const tx = db.transaction("kv", "readwrite");
           tx.objectStore("kv").put(S, "state");
           updateCloudStatus("online");
-          if (isManual) toast("✓ Dados baixados da nuvem com sucesso!");
-          else toast("☁️ Acervo atualizado por outro usuário!");
+          if (isManual) toast("✓ Dados sincronizados da nuvem!");
+          else if (localTime > 0) toast("☁️ Acervo atualizado por outro usuário!");
           updateCounters();
           route();
         } else {
           updateCloudStatus("online");
         }
-      } else if (remoteData === null && S && S.rooms) {
-        // Banco na nuvem recém-criado/vazio: faz push automático da base inicial
+      } else if (remoteData === null && S && S.rooms && localTime > 0) {
+        // Banco na nuvem recém-criado/vazio: faz push da base
         updateCloudStatus("online");
         cloudSyncPush();
       } else {
@@ -2819,7 +2830,7 @@ function migrateState(d) {
   
   const state = {
     version: 4,
-    lastModified: Number(d.lastModified) || Number(localStorage.getItem("wisla_last_modified")) || Date.now(),
+    lastModified: Number(d.lastModified) || Number(localStorage.getItem("wisla_last_modified")) || 0,
     cloudDbUrl: d.cloudDbUrl || DEFAULT_CLOUD_DB_URL,
     activeRoom: d.activeRoom || "masculino",
     masterPin: d.masterPin || hash(MASTER_PIN_DEFAULT),
@@ -3069,7 +3080,15 @@ function download(name, text, type) {
 const today = () => new Date().toISOString().slice(0, 10);
 const bank = () => (S.bank = S.bank || []);
 
-function readImg(file, max = 1000) {
+function exportCanvasOptimized(cv) {
+  try {
+    const webp = cv.toDataURL("image/webp", 0.78);
+    if (webp && webp.startsWith("data:image/webp")) return webp;
+  } catch (e) {}
+  return cv.toDataURL("image/jpeg", 0.78);
+}
+
+function readImg(file, max = 600) {
   return new Promise((res, rej) => {
     const fr = new FileReader();
     fr.onload = () => {
@@ -3084,7 +3103,7 @@ function readImg(file, max = 1000) {
         g.fillRect(0, 0, cv.width, cv.height);
         g.filter = "brightness(1.05) contrast(1.08)";
         g.drawImage(im, 0, 0, cv.width, cv.height);
-        res(cv.toDataURL("image/jpeg", 0.85));
+        res(exportCanvasOptimized(cv));
       };
       im.onerror = () => rej(new Error("Formato não suportado"));
       im.src = fr.result;
@@ -3131,10 +3150,10 @@ function openImageResizer(source, defaultName, callback) {
     panX = 0;
     panY = 0;
     selAspect.value = "free";
-    selMaxSize.value = "800";
+    selMaxSize.value = "600";
 
     const redraw = () => {
-      const maxSize = parseInt(selMaxSize.value, 10) || 800;
+      const maxSize = parseInt(selMaxSize.value, 10) || 600;
       const aspect = selAspect.value || "free";
       const rot = ((rotation % 360) + 360) % 360;
       const isSwapped = rot === 90 || rot === 270;
@@ -3195,9 +3214,9 @@ function openImageResizer(source, defaultName, callback) {
 
       if (dimInfo) dimInfo.textContent = `${targetW} × ${targetH} px`;
       try {
-        const estData = canvas.toDataURL("image/jpeg", 0.85);
+        const estData = exportCanvasOptimized(canvas);
         const kb = Math.round((estData.length * 0.75) / 1024);
-        if (sizeInfo) sizeInfo.textContent = `~${kb} KB (JPEG 85%)`;
+        if (sizeInfo) sizeInfo.textContent = `~${kb} KB (Otimizado)`;
       } catch (e) {}
     };
 
@@ -3311,7 +3330,7 @@ function openImageResizer(source, defaultName, callback) {
       zoomInp.value = "1";
       zoomVal.textContent = "1.0x";
       selAspect.value = "free";
-      selMaxSize.value = "800";
+      selMaxSize.value = "600";
       redraw();
     };
 
@@ -3325,7 +3344,7 @@ function openImageResizer(source, defaultName, callback) {
 
     btnApply.onclick = () => {
       try {
-        const finalImg = canvas.toDataURL("image/jpeg", 0.85);
+        const finalImg = exportCanvasOptimized(canvas);
         close();
         callback(finalImg);
       } catch (e) {
@@ -5453,15 +5472,19 @@ window.addEventListener("hashchange", route);
     raw = await loadState();
   } catch (e) {}
   
-  // Se IndexedDB estiver vazio ou sem trajes, carrega automaticamente os dados padrão embutidos!
+  // Se IndexedDB estiver vazio ou sem trajes, carrega dados padrão embutidos com prioridade zero
   const hasCostumes = raw && raw.rooms && Object.values(raw.rooms).some(r => r.costumes && r.costumes.length > 0);
   if (!raw || !hasCostumes) {
     if (window.WISLA_DEFAULT_DATA) {
-      raw = window.WISLA_DEFAULT_DATA;
+      raw = JSON.parse(JSON.stringify(window.WISLA_DEFAULT_DATA));
+      raw.lastModified = 0; // Fallback estático sempre tem prioridade zero
     } else {
       try {
         const resp = await fetch('trajes-backup-2026-09-23.json');
-        if (resp.ok) raw = await resp.json();
+        if (resp.ok) {
+          raw = await resp.json();
+          if (raw) raw.lastModified = 0;
+        }
       } catch (e) {}
     }
   }
@@ -5484,9 +5507,11 @@ window.addEventListener("hashchange", route);
     tx.objectStore("kv").put(S, "state");
   } catch (e) {}
 
-  // Consulta a nuvem em segundo plano sem travar a interface
+  // Consulta a nuvem em segundo plano com prioridade e ativa escuta em tempo real
   if (getCloudDbUrl()) {
-    cloudSyncPull(false);
+    const isFresh = !raw || !raw.lastModified || raw.lastModified <= 0;
+    cloudSyncPull(isFresh);
+    initCloudRealtimeListener();
   } else {
     updateCloudStatus("local");
   }
