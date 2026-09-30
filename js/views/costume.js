@@ -6,7 +6,7 @@ function viewCostume(id) {
   if (!c) {
     const foundRoom = Object.values(S.rooms).find(room => (room.costumes || []).some(x => x.id === id));
     if (foundRoom) {
-      S.activeRoom = foundRoom.id;
+      setActiveRoomId(foundRoom.id);
       r = foundRoom;
       c = (r.costumes || []).find(x => x.id === id);
       updateThemeForActiveRoom();

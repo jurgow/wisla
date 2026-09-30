@@ -167,7 +167,7 @@ function migrateState(d) {
     version: 4,
     lastModified: Number(d.lastModified) || Number(localStorage.getItem("wisla_last_modified")) || 0,
     cloudDbUrl: d.cloudDbUrl || DEFAULT_CLOUD_DB_URL,
-    activeRoom: d.activeRoom || "masculino",
+    activeRoom: (typeof getActiveRoomId === "function" ? getActiveRoomId() : (localStorage.getItem("wisla_active_room") || "masculino")),
     masterPin: d.masterPin || hash(MASTER_PIN_DEFAULT),
     rooms: d.rooms || JSON.parse(JSON.stringify(DEFAULT_ROOMS)),
     dances: d.dances || [],

@@ -18,11 +18,34 @@ function setRoomUnlocked(roomId, val) {
   updateAuthUI();
 }
 
-/* Helpers de Sala Ativa */
+/* Helpers de Sala Ativa (Isolamento por Dispositivo/Sessão) */
+function getActiveRoomId() {
+  const local = localStorage.getItem("wisla_active_room");
+  if (local && S && S.rooms && S.rooms[local]) {
+    return local;
+  }
+  if (S && S.rooms) {
+    if (S.rooms["masculino"]) return "masculino";
+    const keys = Object.keys(S.rooms);
+    if (keys.length > 0) return keys[0];
+  }
+  return "masculino";
+}
+
+function setActiveRoomId(roomId) {
+  if (roomId) {
+    localStorage.setItem("wisla_active_room", roomId);
+    if (S) S.activeRoom = roomId;
+  }
+}
+
 function getActiveRoom() {
   if (!S || !S.rooms) return DEFAULT_ROOMS.masculino;
-  if (!S.rooms[S.activeRoom]) S.activeRoom = Object.keys(S.rooms)[0] || "masculino";
-  return S.rooms[S.activeRoom];
+  const currentId = getActiveRoomId();
+  if (S.rooms[currentId]) return S.rooms[currentId];
+  const firstId = Object.keys(S.rooms)[0] || "masculino";
+  setActiveRoomId(firstId);
+  return S.rooms[firstId] || DEFAULT_ROOMS.masculino;
 }
 
 function isCurrentRoomUnlocked() {
@@ -263,9 +286,10 @@ function openAuthModal() {
 function openRoomSwitcher() {
   const modal = document.getElementById("roomModal");
   const grid = document.getElementById("roomsListGrid");
+  const currentRoomId = getActiveRoomId();
   
   grid.innerHTML = Object.values(S.rooms).map(roomItem => {
-    const isAct = roomItem.id === S.activeRoom;
+    const isAct = roomItem.id === currentRoomId;
     const stats = getRoomInventoryStats(roomItem);
     const hasPin = !!roomItem.pin;
     
@@ -287,8 +311,7 @@ function openRoomSwitcher() {
   grid.querySelectorAll(".room-card-option").forEach(card => {
     card.onclick = () => {
       const rid = card.dataset.roomId;
-      S.activeRoom = rid;
-      save();
+      setActiveRoomId(rid);
       updateThemeForActiveRoom();
       modal.classList.remove("active");
       toast(`Sala alterada para: ${getActiveRoom().name}`);
@@ -317,7 +340,7 @@ function openRoomSwitcher() {
         costumes: [],
         common: []
       };
-      S.activeRoom = id;
+      setActiveRoomId(id);
       save();
       updateThemeForActiveRoom();
       modal.classList.remove("active");
