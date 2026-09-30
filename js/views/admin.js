@@ -323,25 +323,53 @@ function viewBackup() {
   };
 }
 
-/* 3. Configurações & Gestão de Salas */
+/* 3. Configurações & Gestão de Salas (Apenas Master) */
 function renderRoomsManagement() {
   const container = document.getElementById("roomsManagementList");
   if (!container) return;
 
-  container.innerHTML = Object.values(S.rooms).map(r => {
+  const addBtn = document.getElementById("adminAddNewRoomBtn");
+  if (addBtn) {
+    addBtn.onclick = () => {
+      requireMasterAuth(() => {
+        const name = prompt("Nome da nova sala / departamento de trajes:");
+        if (!name || !name.trim()) return;
+        const icon = prompt("Ícone (emoji) para a sala:", "📁") || "📁";
+        const desc = prompt("Descrição breve da sala:", "Departamento de trajes") || "";
+        const id = uid();
+        S.rooms[id] = {
+          id,
+          name: name.trim(),
+          icon,
+          color: "#0284c7",
+          desc,
+          pin: "",
+          costumes: [],
+          common: []
+        };
+        save();
+        toast(`Sala "${name}" criada com sucesso!`);
+        renderRoomsManagement();
+      });
+    };
+  }
+
+  container.innerHTML = getSortedRoomsList(S.rooms).map(r => {
     const hasPin = !!r.pin;
     const stats = getRoomInventoryStats(r);
+    const isDefault = ["masculino", "feminino", "botas_masc", "botas_fem", "aderecos_fem"].includes(r.id);
     return `<div style="background:var(--surface-card); border:1px solid var(--bd); border-radius:12px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
       <div style="display:flex; align-items:center; gap:10px;">
         <span style="font-size:22px;">${r.icon || '📁'}</span>
         <div>
           <b style="color:#fff; font-size:14px;">${esc(r.name)}</b>
-          <div style="font-size:11px; color:var(--text-muted);"><b>${stats.totalKits} trajes completos</b> (${stats.totalTrajes} modelos) · Status: ${hasPin ? '🔒 PIN Protegido' : '🔓 Acesso Livre'}</div>
+          <div style="font-size:11px; color:var(--text-muted);"><b>${stats.totalKits} ${(r.id.includes('botas') || r.id.includes('aderecos')) ? 'itens prontos' : 'trajes completos'}</b> (${stats.totalTrajes} modelos) · Status: ${hasPin ? '🔒 PIN Protegido' : '🔓 Acesso Livre'}</div>
         </div>
       </div>
-      <div style="display:flex; gap:6px;">
+      <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
         <button class="btn sm" data-setpin="${r.id}">${hasPin ? 'Alterar PIN' : 'Definir PIN'}</button>
         ${hasPin ? `<button class="btn sm red" data-rempin="${r.id}">Remover PIN</button>` : ''}
+        ${!isDefault ? `<button class="btn sm red" data-delroom="${r.id}" title="Excluir Sala Permanentemente">🗑️ Excluir</button>` : ''}
       </div>
     </div>`;
   }).join("");
@@ -372,6 +400,28 @@ function renderRoomsManagement() {
           save();
           toast(`PIN de ${targetRoom.name} removido!`);
           renderRoomsManagement();
+        }
+      });
+    };
+  });
+
+  container.querySelectorAll("[data-delroom]").forEach(btn => {
+    btn.onclick = () => {
+      requireMasterAuth(() => {
+        const rid = btn.dataset.delroom;
+        const targetRoom = S.rooms[rid];
+        if (!targetRoom) return;
+        const totalItems = (targetRoom.costumes || []).length;
+        if (confirm(`Tem certeza que deseja excluir permanentemente a sala "${targetRoom.name}"? ${totalItems > 0 ? `\n\nATENÇÃO: Ela possui ${totalItems} trajes cadastrados que serão apagados!` : ''}`)) {
+          if (getActiveRoomId() === rid) {
+            setActiveRoomId("masculino");
+            updateThemeForActiveRoom();
+          }
+          delete S.rooms[rid];
+          save();
+          toast(`Sala "${targetRoom.name}" excluída.`);
+          renderRoomsManagement();
+          route();
         }
       });
     };

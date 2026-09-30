@@ -25,11 +25,11 @@ function go(h) {
   }
 }
 
-/* Sincronização inteligente sem polling: apenas ao focar ou reabrir a aba (com debounce) */
+/* Sincronização inteligente sem polling: apenas checagem ultra-leve de 15 bytes ao focar ou reabrir a aba */
 let lastFocusCheck = 0;
 function checkCloudOnActive() {
   const now = Date.now();
-  if (now - lastFocusCheck < 15000) return; // Mínimo de 15 segundos entre checagens
+  if (now - lastFocusCheck < 30000) return; // Mínimo de 30 segundos entre checagens
   lastFocusCheck = now;
   if (document.visibilityState === "visible" && getCloudDbUrl()) {
     cloudSyncPull(false);
@@ -143,6 +143,14 @@ function setupGlobalListeners() {
   const sideQuickBtn = document.getElementById("sideQuickSwitchBtn");
   if (sideQuickBtn) sideQuickBtn.onclick = openRoomSwitcher;
 
+  const cloudPill = document.getElementById("cloudPill");
+  if (cloudPill) {
+    cloudPill.onclick = () => {
+      toast("🔄 Sincronizando com a nuvem...");
+      cloudSyncPull(true);
+    };
+  }
+
   const authPill = document.getElementById("authPill");
   if (authPill) {
     authPill.onclick = () => {
@@ -208,27 +216,14 @@ function setupGlobalListeners() {
     tx.objectStore("kv").put(S, "state");
   } catch (e) {}
 
-  // Consulta a nuvem imediatamente e ativa escuta em tempo real
+  // Consulta a nuvem de forma imediata na inicialização para carregar as fotos e dados mais recentes
   if (getCloudDbUrl()) {
     cloudSyncPull(true);
     initCloudRealtimeListener();
 
-    // Sincronização periódica suave em segundo plano a cada 20s se a janela estiver visível
-    setInterval(() => {
-      if (document.visibilityState === "visible" && !isSyncingCloud && getCloudDbUrl()) {
-        cloudSyncPull(false);
-      }
-    }, 20000);
-
-    // Sincronização instantânea ao focar na janela ou voltar para a aba
-    window.addEventListener("focus", () => {
-      if (getCloudDbUrl()) cloudSyncPull(false);
-    });
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible" && getCloudDbUrl()) {
-        cloudSyncPull(false);
-      }
-    });
+    // Sincronização inteligente com debounce apenas ao voltar à aba/janela
+    window.addEventListener("focus", checkCloudOnActive);
+    document.addEventListener("visibilitychange", checkCloudOnActive);
   } else {
     updateCloudStatus("local");
   }

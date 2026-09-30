@@ -37,10 +37,20 @@ const DEFAULT_ROOMS = {
   },
   "botas_fem": {
     id: "botas_fem",
-    name: "Adereços e Botas Femininos",
-    icon: "👠",
+    name: "Botas Femininas",
+    icon: "👢",
     color: "#a855f7",
-    desc: "Botas e adereços femininos",
+    desc: "Botas e calçados femininos",
+    pin: "",
+    costumes: [],
+    common: []
+  },
+  "aderecos_fem": {
+    id: "aderecos_fem",
+    name: "Adereços Femininos",
+    icon: "🎀",
+    color: "#ec4899",
+    desc: "Adereços, flores, coroas, laços e fitas femininos",
     pin: "",
     costumes: [],
     common: []
@@ -183,6 +193,13 @@ function migrateState(d) {
     }
   });
 
+  // Atualiza nome/descrição de botas_fem caso esteja com a nomenclatura antiga
+  if (state.rooms.botas_fem && state.rooms.botas_fem.name === "Adereços e Botas Femininos") {
+    state.rooms.botas_fem.name = "Botas Femininas";
+    state.rooms.botas_fem.desc = "Botas e calçados femininos";
+    state.rooms.botas_fem.icon = "👢";
+  }
+
   // Se veio do modelo antigo (costumes na raiz), aloca para 'masculino'
   if (Array.isArray(d.costumes) && d.costumes.length > 0 && state.rooms.masculino.costumes.length === 0) {
     state.rooms.masculino.costumes = d.costumes;
@@ -225,12 +242,24 @@ function migrateState(d) {
   return state;
 }
 
-/* Sincronização em Tempo Real (EventSource + Push / Pull) */
+function getCloudMetaUrl() {
+  const fullUrl = getCloudDbUrl();
+  if (!fullUrl) return "";
+  if (fullUrl.endsWith("/acervo.json")) {
+    return fullUrl.replace("/acervo.json", "/acervo/lastModified.json");
+  }
+  if (fullUrl.endsWith(".json")) {
+    return fullUrl.replace(/\.json$/, "/lastModified.json");
+  }
+  return fullUrl + "/lastModified.json";
+}
+
+/* Sincronização em Tempo Real Ultra-Econômica (Escuta apenas o Timestamp de 15 bytes) */
 let cloudEventSource = null;
 
 function initCloudRealtimeListener() {
-  const url = getCloudDbUrl();
-  if (!url || typeof EventSource === "undefined") return;
+  const metaUrl = getCloudMetaUrl();
+  if (!metaUrl || typeof EventSource === "undefined") return;
   
   if (cloudEventSource) {
     try { cloudEventSource.close(); } catch(e) {}
@@ -238,37 +267,30 @@ function initCloudRealtimeListener() {
   }
   
   try {
-    cloudEventSource = new EventSource(url);
+    // Conecta SSE no nó de timestamp (apenas 15 bytes por evento em vez de 10.7MB)
+    cloudEventSource = new EventSource(metaUrl);
     
     cloudEventSource.addEventListener("put", (e) => {
       try {
         const payload = JSON.parse(e.data);
-        if (!payload) return;
+        if (payload === null || payload === undefined) return;
         
-        // Se a alteração veio de uma atualização de raiz com dados
-        if (payload.path === "/" && payload.data && typeof payload.data === "object" && (payload.data.rooms || payload.data.costumes)) {
-          const remoteData = payload.data;
-          const remoteTime = Number(remoteData.lastModified) || Date.now();
-          const localTime = (S && S.lastModified) || Number(localStorage.getItem("wisla_last_modified")) || 0;
-          
-          if (remoteTime > localTime) {
-            S = migrateState(remoteData);
-            S.lastModified = remoteTime;
-            localStorage.setItem("wisla_last_modified", String(remoteTime));
-            
-            openDB().then(db => {
-              const tx = db.transaction("kv", "readwrite");
-              tx.objectStore("kv").put(S, "state");
-            }).catch(() => {});
-            
-            updateCloudStatus("online");
-            updateCounters();
-            updateThemeForActiveRoom();
-            route();
-          }
-        } else {
-          // Alteração parcial ou sub-ramo: sincroniza estado
+        let remoteTime = 0;
+        if (typeof payload === "number") {
+          remoteTime = payload;
+        } else if (payload && typeof payload.data === "number") {
+          remoteTime = payload.data;
+        } else if (payload && typeof payload.data === "object" && payload.data) {
+          remoteTime = Number(payload.data.lastModified || payload.data) || 0;
+        }
+        
+        const localTime = (S && S.lastModified) || Number(localStorage.getItem("wisla_last_modified")) || 0;
+        
+        // Só faz o download do acervo completo se houver alteração real mais recente
+        if (remoteTime > localTime) {
           cloudSyncPull(false);
+        } else {
+          updateCloudStatus("online");
         }
       } catch (err) {}
     });
@@ -278,7 +300,7 @@ function initCloudRealtimeListener() {
     };
 
     cloudEventSource.onerror = () => {
-      // Reconexão transparente gerenciada pelo browser
+      // Reconexão gerenciada automaticamente pelo navegador
     };
   } catch(e) {
     console.warn("SSE não suportado:", e);
@@ -303,7 +325,7 @@ async function cloudSyncPush() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(S)
-      }, 15000);
+      }, 20000);
       if (res.ok) {
         updateCloudStatus("online");
         toast("☁️ Sincronizado na nuvem para todos!");
@@ -314,33 +336,56 @@ async function cloudSyncPush() {
       console.warn("Falha ao salvar na nuvem:", e);
       updateCloudStatus("offline");
     }
-  }, 500);
+  }, 800);
 }
 
-async function cloudSyncPull(isManual = false) {
+async function cloudSyncPull(force = false) {
   const url = getCloudDbUrl();
+  const metaUrl = getCloudMetaUrl();
   if (!url) {
     updateCloudStatus("local");
     return;
   }
   if (isSyncingCloud) return;
+
   try {
     isSyncingCloud = true;
     updateCloudStatus("syncing");
     const localTime = (S && S.lastModified) || Number(localStorage.getItem("wisla_last_modified")) || 0;
 
-    const res = await fetchWithTimeout(url, { cache: "no-cache" }, 12000);
+    // 1. CHECAGEM ULTRA-LEVE DE METADADOS (apenas 15 bytes de download):
+    // Se não for forçado e já tivermos dados locais, checamos se o timestamp remoto mudou antes de baixar o arquivo
+    if (!force && localTime > 0 && metaUrl) {
+      try {
+        const metaRes = await fetchWithTimeout(metaUrl, { cache: "no-cache" }, 4000);
+        if (metaRes.ok) {
+          const remoteTime = Number(await metaRes.json()) || 0;
+          if (remoteTime > 0 && remoteTime <= localTime) {
+            // DADOS LOCAIS JÁ ESTÃO 100% ATUALIZADOS!
+            updateCloudStatus("online");
+            return;
+          }
+        }
+      } catch(e) {}
+    }
+
+    // 2. BAIXA O ACERVO COMPLETO DA NUVEM (em segundo plano, sem travar a navegação)
+    const res = await fetchWithTimeout(url, { cache: "no-cache" }, 20000);
     if (res.ok) {
       const remoteData = await res.json();
       if (remoteData && typeof remoteData === "object" && (remoteData.rooms || remoteData.costumes)) {
         const remoteTime = Number(remoteData.lastModified) || 0;
         
-        // Nuvem tem prioridade na carga inicial, quando solicitada ou quando é mais recente/igual
-        if (isManual || remoteTime >= localTime || localTime === 0 || !S || !S.rooms) {
+        // Aplica os dados da nuvem se for forçado (inicialização/manual) ou se a nuvem for >= local
+        if (force || remoteTime >= localTime || localTime === 0 || !S || !S.rooms) {
           S = migrateState(remoteData);
           if (remoteTime > 0) {
             S.lastModified = remoteTime;
             localStorage.setItem("wisla_last_modified", String(remoteTime));
+          } else {
+            const now = Date.now();
+            S.lastModified = now;
+            localStorage.setItem("wisla_last_modified", String(now));
           }
           
           try {
@@ -350,14 +395,13 @@ async function cloudSyncPull(isManual = false) {
           } catch(e) {}
 
           updateCloudStatus("online");
-          if (isManual && localTime > 0) toast("✓ Nuvem sincronizada!");
           updateCounters();
           updateThemeForActiveRoom();
           route();
         } else {
           updateCloudStatus("online");
         }
-      } else if (remoteData === null && S && S.rooms && localTime > 0) {
+      } else if (remoteData === null && S && S.rooms) {
         updateCloudStatus("online");
         cloudSyncPush();
       } else {

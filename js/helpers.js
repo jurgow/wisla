@@ -178,3 +178,41 @@ function updateCounters() {
   if (elPh) elPh.textContent = phCount;
 }
 
+/* Ordenação Padrão das Salas (Trajes sempre primeiro) */
+function getSortedRoomsList(roomsObj) {
+  const list = Object.values(roomsObj || (typeof S !== "undefined" && S?.rooms) || {});
+  if (!list.length) return [];
+  
+  const rank = (r) => {
+    if (!r) return 999;
+    const id = (r.id || "").toLowerCase();
+    const nm = (r.name || "").toLowerCase();
+    
+    // 1. Trajes Masculinos primeiro
+    if (id === "masculino") return 10;
+    if (nm.includes("traje") && nm.includes("masculin")) return 11;
+    
+    // 2. Trajes Femininos logo em seguida
+    if (id === "feminino") return 20;
+    if (nm.includes("traje") && nm.includes("feminin")) return 21;
+    
+    // 3. Outras salas de trajes
+    if (nm.includes("traje")) return 25;
+    
+    // 4. Botas & Adereços
+    if (id === "botas_masc" || (nm.includes("bota") && nm.includes("masc"))) return 30;
+    if (id === "botas_fem" || (nm.includes("bota") && nm.includes("fem"))) return 40;
+    if (id === "aderecos_fem" || (nm.includes("adere") && nm.includes("fem"))) return 50;
+    if (nm.includes("bota") || nm.includes("calcado")) return 70;
+    if (nm.includes("adere")) return 80;
+    
+    return 100;
+  };
+
+  return list.sort((a, b) => {
+    const ra = rank(a);
+    const rb = rank(b);
+    if (ra !== rb) return ra - rb;
+    return (a.name || "").localeCompare(b.name || "", "pt-BR");
+  });
+}

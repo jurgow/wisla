@@ -108,7 +108,7 @@ function viewHome() {
           ${c.photo ? `<img src="${c.photo}" alt="${esc(c.name)}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block;">` : `<div style="display:flex; justify-content:center; align-items:center; height:100%; font-size:36px; opacity:0.6;">${r.icon || "👔"}</div>`}
           <div class="card-badges">
             <span class="badge-count room">
-              <span><b>${kitInfo.kits || comp.totalUnits || 0}</b> ${kitInfo.kits ? (r.id.includes('botas') ? 'prontos' : 'kits') : (comp.totalUnits ? 'peças' : 'Novo')}</span>
+              <span><b>${kitInfo.kits || comp.totalUnits || 0}</b> ${kitInfo.kits ? ((r.id.includes('botas') || r.id.includes('aderecos')) ? 'prontos' : 'kits') : (comp.totalUnits ? 'peças' : 'Novo')}</span>
               ${kitInfo.incomplete > 0 ? `<span class="badge-incomplete">+${kitInfo.incomplete} s/ capote</span>` : ''}
             </span>
           </div>
@@ -136,7 +136,7 @@ function viewHome() {
     h += `<div class="wrap"><table><thead><tr>
       <th>Traje / Item (A-Z)</th>
       <th>Foto</th>
-      <th style="text-align:center; color:var(--pri-light);">${r.id.includes('botas') ? 'Itens Prontos' : 'Trajes Completos'}</th>
+      <th style="text-align:center; color:var(--pri-light);">${(r.id.includes('botas') || r.id.includes('aderecos')) ? 'Itens Prontos' : 'Trajes Completos'}</th>
       <th style="text-align:center">${r.id === 'feminino' ? '🦺 Corpetes' : '🦺 Coletes'}</th>
       <th style="text-align:center">${r.id === 'feminino' ? '👔 Blusas' : '👔 Camisas'}</th>
       ${r.id === 'feminino' ? '<th style="text-align:center">👗 Saias</th>' : '<th style="text-align:center">👖 Calças</th>'}

@@ -288,7 +288,7 @@ function openRoomSwitcher() {
   const grid = document.getElementById("roomsListGrid");
   const currentRoomId = getActiveRoomId();
   
-  grid.innerHTML = Object.values(S.rooms).map(roomItem => {
+  grid.innerHTML = getSortedRoomsList(S.rooms).map(roomItem => {
     const isAct = roomItem.id === currentRoomId;
     const stats = getRoomInventoryStats(roomItem);
     const hasPin = !!roomItem.pin;
@@ -299,7 +299,7 @@ function openRoomSwitcher() {
         <span class="room-card-icon">${roomItem.icon || '📁'}</span>
         <div>
           <div class="room-card-name">${esc(roomItem.name)}</div>
-          <div class="room-card-count"><b>${stats.totalKits} trajes completos</b> · ${stats.totalTrajes} modelos</div>
+          <div class="room-card-count"><b>${stats.totalKits} ${(roomItem.id.includes('botas') || roomItem.id.includes('aderecos')) ? 'itens prontos' : 'trajes completos'}</b> · ${stats.totalTrajes} modelos</div>
         </div>
       </div>
       <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">${esc(roomItem.desc || '')}</p>
@@ -323,31 +323,6 @@ function openRoomSwitcher() {
   document.getElementById("closeRoomModalBtn").onclick = () => modal.classList.remove("active");
   document.getElementById("confirmRoomBtn").onclick = () => modal.classList.remove("active");
   modal.onclick = e => { if (e.target.id === "roomModal") modal.classList.remove("active"); };
-  
-  document.getElementById("addNewRoomBtn").onclick = () => {
-    requireMasterAuth(() => {
-      const name = prompt("Nome da nova sala / departamento de trajes:");
-      if (!name) return;
-      const icon = prompt("Ícone (emoji) para a sala:", "📁") || "📁";
-      const id = uid();
-      S.rooms[id] = {
-        id,
-        name,
-        icon,
-        color: "#0284c7",
-        desc: "Departamento de trajes",
-        pin: "",
-        costumes: [],
-        common: []
-      };
-      setActiveRoomId(id);
-      save();
-      updateThemeForActiveRoom();
-      modal.classList.remove("active");
-      toast(`Nova sala "${name}" criada com sucesso!`);
-      go("#/");
-    });
-  };
 }
 
 /* ===== CÁLCULO DE TRAJES COMPLETOS (KITS PRONTOS) ===== */
