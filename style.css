@@ -350,6 +350,23 @@ body:not(.is-master) .master-only {
   border-color: rgba(225, 29, 72, 0.45);
 }
 
+/* Oculta menu e barra lateral para quem não está autenticado (Modo Consulta) */
+body.locked:not(.is-master) .menu-toggle-btn {
+  display: none !important;
+}
+body.locked:not(.is-master) .sidebar {
+  display: none !important;
+}
+body.locked:not(.is-master) .sidebar-overlay {
+  display: none !important;
+}
+body.locked:not(.is-master) .mobile-bottom-nav {
+  display: none !important;
+}
+body.locked:not(.is-master) .content-area {
+  max-width: 100vw !important;
+}
+
 .menu-toggle-btn {
   background: transparent;
   border: none;
@@ -930,18 +947,18 @@ body:not(.is-master) .master-only {
 /* ===== GRADE DE CARTÕES DE TRAJES (HOME) ===== */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
   margin-bottom: 24px;
 }
 .card {
-  background: var(--surface-card);
+  background: #0d1322;
   border: 1px solid var(--bd);
   border-radius: var(--radius);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), border-color 0.2s ease, box-shadow 0.2s ease;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   position: relative;
@@ -949,7 +966,7 @@ body:not(.is-master) .master-only {
 .card:hover {
   border-color: var(--room-color);
   transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 12px var(--bd-glow);
 }
 .card .ph {
   width: 100%;
@@ -960,6 +977,7 @@ body:not(.is-master) .master-only {
   justify-content: center;
   overflow: hidden;
   position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 .card .ph img {
   width: 100%;
@@ -973,9 +991,9 @@ body:not(.is-master) .master-only {
 }
 .card-badges {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
+  top: 8px;
+  left: 8px;
+  right: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -986,16 +1004,29 @@ body:not(.is-master) .master-only {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: var(--radius-full);
-  background: rgba(0, 0, 0, 0.78);
+  background: rgba(11, 15, 25, 0.88);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   font-size: 11px;
   font-weight: 700;
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.badge-count b {
+  color: var(--pri-light, #fda4af);
+  font-weight: 800;
+}
+.badge-incomplete {
+  background: rgba(245, 158, 11, 0.3);
+  border: 1px solid rgba(245, 158, 11, 0.6);
+  padding: 1px 5px;
+  border-radius: 6px;
+  font-size: 9px;
+  color: #fde68a;
+  font-weight: 700;
 }
 .btn-card-photo-edit {
   position: absolute;
@@ -1021,19 +1052,22 @@ body:not(.is-master) .master-only {
 }
 .nm-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: 12px 14px 6px;
-  gap: 8px;
+  padding: 10px 12px 4px;
+  gap: 6px;
 }
 .nm-row .nm {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
   color: #fff;
-  line-height: 1.2;
-  white-space: nowrap;
+  line-height: 1.25;
+  flex: 1;
   overflow: hidden;
-  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  min-height: 35px;
 }
 .btn-rename-card {
   background: transparent;
@@ -1052,19 +1086,19 @@ body:not(.is-master) .master-only {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  padding: 0 14px 10px;
-  min-height: 48px;
+  padding: 0 12px 8px;
+  min-height: 24px;
   align-content: flex-start;
 }
 .part-pill {
   display: inline-flex;
   align-items: center;
-  padding: 2px 7px;
-  border-radius: var(--radius-xs);
+  padding: 2px 6px;
+  border-radius: 4px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--bd);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 10px;
-  color: var(--text-muted);
+  color: #cbd5e1;
   white-space: nowrap;
 }
 .part-pill b {
@@ -1076,8 +1110,8 @@ body:not(.is-master) .master-only {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 8px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
   background: rgba(0, 0, 0, 0.2);
   font-size: 11px;
   color: var(--text-muted);
@@ -1749,47 +1783,62 @@ body.locked .qty-btn { display: none !important; }
   /* 2 Fotos / Cards por Linha no Celular */
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px !important;
+    gap: 8px !important;
     margin-bottom: 20px;
   }
   .card {
-    border-radius: var(--radius-sm);
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
   }
   .card .ph {
     aspect-ratio: 3/4;
   }
   .card-badges {
-    top: 6px;
-    left: 6px;
-    right: 6px;
+    top: 5px;
+    left: 5px;
+    right: 5px;
   }
   .badge-count {
-    font-size: 9px;
-    padding: 2px 5px;
+    font-size: 9.5px;
+    padding: 2px 6px;
+    gap: 2px;
+  }
+  .badge-incomplete {
+    font-size: 8px;
+    padding: 1px 4px;
   }
   .btn-card-photo-edit {
-    width: 24px;
-    height: 24px;
+    bottom: 5px;
+    right: 5px;
+    padding: 2px 5px;
+    font-size: 9.5px;
+  }
+  .nm-row {
+    padding: 6px 8px 2px;
+    gap: 4px;
+  }
+  .nm-row .nm {
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.2;
+    min-height: 28px;
+  }
+  .btn-rename-card {
     font-size: 11px;
   }
-  .card .bd {
-    padding: 8px;
-  }
-  .card .nm {
-    font-size: 12px;
-    font-weight: 700;
-  }
   .comp-preview {
-    gap: 3px;
-    margin-top: 6px;
+    gap: 2px;
+    padding: 0 8px 6px;
+    min-height: 16px;
   }
   .part-pill {
-    font-size: 9px;
-    padding: 1px 5px;
+    font-size: 8.5px;
+    padding: 1px 4px;
+    border-radius: 3px;
   }
   .card-footer {
-    padding: 6px 8px;
-    font-size: 9px;
+    padding: 5px 8px;
+    font-size: 9.5px;
   }
 
   /* KPI Grid no Celular (2 por linha) */

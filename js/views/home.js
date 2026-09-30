@@ -87,8 +87,8 @@ function viewHome() {
     h += `<div style="padding: 40px 16px; text-align: center; background: var(--surface-card); border-radius: 16px; border: 1px dashed var(--bd);">
       <div style="font-size: 40px; margin-bottom: 10px;">${r.icon || '📁'}</div>
       <h3 style="font-size: 16px; margin-bottom: 6px; color:#fff;">Nenhum traje cadastrado em "${esc(r.name)}"</h3>
-      <p style="color: var(--text-muted); margin-bottom: 16px; font-size:13px;">Adicione o primeiro traje desta sala ou importe dados de backup.</p>
-      <button class="btn primary" onclick="document.getElementById('addC').click()">+ Criar Primeiro Traje</button>
+      <p style="color: var(--text-muted); margin-bottom: 16px; font-size:13px;">Adicione o primeiro item desta sala.</p>
+      <button class="btn primary" onclick="document.getElementById('addC').click()">+ Criar Primeiro</button>
     </div>`;
   } else if (currentHomeView === 'cards') {
     h += `<div class="grid">`;
@@ -98,18 +98,18 @@ function viewHome() {
       const dancerCount = dancersCountFor(c.name);
       
       const pills = comp.groups.map(g => {
-        return `<span class="part-pill">${esc(g.name)}: <b>${g.totalQty ? g.totalQty + ' un' : '✓'}</b></span>`;
-      }).slice(0, 4).join("");
+        return `<span class="part-pill">${esc(g.name)}: <b>${g.totalQty ? g.totalQty : '✓'}</b></span>`;
+      }).slice(0, 3).join("");
       
-      const extraCount = comp.groups.length > 4 ? `<span class="part-pill">+${comp.groups.length - 4}</span>` : "";
+      const extraCount = comp.groups.length > 3 ? `<span class="part-pill">+${comp.groups.length - 3}</span>` : "";
 
       h += `<div class="card" data-id="${c.id}" data-name="${esc(norm(c.name))}">
         <div class="ph">
           ${c.photo ? `<img src="${c.photo}" alt="${esc(c.name)}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block;">` : `<div style="display:flex; justify-content:center; align-items:center; height:100%; font-size:36px; opacity:0.6;">${r.icon || "👔"}</div>`}
           <div class="card-badges">
-            <span class="badge-count room" style="display:inline-flex; align-items:center; gap:4px;">
-              <span>${kitInfo.kits ? kitInfo.kits + (r.id.includes('botas') ? ' prontos' : ' trajes completos') : (comp.totalUnits ? comp.totalUnits + ' peças' : 'Novo')}</span>
-              ${kitInfo.incomplete > 0 ? `<span style="background:rgba(245, 158, 11, 0.35); border:1px solid rgba(245, 158, 11, 0.6); padding:1px 5px; border-radius:8px; font-size:10px; color:#fde68a; font-weight:700;">+${kitInfo.incomplete} s/ capote</span>` : ''}
+            <span class="badge-count room">
+              <span><b>${kitInfo.kits || comp.totalUnits || 0}</b> ${kitInfo.kits ? (r.id.includes('botas') ? 'prontos' : 'kits') : (comp.totalUnits ? 'peças' : 'Novo')}</span>
+              ${kitInfo.incomplete > 0 ? `<span class="badge-incomplete">+${kitInfo.incomplete} s/ capote</span>` : ''}
             </span>
           </div>
           ${isUnlocked ? `
@@ -126,7 +126,7 @@ function viewHome() {
           ${pills ? pills + extraCount : '<span style="color:var(--text-light)">(sem peças)</span>'}
         </div>
         <div class="card-footer">
-          <span>👥 ${dancerCount} dançarinos</span>
+          <span>👥 ${dancerCount}</span>
           <span style="color:var(--pri-light); font-weight:700;">Ver Ficha →</span>
         </div>
       </div>`;
