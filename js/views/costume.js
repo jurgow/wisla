@@ -40,6 +40,7 @@ function viewCostume(id) {
       ${isUnlocked ? `
         <button class="btn primary" id="addCustomPieceTopBtn">➕ Adicionar Peça</button>
         <button class="btn" id="renameCostumeBtn" title="Renomear traje (A-Z)">✏️ Renomear Traje</button>
+        <button class="btn" id="moveCostumeBtn" title="Mover este traje para outra sala">📦 Mover de Sala</button>
       ` : ''}
       <button class="btn" onclick="window.print()" title="Imprimir ficha">🖨️ Imprimir</button>
       ${isUnlocked ? `
@@ -108,7 +109,18 @@ function viewCostume(id) {
       <span>⚡ <b>Inserção Rápida de Peça:</b></span>
     </div>
     <div class="quick-add-buttons-flow">
-      ${r.id === 'feminino' ? `
+      ${r.id.includes('botas') ? `
+        <button class="btn-preset-add" data-qa-part="BOTA">👢 + Bota</button>
+        <button class="btn-preset-add" data-qa-part="SAPATO">👞 + Sapato</button>
+        <button class="btn-preset-add" data-qa-part="SAPATILHA">🩰 + Sapatilha</button>
+        <button class="btn-preset-add" data-qa-part="SANDÁLIA">👡 + Sandália</button>
+      ` : r.id === 'aderecos_fem' ? `
+        <button class="btn-preset-add" data-qa-part="COROA">👑 + Coroa / Wianek</button>
+        <button class="btn-preset-add" data-qa-part="FAIXA">🎗️ + Faixa / Fitas</button>
+        <button class="btn-preset-add" data-qa-part="COLAR">📿 + Colar / Miçangas</button>
+        <button class="btn-preset-add" data-qa-part="LENÇO">🧣 + Lenço (Chusta)</button>
+        <button class="btn-preset-add" data-qa-part="ADEREÇO">✨ + Adereço Geral</button>
+      ` : r.id === 'feminino' ? `
         <button class="btn-preset-add" data-qa-part="CORPETE">🦺 + Corpete</button>
         <button class="btn-preset-add" data-qa-part="BLUSA">👔 + Blusa</button>
         <button class="btn-preset-add" data-qa-part="SAIA">👗 + Saia</button>
@@ -307,6 +319,37 @@ function viewCostume(id) {
     covEl.onclick = () => {
       const set = p => { c.photo = p; save(); re(); };
       c.photo ? openPhoto(c.photo, isUnlocked ? set : null, isUnlocked ? () => { if (confirm("Remover a foto do traje?")) set(""); } : null) : (isUnlocked ? pickImg(set) : null);
+    };
+  }
+
+  // Mover Traje para outra Sala
+  const moveCostumeBtn = document.getElementById("moveCostumeBtn");
+  if (moveCostumeBtn) {
+    moveCostumeBtn.onclick = () => {
+      const roomOptions = Object.values(S.rooms).filter(room => room.id !== r.id);
+      const promptText = `Mover o traje "${c.name}" para qual sala?\n\n` + 
+        roomOptions.map((room, idx) => `${idx + 1} - ${room.icon || '📁'} ${room.name}`).join("\n") + 
+        `\n\nDigite o número da sala de destino:`;
+      const choice = prompt(promptText);
+      if (!choice) return;
+      const selectedIndex = parseInt(choice, 10) - 1;
+      const targetRoom = roomOptions[selectedIndex];
+      if (!targetRoom) {
+        alert("Opção inválida.");
+        return;
+      }
+      if (confirm(`Confirmar transferência do traje "${c.name}" da sala "${r.name}" para a sala "${targetRoom.name}"?`)) {
+        r.costumes = r.costumes.filter(x => x !== c);
+        if (!Array.isArray(targetRoom.costumes)) targetRoom.costumes = [];
+        targetRoom.costumes.push(c);
+        targetRoom.costumes.sort((a, b) => (a.name || "").localeCompare(b.name || "", "pt-BR", { sensitivity: "base" }));
+        save();
+        updateCounters();
+        toast(`Traje "${c.name}" transferido com sucesso para ${targetRoom.name}! 🚀`);
+        setActiveRoomId(targetRoom.id);
+        updateThemeForActiveRoom();
+        go("#/traje/" + c.id);
+      }
     };
   }
 

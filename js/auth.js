@@ -411,10 +411,16 @@ function calcCompleteKitsInfo(costume, commonList) {
     // Traje com calças (Masculino)
     const topTotal = counts.coletes + counts.capotes;
     if (topTotal > 0) req.push(topTotal);
-  } else {
+  } else if (counts.coletes > 0 || counts.capotes > 0) {
     // Traje feminino ou sem calça (Saias, Corpetes, Vestidos, Aventais)
     if (counts.coletes > 0) req.push(counts.coletes);
     if (counts.capotes > 0) req.push(counts.capotes);
+  } else if (counts.calcados > 0) {
+    // Botas e Calçados
+    req.push(counts.calcados);
+  } else if (counts.aderecos > 0) {
+    // Adereços e Faixas
+    req.push(counts.aderecos);
   }
 
   // Se não foi capturado pelas categorias base, mas possui peças cadastradas

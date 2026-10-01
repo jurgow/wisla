@@ -214,6 +214,7 @@ function viewBackup() {
       <button class="btn" id="bAll">⬇ Baixar Backup JSON (.json)</button>
       <button class="btn" id="bRoom">⬇ Baixar Backup de "${esc(r.name)}"</button>
       <button class="btn red" id="bI">⬆ Restaurar Backup Local (.json)</button>
+      <button class="btn blue" id="btnRestoreBootsFem">👢 Recarregar Botas Femininas Padrão</button>
     </div>
   </div>`;
 
@@ -321,6 +322,40 @@ function viewBackup() {
     };
     inp.click();
   };
+
+  const bRestoreBoots = document.getElementById("btnRestoreBootsFem");
+  if (bRestoreBoots) {
+    bRestoreBoots.onclick = () => {
+      if (confirm("Deseja restaurar os 12 modelos e 291 calçados padrão na sala 'Botas Femininas'? (Se houver trajes femininos criados lá por engano, eles serão transferidos automaticamente para 'Trajes Femininos')")) {
+        const defaultBootList = (typeof window !== "undefined" && window.WISLA_DEFAULT_DATA && window.WISLA_DEFAULT_DATA.rooms && window.WISLA_DEFAULT_DATA.rooms.botas_fem && window.WISLA_DEFAULT_DATA.rooms.botas_fem.costumes) || [];
+        if (defaultBootList.length > 0) {
+          if (!S.rooms.botas_fem) S.rooms.botas_fem = JSON.parse(JSON.stringify(DEFAULT_ROOMS.botas_fem));
+          
+          const currentCostumes = S.rooms.botas_fem.costumes || [];
+          const officialNames = new Set(defaultBootList.map(b => (b.name || "").toUpperCase().trim()));
+          const nonBootCostumes = currentCostumes.filter(c => {
+            const nm = (c.name || "").toUpperCase().trim();
+            return !officialNames.has(nm) && !nm.startsWith("BOTA") && !nm.startsWith("SAPATO") && !nm.startsWith("SANDÁLIA") && !nm.startsWith("SAPATILHA");
+          });
+          if (nonBootCostumes.length > 0) {
+            if (!S.rooms.feminino) S.rooms.feminino = JSON.parse(JSON.stringify(DEFAULT_ROOMS.feminino));
+            if (!Array.isArray(S.rooms.feminino.costumes)) S.rooms.feminino.costumes = [];
+            nonBootCostumes.forEach(nb => {
+              if (!S.rooms.feminino.costumes.some(fc => fc.id === nb.id || fc.name === nb.name)) {
+                S.rooms.feminino.costumes.push(nb);
+              }
+            });
+          }
+          
+          S.rooms.botas_fem.costumes = JSON.parse(JSON.stringify(defaultBootList));
+          save();
+          updateThemeForActiveRoom();
+          toast("12 modelos de calçados restaurados com sucesso em Botas Femininas!");
+          viewAdmin();
+        }
+      }
+    };
+  }
 }
 
 /* 3. Configurações & Gestão de Salas (Apenas Master) */

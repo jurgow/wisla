@@ -86,7 +86,7 @@ function viewHome() {
   if (!r.costumes.length) {
     h += `<div style="padding: 40px 16px; text-align: center; background: var(--surface-card); border-radius: 16px; border: 1px dashed var(--bd);">
       <div style="font-size: 40px; margin-bottom: 10px;">${r.icon || '📁'}</div>
-      <h3 style="font-size: 16px; margin-bottom: 6px; color:#fff;">Nenhum traje cadastrado em "${esc(r.name)}"</h3>
+      <h3 style="font-size: 16px; margin-bottom: 6px; color:#fff;">Nenhum item cadastrado em "${esc(r.name)}"</h3>
       <p style="color: var(--text-muted); margin-bottom: 16px; font-size:13px;">Adicione o primeiro item desta sala.</p>
       <button class="btn primary" onclick="document.getElementById('addC').click()">+ Criar Primeiro</button>
     </div>`;

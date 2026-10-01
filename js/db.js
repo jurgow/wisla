@@ -211,6 +211,36 @@ function migrateState(d) {
     state.rooms.masculino.pin = d.pin;
   }
 
+  // Migração e saneamento da sala botas_fem
+  if (state.rooms.botas_fem) {
+    const defaultBootList = (typeof window !== "undefined" && window.WISLA_DEFAULT_DATA && window.WISLA_DEFAULT_DATA.rooms && window.WISLA_DEFAULT_DATA.rooms.botas_fem && window.WISLA_DEFAULT_DATA.rooms.botas_fem.costumes && window.WISLA_DEFAULT_DATA.rooms.botas_fem.costumes.length > 0) ? window.WISLA_DEFAULT_DATA.rooms.botas_fem.costumes : [];
+    const officialNames = new Set(defaultBootList.map(b => (b.name || "").toUpperCase().trim()));
+    const currentCostumes = state.rooms.botas_fem.costumes || [];
+    
+    // Se houver trajes criados na sala de botas que NÃO são calçados, move automaticamente para a sala 'feminino'
+    const nonBootCostumes = currentCostumes.filter(c => {
+      const nm = (c.name || "").toUpperCase().trim();
+      return !officialNames.has(nm) && !nm.startsWith("BOTA") && !nm.startsWith("SAPATO") && !nm.startsWith("SANDÁLIA") && !nm.startsWith("SAPATILHA");
+    });
+
+    if (nonBootCostumes.length > 0) {
+      if (!state.rooms.feminino) state.rooms.feminino = JSON.parse(JSON.stringify(DEFAULT_ROOMS.feminino));
+      if (!Array.isArray(state.rooms.feminino.costumes)) state.rooms.feminino.costumes = [];
+      nonBootCostumes.forEach(nb => {
+        if (!state.rooms.feminino.costumes.some(fc => fc.id === nb.id || fc.name === nb.name)) {
+          state.rooms.feminino.costumes.push(nb);
+        }
+      });
+      state.rooms.botas_fem.costumes = currentCostumes.filter(c => !nonBootCostumes.includes(c));
+    }
+
+    // Se a sala de botas estiver sem os modelos padrão oficiais, carrega a lista oficial completa
+    const hasOfficialBoots = (state.rooms.botas_fem.costumes || []).some(c => officialNames.has((c.name || "").toUpperCase().trim()));
+    if ((!hasOfficialBoots || state.rooms.botas_fem.costumes.length === 0) && defaultBootList.length > 0) {
+      state.rooms.botas_fem.costumes = JSON.parse(JSON.stringify(defaultBootList));
+    }
+  }
+
   // Ordena alfabeticamente trajes e dançarinos em todas as salas
   Object.values(state.rooms).forEach(r => {
     if (Array.isArray(r.costumes)) {
