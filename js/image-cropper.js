@@ -299,16 +299,74 @@ function openPhoto(src, onChange, onDelete) {
     lb.classList.remove("active");
     if (typeof onChange === "function") pickImg(onChange);
   };
-  document.getElementById("lbdel").onclick = () => {
-    lb.classList.remove("active");
-    if (typeof onDelete === "function") onDelete();
-  };
-  document.getElementById("lbclose").onclick = () => lb.classList.remove("active");
+  const lbdel = document.getElementById("lbdel");
+  if (lbdel) {
+    lbdel.onclick = () => {
+      lb.classList.remove("active");
+      if (typeof onDelete === "function") onDelete();
+    };
+  }
+  const lbclose = document.getElementById("lbclose");
+  if (lbclose) lbclose.onclick = () => lb.classList.remove("active");
 }
-document.getElementById("lb").onclick = e => { if (e.target.id === "lb") e.currentTarget.classList.remove("active"); };
+const lbModal = document.getElementById("lb");
+if (lbModal) lbModal.onclick = e => { if (e.target.id === "lb") e.currentTarget.classList.remove("active"); };
+
+/* Funções de Captura Direta */
+window.triggerCameraCapture = function(cb, defaultName = "FOTO CAMERA") {
+  const inp = document.createElement("input");
+  inp.type = "file";
+  inp.accept = "image/*";
+  inp.setAttribute("capture", "environment");
+  inp.onchange = () => {
+    if (!inp.files || !inp.files[0]) return;
+    const file = inp.files[0];
+    openImageResizer(file, file.name || defaultName, (finalImg) => {
+      const photoName = prompt("Nome desta foto para o Acervo:", defaultName) || defaultName;
+      const newPhotoObj = {
+        id: uid(),
+        name: photoName.toUpperCase().trim(),
+        img: finalImg,
+        date: new Date().toISOString().slice(0, 10)
+      };
+      bank().push(newPhotoObj);
+      save();
+      updateCounters();
+      cb(finalImg);
+      toast(`Foto da câmera salva e aplicada! 📸`);
+    });
+  };
+  inp.click();
+};
+
+window.triggerGalleryUpload = function(cb, defaultName = "") {
+  const inp = document.createElement("input");
+  inp.type = "file";
+  inp.accept = "image/*";
+  inp.onchange = () => {
+    if (!inp.files || !inp.files[0]) return;
+    const file = inp.files[0];
+    const baseName = (file.name || defaultName || "FOTO").replace(/\.[^.]+$/, "").toUpperCase();
+    openImageResizer(file, baseName, (finalImg) => {
+      const photoName = prompt("Nome desta foto para o Acervo:", baseName) || baseName;
+      const newPhotoObj = {
+        id: uid(),
+        name: photoName.toUpperCase().trim(),
+        img: finalImg,
+        date: new Date().toISOString().slice(0, 10)
+      };
+      bank().push(newPhotoObj);
+      save();
+      updateCounters();
+      cb(finalImg);
+      toast(`Foto "${newPhotoObj.name}" salva e aplicada! ✓`);
+    });
+  };
+  inp.click();
+};
 
 /* Modal Seletor de Fotos do Acervo */
-window.pickImg = function(cb) {
+window.pickImg = function(cb, itemNameHint = "") {
   const B = bank(), box = document.getElementById("bkBox");
 
   const renderPickerCards = (filter = "") => {
@@ -316,10 +374,10 @@ window.pickImg = function(cb) {
     const filtered = B.filter(b => !q || norm(b.name || "").includes(q));
     
     if (!filtered.length) {
-      return `<div style="grid-column: 1/-1; text-align: center; padding: 36px 16px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--bd);">
+      return `<div style="grid-column: 1/-1; text-align: center; padding: 30px 16px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--bd);">
         <div style="font-size: 32px; margin-bottom: 8px;">📷</div>
-        <p style="color: var(--text-muted); margin: 0 0 12px; font-size: 13px;">${B.length ? 'Nenhuma foto encontrada com esse nome.' : 'Nenhuma foto no Acervo ainda.'}</p>
-        <button class="btn primary sm" id="pkEmptyUp">⬆ Adicionar Nova Foto ao Acervo</button>
+        <p style="color: var(--text-muted); margin: 0 0 12px; font-size: 13px;">${B.length ? 'Nenhuma foto encontrada com esse nome no acervo.' : 'Nenhuma foto no Acervo ainda.'}</p>
+        <button class="btn primary sm" id="pkEmptyUp">📸 Tirar ou Enviar Foto</button>
       </div>`;
     }
 
@@ -341,19 +399,28 @@ window.pickImg = function(cb) {
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid var(--bd); padding-bottom:10px;">
       <div>
         <h3 style="margin:0; font-size:16px; display:flex; align-items:center; gap:8px;">
-          <span>📷</span> <span>Acervo Central de Fotos Wisła</span>
+          <span>📷</span> <span>Adicionar ou Escolher Foto</span>
         </h3>
-        <span style="font-size:12px; color:var(--text-muted);">Selecione uma foto existente do acervo ou adicione uma nova foto.</span>
+        <span style="font-size:12px; color:var(--text-muted);">Tire uma foto pela câmera, envie da galeria ou escolha do acervo.</span>
       </div>
       <button class="btn sm" id="pkX" style="border:none; box-shadow:none; font-size:16px;">✕</button>
     </div>
 
-    <div style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; align-items:center;">
-      <input type="search" id="pkQ" placeholder="Buscar foto no acervo por nome..." style="flex:1; min-width:200px; padding:8px 12px; background:#0d1322; border:1px solid var(--bd); border-radius:8px; color:#fff; font-size:13px;">
-      <button class="btn primary" id="pkUp" style="white-space:nowrap;">⬆ Nova Foto do Dispositivo</button>
+    <!-- Ações Rápidas: Câmera vs Galeria -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; margin-bottom:14px;">
+      <button class="btn primary" id="pkCamera" style="padding:10px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px; font-size:13px;">
+        <span style="font-size:18px;">📸</span> <span>Tirar Foto (Câmera)</span>
+      </button>
+      <button class="btn blue" id="pkGallery" style="padding:10px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px; font-size:13px;">
+        <span style="font-size:18px;">📁</span> <span>Galeria / Arquivo</span>
+      </button>
     </div>
 
-    <div style="overflow-y:auto; max-height:56vh; padding:2px;">
+    <div style="display:flex; gap:10px; margin-bottom:12px; align-items:center;">
+      <input type="search" id="pkQ" placeholder="🔍 Buscar no acervo existente (${B.length} fotos)..." style="flex:1; padding:8px 12px; background:#0d1322; border:1px solid var(--bd); border-radius:8px; color:#fff; font-size:13px;">
+    </div>
+
+    <div style="overflow-y:auto; max-height:48vh; padding:2px;">
       <div class="bk-grid" id="pkGrid">
         ${renderPickerCards()}
       </div>
@@ -375,7 +442,7 @@ window.pickImg = function(cb) {
       };
     });
     const emptyUp = document.getElementById("pkEmptyUp");
-    if (emptyUp) emptyUp.onclick = () => document.getElementById("pkUp").click();
+    if (emptyUp) emptyUp.onclick = () => document.getElementById("pkCamera").click();
   };
 
   bindCardClicks();
@@ -385,31 +452,23 @@ window.pickImg = function(cb) {
     bindCardClicks();
   };
 
-  document.getElementById("pkUp").onclick = () => {
-    const i = document.createElement("input");
-    i.type = "file";
-    i.accept = "image/*";
-    i.onchange = () => {
-      if (!i.files[0]) return;
-      const file = i.files[0];
-      openImageResizer(file, file.name, (finalImg) => {
-        const defaultName = file.name.replace(/\.[^.]+$/, "").toUpperCase();
-        const photoName = prompt("Nome desta foto para o Acervo:", defaultName) || defaultName;
-        const newPhotoObj = {
-          id: uid(),
-          name: photoName.toUpperCase().trim(),
-          img: finalImg,
-          date: new Date().toISOString().slice(0, 10)
-        };
-        bank().push(newPhotoObj);
-        save();
-        updateCounters();
-        close();
-        cb(finalImg);
-        toast(`Foto "${newPhotoObj.name}" salva no Acervo e aplicada!`);
-      });
-    };
-    i.click();
+  // Botão Câmera
+  document.getElementById("pkCamera").onclick = () => {
+    const hint = itemNameHint || "FOTO CAMERA";
+    triggerCameraCapture((finalImg) => {
+      close();
+      cb(finalImg);
+    }, hint);
+  };
+
+  // Botão Galeria
+  document.getElementById("pkGallery").onclick = () => {
+    const hint = itemNameHint || "";
+    triggerGalleryUpload((finalImg) => {
+      close();
+      cb(finalImg);
+    }, hint);
   };
 };
-document.getElementById("bkDlg").onclick = e => { if (e.target.id === "bkDlg") document.getElementById("bkDlg").classList.remove("active"); };
+const bkDlgModal = document.getElementById("bkDlg");
+if (bkDlgModal) bkDlgModal.onclick = e => { if (e.target.id === "bkDlg") bkDlgModal.classList.remove("active"); };

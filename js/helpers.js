@@ -90,6 +90,44 @@ function classifyPiece(part) {
   return { key: "outros", label: "Outras Peças", icon: "📦" };
 }
 
+/* Nomenclatura e Tipagem Inteligente por Sala */
+function isBootRoom(roomOrId) {
+  const rid = typeof roomOrId === "string" ? roomOrId.toLowerCase() : ((roomOrId && roomOrId.id) || "").toLowerCase();
+  return rid.includes("bota") || rid.includes("calcado") || rid.includes("sapato");
+}
+
+function isAccessoryRoom(roomOrId) {
+  const rid = typeof roomOrId === "string" ? roomOrId.toLowerCase() : ((roomOrId && roomOrId.id) || "").toLowerCase();
+  return rid.includes("adereco") || rid.includes("acessorio") || rid.includes("faixa");
+}
+
+function isCostumeRoom(roomOrId) {
+  return !isBootRoom(roomOrId) && !isAccessoryRoom(roomOrId);
+}
+
+function getRoomUnitName(roomOrId, count = 1) {
+  if (isBootRoom(roomOrId)) return count === 1 ? "calçado" : "calçados";
+  if (isAccessoryRoom(roomOrId)) return count === 1 ? "item" : "itens";
+  return count === 1 ? "traje completo" : "trajes completos";
+}
+
+function getRoomItemSimpleName(roomOrId, count = 1) {
+  if (isBootRoom(roomOrId)) return count === 1 ? "calçado" : "calçados";
+  if (isAccessoryRoom(roomOrId)) return count === 1 ? "item" : "itens";
+  return count === 1 ? "traje" : "trajes";
+}
+
+function getRoomAddButtonLabel(roomOrId) {
+  if (isCostumeRoom(roomOrId)) return "+ Novo Traje";
+  return "+ Novo Item";
+}
+
+function getRoomNavLabel(roomOrId) {
+  if (isBootRoom(roomOrId)) return "Calçados";
+  if (isAccessoryRoom(roomOrId)) return "Itens";
+  return "Trajes";
+}
+
 /* Hash & Segurança */
 const hash = s => {
   let h = 5381; s = "trajes|" + s;

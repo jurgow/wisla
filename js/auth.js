@@ -205,6 +205,12 @@ function updateThemeForActiveRoom() {
   if (sideIcon) sideIcon.textContent = r.icon || "📁";
   if (sideLabel) sideLabel.textContent = r.name || "Sala";
 
+  const sideTrajesLabel = document.getElementById("sidebarTrajesLabel");
+  const mobileTrajesLabel = document.getElementById("mobileTrajesLabel");
+  const navLabel = getRoomNavLabel(r);
+  if (sideTrajesLabel) sideTrajesLabel.textContent = navLabel;
+  if (mobileTrajesLabel) mobileTrajesLabel.textContent = navLabel;
+
   updateCounters();
   updateAuthUI();
 }
@@ -292,6 +298,9 @@ function openRoomSwitcher() {
     const isAct = roomItem.id === currentRoomId;
     const stats = getRoomInventoryStats(roomItem);
     const hasPin = !!roomItem.pin;
+    const unitNoun = getRoomUnitName(roomItem, stats.totalKits);
+    const modelNoun = isCostumeRoom(roomItem) ? (stats.totalTrajes === 1 ? 'traje' : 'trajes') : (stats.totalTrajes === 1 ? 'modelo' : 'modelos');
+    const repairInfo = stats.totalRepair > 0 ? ` · <span style="color:#fbbf24;">🔧 ${stats.totalRepair} em conserto</span>` : '';
     
     return `<div class="room-card-option ${isAct ? 'active' : ''}" data-room-id="${roomItem.id}">
       <span class="room-card-lock-badge">${hasPin ? '🔒' : '🔓'}</span>
@@ -299,7 +308,7 @@ function openRoomSwitcher() {
         <span class="room-card-icon">${roomItem.icon || '📁'}</span>
         <div>
           <div class="room-card-name">${esc(roomItem.name)}</div>
-          <div class="room-card-count"><b>${stats.totalKits} ${(roomItem.id.includes('botas') || roomItem.id.includes('aderecos')) ? 'itens prontos' : 'trajes completos'}</b> · ${stats.totalTrajes} modelos</div>
+          <div class="room-card-count"><b>${stats.totalKits} ${unitNoun}</b> · ${stats.totalTrajes} ${modelNoun}${repairInfo}</div>
         </div>
       </div>
       <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">${esc(roomItem.desc || '')}</p>
@@ -552,6 +561,7 @@ function getRoomInventoryStats(r) {
     totalKits: 0,
     totalIncompleteKits: 0,
     totalUnits: 0,
+    totalRepair: 0,
     calcas: 0,
     camisas: 0,
     coletes: 0,
@@ -573,7 +583,9 @@ function getRoomInventoryStats(r) {
       if (!raw.cid) {
         const cat = classifyPiece(raw.part).key;
         const q = parseQty(raw.qty);
+        const rep = parseInt(raw.repair || 0, 10) || 0;
         stats.totalUnits += q;
+        stats.totalRepair += rep;
         if (stats[cat] !== undefined) stats[cat] += q;
         else stats.outros += q;
       }
@@ -584,11 +596,14 @@ function getRoomInventoryStats(r) {
   (r.common || []).forEach(cm => {
     const cat = classifyPiece(cm.part).key;
     const q = parseQty(cm.qty);
+    const rep = parseInt(cm.repair || 0, 10) || 0;
     stats.totalUnits += q;
+    stats.totalRepair += rep;
     if (stats[cat] !== undefined) stats[cat] += q;
     else stats.outros += q;
   });
 
+  stats.availableUnits = Math.max(0, stats.totalUnits - stats.totalRepair);
   return stats;
 }
 

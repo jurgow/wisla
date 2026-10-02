@@ -5,13 +5,17 @@ function viewPieces() {
   const r = getActiveRoom();
   const stats = getRoomInventoryStats(r);
   const isUnlocked = isCurrentRoomUnlocked();
+  const isBoots = isBootRoom(r);
+  const isAder = isAccessoryRoom(r);
+  const isCostume = isCostumeRoom(r);
   
   const allRows = [];
   (r.costumes || []).forEach(c => (c.items || []).forEach(raw => {
     const it = eff(raw); if (!it) return;
     const cat = classifyPiece(it.part);
     const q = parseQty(it.qty);
-    allRows.push({ costume: c, raw, it, cat, q, txt: norm([c.name, it.part, it.type, it.color, it.qty, it.notes].join(" ")) });
+    const rep = parseInt(it.repair || 0, 10) || 0;
+    allRows.push({ costume: c, raw, it, cat, q, rep, txt: norm([c.name, it.part, it.type, it.color, it.qty, it.notes].join(" ")) });
   }));
 
   // Adiciona peças compartilhadas que ainda não foram vinculadas a nenhum traje
@@ -20,12 +24,14 @@ function viewPieces() {
     if (!linked) {
       const cat = classifyPiece(cm.part);
       const q = parseQty(cm.qty);
+      const rep = parseInt(cm.repair || 0, 10) || 0;
       allRows.push({
         costume: { id: "", name: "(Sem Traje Vinculado)" },
         raw: { cid: cm.id },
         it: cm,
         cat,
         q,
+        rep,
         txt: norm(["Compartilhada", cm.part, cm.type, cm.color, cm.qty, cm.notes].join(" "))
       });
     }
@@ -38,14 +44,15 @@ function viewPieces() {
   });
 
   const submenus = [
-    { key: "all", label: "Todas as Peças", icon: "📦", count: stats.totalUnits },
+    { key: "all", label: isBoots ? "Todos os Calçados" : isAder ? "Todos os Itens" : "Todas as Peças", icon: isBoots ? "👢" : isAder ? "🎗️" : "📦", count: stats.totalUnits },
+    ...(stats.totalRepair > 0 ? [{ key: "repair", label: "Em Conserto", icon: "🔧", count: stats.totalRepair }] : []),
     ...(stats.calcas > 0 || r.id === 'masculino' ? [{ key: "calcas", label: "Calças", icon: "👖", count: stats.calcas }] : []),
     { key: "camisas", label: r.id === 'feminino' ? "Blusas & Camisas" : "Camisas & Blusas", icon: "👔", count: stats.camisas },
     { key: "coletes", label: r.id === 'feminino' ? "Corpetes & Coletes" : "Coletes & Corpetes", icon: "🦺", count: stats.coletes },
     { key: "capotes", label: r.id === 'feminino' ? "Saias, Capotes & Aventais" : "Capotes, Sukmanas & Saias", icon: r.id === 'feminino' ? "👗" : "🧥", count: stats.capotes },
     { key: "calcados", label: "Botas & Calçados", icon: r.id === 'botas_fem' ? "👠" : "👢", count: stats.calcados },
     { key: "aderecos", label: "Adereços & Faixas", icon: "🎗️", count: stats.aderecos },
-    { key: "compartilhadas", label: "Compartilhadas", icon: "🔗", count: (r.common || []).length }
+    ...(isCostume ? [{ key: "compartilhadas", label: "Compartilhadas", icon: "🔗", count: (r.common || []).length }] : [])
   ];
 
   let h = `
@@ -67,26 +74,28 @@ function viewPieces() {
   </div>
 
   <div class="wrap"><table><thead><tr>
-    <th>Traje (A-Z)</th>
-    <th>Peça</th>
+    <th>${isCostume ? 'Traje (A-Z)' : 'Modelo / Item (A-Z)'}</th>
+    <th>${isBoots ? 'Item / Calçado' : isAder ? 'Item' : 'Peça'}</th>
     <th>Foto</th>
-    <th>Tipo / Detalhe</th>
+    <th>${isBoots ? 'Numeração / Tamanho' : 'Tipo / Detalhe'}</th>
     <th>Cor</th>
-    <th style="text-align:center">Quant.</th>
+    <th style="text-align:center">Qtd Total</th>
+    <th style="text-align:center; color:#fbbf24;">🔧 Em Conserto</th>
     <th>Observação</th>
   </tr></thead><tbody>`;
 
   allRows.forEach((row, rIdx) => {
-    const { costume: c, raw, it, cat, txt } = row;
+    const { costume: c, raw, it, cat, txt, rep } = row;
     const isShared = !!raw.cid;
     const customTag = isShared ? formatSharedTag(it.part) : "";
-    h += `<tr data-t="${esc(txt)}" data-cat="${cat.key}" data-is-shared="${isShared ? 'true' : 'false'}" ${isShared ? 'class="link"' : ""}>
+    h += `<tr data-t="${esc(txt)}" data-cat="${cat.key}" data-is-repair="${rep > 0 ? 'true' : 'false'}" data-is-shared="${isShared ? 'true' : 'false'}" ${isShared ? 'class="link"' : ""}>
       <td>${c.id ? `<span class="chip" data-go="${c.id}">${esc(c.name)}</span>` : `<span style="color:var(--amber); font-size:12px;">${esc(c.name)}</span>`}</td>
       <td><b>${esc(it.part)}</b>${isShared ? ' <span class="tag shared" data-cm="' + raw.cid + '">' + esc(customTag) + '</span>' : ""}</td>
       <td>${thumb(it.photo, `data-row-ph="${rIdx}"`)}</td>
       <td>${esc(it.type)}</td>
       <td>${esc(it.color)}</td>
       <td style="text-align:center; font-weight:700;">${esc(it.qty)}</td>
+      <td style="text-align:center;">${rep > 0 ? `<span class="badge-repair" style="background:rgba(245,158,11,0.2); color:#fbbf24; font-weight:700; padding:2px 6px; border-radius:4px; font-size:12px;">🔧 ${rep} un</span>` : '<span style="color:var(--text-light);">-</span>'}</td>
       <td>${esc(it.notes)}</td>
     </tr>`;
   });
@@ -98,6 +107,7 @@ function viewPieces() {
     let n = 0;
     app.querySelectorAll("tbody tr").forEach(tr => {
       const matchCat = currentPieceCategory === "all" ? true :
+                       currentPieceCategory === "repair" ? (tr.dataset.isRepair === "true") :
                        currentPieceCategory === "compartilhadas" ? (tr.dataset.isShared === "true") :
                        (tr.dataset.cat === currentPieceCategory);
       const matchTxt = !q || tr.dataset.t.includes(q);

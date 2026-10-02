@@ -234,9 +234,13 @@ function migrateState(d) {
       state.rooms.botas_fem.costumes = currentCostumes.filter(c => !nonBootCostumes.includes(c));
     }
 
-    // Se a sala de botas estiver sem os modelos padrão oficiais, carrega a lista oficial completa
+    // Se a sala de botas contiver modelos antigos divergentes da planilha oficial ou estiver vazia, sincroniza com a lista oficial
+    const hasOldInvalidBoots = (state.rooms.botas_fem.costumes || []).some(c => {
+      const nm = (c.name || "").toUpperCase().trim();
+      return nm.includes("BIŁGORAJ") || nm.includes("BILGORAJ") || nm.includes("BOTINA") || nm.includes("BOTINHA") || nm.includes("VELUDO");
+    });
     const hasOfficialBoots = (state.rooms.botas_fem.costumes || []).some(c => officialNames.has((c.name || "").toUpperCase().trim()));
-    if ((!hasOfficialBoots || state.rooms.botas_fem.costumes.length === 0) && defaultBootList.length > 0) {
+    if ((hasOldInvalidBoots || !hasOfficialBoots || state.rooms.botas_fem.costumes.length === 0) && defaultBootList.length > 0) {
       state.rooms.botas_fem.costumes = JSON.parse(JSON.stringify(defaultBootList));
     }
   }

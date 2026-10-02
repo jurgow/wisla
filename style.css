@@ -1451,6 +1451,29 @@ td.part { font-weight: 700; color: #fff; }
 }
 .qty-stepper input:focus { outline: none; }
 
+/* Stepper de Em Conserto */
+.qty-stepper.repair-stepper {
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.06);
+}
+.qty-stepper.repair-stepper .qty-btn:hover {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+}
+.badge-repair {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  font-weight: 700;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
 /* Inputs e Formulários */
 input[type="text"], input[type="password"], input[type="number"], select, textarea {
   background: #0d1322;
